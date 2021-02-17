@@ -1,0 +1,15 @@
+{
+  "name": "ramsterhad/deepdanboorutagassist",
+  "description": "Deep Danbooru Tag Assist. An assistant to find new tags.",
+  "type": "project",
+  "license": "proprietary",
+  "version": "0.1",
+  "autoload": {
+    "psr-4": {
+      "Ramsterhad\\DeepDanbooruTagAssist\\": ""
+    }
+  },
+  "require-dev": {
+    "symfony/dotenv": "^5.2"
+  }
+}

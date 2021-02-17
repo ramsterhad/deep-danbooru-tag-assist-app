@@ -1,0 +1,723 @@
+commit 95d4a782f0353b02b6ca84fa021ec89204a7ea6f
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Feb 16 13:35:06 2021 +0100
+
+    replaced old footer, with a new, more styleable one. centered login box.
+
+commit 1a1a7a584237ca3f6b50ea6071acd67c4df60e7c
+Author: Balint gottlasz <Balint@gottlasz.hu>
+Date:   Thu Feb 4 00:41:21 2021 +0100
+
+    css adjustments mostly image/text ratios
+    removed a few unused and or unneded rules.
+    Added a few things to the index.php
+    As a todo: for some reason when there are less than 9 but not 0 new tags the flex container misbehaves likely due to a missing closing div tag but idk where that happens
+
+commit a15508fc699843bc310ef1a3c4227546ac42c823
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Wed Feb 3 23:31:02 2021 +0100
+
+    Update .env
+
+commit 5d1ec3e68ef3802dabd13b128b982b1ecc3b638d
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Feb 2 00:23:13 2021 +0100
+
+    added a switch. either login was performed by form or by config.
+
+commit 50d8d0f20d4b2020d48d5692996e29df98e1dd0c
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Feb 2 00:12:31 2021 +0100
+
+    Implemented a login service. Enhanced exception handling for the request.
+
+commit 2079079dce133edb3f4d8483ccc297b9ddeaccf9
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Feb 1 22:46:42 2021 +0100
+
+    new error message for wrong credentials.
+
+commit ab3998b7415a3c643bff69d24057017323056779
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Feb 1 22:10:49 2021 +0100
+
+    Added exceptions to catch errors.
+
+commit 2f7ed40be497409424a9e6266c3707d7f9dd6eb7
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Feb 1 15:30:09 2021 +0100
+
+    added a check if the credentials are set.
+
+commit 4008b7307e4320ef5ecefe9d3a3f9ea1a94b8f5f
+Merge: 0392b61 f8c671f
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 31 12:30:52 2021 +0100
+
+    Merge branch 'main' of github.com:Ramsterhad/DeepDanbooruTagAssist into main
+
+commit 0392b6120b5b0737b19c2ae01459a80c6559ff17
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 31 12:20:08 2021 +0100
+
+    removed (hopefully) unused element properties.
+
+commit 4bdc3bcc85436e0d8706e577616e92cb4287808e
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 31 12:15:18 2021 +0100
+
+    Added further explanation, moved a bit business code from the frontend to the app.
+
+commit e8bc36a4da0498414f2d5723595558eaf73843f7
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 31 12:05:36 2021 +0100
+
+    added a explanation to the closeRow variable.
+
+commit f8c671f22836c38df31e661148d4309784dc219e
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Sat Jan 30 19:28:59 2021 +0100
+
+    Update README.md
+
+commit e521d049f5704de72579f0a950430f94bfad95ff
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Sat Jan 30 19:26:49 2021 +0100
+
+    Update README.md
+
+commit 5ceb1f62c2cc66abd32af4f3cbd2c1550e007b65
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Sat Jan 30 19:13:55 2021 +0100
+
+    Update README.md
+
+commit fec76efc1de872368c8902321fc330ead8d99c0f
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Sat Jan 30 19:13:04 2021 +0100
+
+    Update .env
+
+commit d3864dca48531d3307f0b8ae9ca7ff7e93df4039
+Author: Balint gottlasz <Balint@gottlasz.hu>
+Date:   Thu Jan 28 00:21:30 2021 +0100
+
+    fix righthand side image css
+
+commit 3302cdf4b50b104960c798298e21e25385ed6f92
+Author: Balint gottlasz <Balint@gottlasz.hu>
+Date:   Wed Jan 27 23:41:26 2021 +0100
+
+    added code for rigthand side images
+    changed a bit of css and added some div and span tags into index.php
+    also added rel="noreferrer" to links in inex.php.
+    lets hope nothing breaks.
+
+commit 6decfe34fa7beb5859e4df584e5e349bc72e7d02
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 12:17:37 2021 +0100
+
+    Added credentials to the post request.
+
+commit 28ba4c17e0fc0b313bb3fe291baa3f7c99f08313
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 01:02:52 2021 +0100
+
+    removed old, duplicte code
+
+commit df7d3a9b924c51ddbd9da6f7d5f8ca0b7c76e5d1
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 01:02:03 2021 +0100
+
+    open links in new tab
+
+commit 4ec0df2a2a87daba9660aac6965e239a0d994f64
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 00:49:26 2021 +0100
+
+    renintroduced greenish new tags.
+
+commit a8676bef6bce8b05a8b1f8d33853ddc46c3faa0b
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 00:44:12 2021 +0100
+
+    fixed #2
+
+commit 32ee7bb5d0ad0812b65db1029a3be6c1c90894a3
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 00:23:34 2021 +0100
+
+    #24 done.
+
+commit f47802d6a2ab298c4f45d506a2d1c8e459e8d1d8
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 00:13:52 2021 +0100
+
+    finished #22. renamed Item to Post
+
+commit af58135cb3a5647530d562658bb413efe99eb634
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 00:06:00 2021 +0100
+
+    moved the git directory so it can see the complete project
+
+commit 5f3a67a21a124ba5c5dd4a2f8ab1a637a61407be
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 26 00:03:24 2021 +0100
+
+    restructered the project so index.php is the only php file accessible.
+
+commit b53a89c843dad154092b80077c6faf7bd4976902
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 25 23:48:41 2021 +0100
+
+    adapt the design a bit, so the paddings are less wide
+
+commit e694639528f1faaed53d3267ec550412711edb09
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 25 23:40:54 2021 +0100
+
+    fixed #25, fixed #26, fixed #27
+
+commit efc6b9455eddc8c842e55e5b694447a9bf64fd0d
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 25 23:37:10 2021 +0100
+
+    fixed a html syntax error.
+
+commit ea0ca3d82feb63da592b4d464118c5e641615433
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 25 23:02:03 2021 +0100
+
+    added the url from the config to create the link to the post, instead of a hardcoded url.
+
+commit efab855c004800fb80e7a31f0e8efa3edc6aefa5
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Sun Jan 24 11:58:50 2021 +0100
+
+    Update .env
+
+commit fdb8b6051d33f08da49f7e592ea004cc5bdca273
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 10:34:30 2021 +0100
+
+    removed unused js code.
+
+commit 443e7175a66e725f7d380b1489732fd7b7cf27b6
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 10:33:57 2021 +0100
+
+    fixed set and reset Danbooru api url
+
+commit 9b00caa7387ccdd87c5712a3f7438c45918bcb3e
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 10:03:19 2021 +0100
+
+    added explanation how to change config parameters.
+
+commit 8bf1262c0df2fd8d917b4e4933e9cfc8ba388bbc
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 09:59:42 2021 +0100
+
+    added #18
+
+commit c2f0217f6f64f0c42e3e5fad87c8366ef11d429f
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 02:50:44 2021 +0100
+
+    fixed #17
+
+commit bcf56ef72b5ab01cdfa835bbefb5bbadb20355a6
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 02:44:09 2021 +0100
+
+    #16
+
+commit 591527725358527ae3e8881001802d5ecf14542a
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 02:18:41 2021 +0100
+
+    #15
+
+commit d33073b6991e42210657a51b5a249d5851b8dfe8
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 02:15:02 2021 +0100
+
+    added sections. added footer.
+
+commit 5bf14712eeb431d03ca3937b08b9d63d020511e2
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Jan 24 01:13:10 2021 +0100
+
+    Added the score as span title.. mouseover
+
+commit 9fab244f8272473b99ae0e43c8f209bb2b364357
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Tue Jan 19 22:59:59 2021 +0100
+
+    derp
+
+commit cb346bc43bba27fd5dff0baab216462b31241d73
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 19 15:53:39 2021 +0100
+
+    respected the line length. ANNE THE LINE LENGTH!
+
+commit 6bc86f1c6ba37ba98dfe9fd6960f20687dafbe3f
+Merge: 64c0578 73ad80f
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 19 15:49:08 2021 +0100
+
+    Merge branch 'main' of github.com:Ramsterhad/DeepDanbooruTagAssist into main
+
+commit 64c05786de55f2331fdb2879b5a99e6c5664e304
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 19 15:47:43 2021 +0100
+
+    added checkboxes to mark new tags. Added curl user and pass
+
+commit 73ad80f345280b5f31f41e2582a2b3a2859906b2
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Thu Jan 7 19:36:27 2021 +0100
+
+    Update Danbooru.php
+    
+    comments
+
+commit e7c79cb971f61c668a2b90a877e6aaffec850ea6
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Thu Jan 7 19:04:32 2021 +0100
+
+    Update Danbooru.php
+    
+    comments
+
+commit ccfef9f8c4c92e7cbeb25641bad027d75f22afc1
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Thu Jan 7 17:49:52 2021 +0100
+
+    Update Danbooru.php
+    
+    comments
+
+commit e8cccf199bc49197f6e7f5c2bb77b5a1f1167229
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Thu Jan 7 17:23:36 2021 +0100
+
+    Add comments
+
+commit dfc1ff509821c151387363db4ad091648544041d
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Wed Jan 6 23:20:14 2021 +0100
+
+    calling the config parameter makes no sense anymore.
+
+commit 109fde7d1b69d93d0edb21c8bc03b86f35cf1665
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 22:56:53 2021 +0100
+
+    moved the wsl command back to the class.
+
+commit 747e3897a65b905e1d67b4efccc6d42f8dd6021b
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 22:15:44 2021 +0100
+
+    escaped the dollars.
+
+commit 77faeabad4bbecf7457612a68f9b72481ed08bf4
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 00:43:03 2021 +0100
+
+    added placeholder to config var so it gets probably replaced.
+
+commit 5f5279c4a46c1f58f52e14b5efdadee44a1312f6
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 00:13:33 2021 +0100
+
+    using win dir separator...again
+
+commit e37f33a825d387c5f97187e1c974faa391f52530
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 00:06:31 2021 +0100
+
+    cleaning up
+
+commit bb29bc33fca3bcf3c2222bd3a6e56fe8fe0fca7e
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 00:05:20 2021 +0100
+
+    new logic to get a wsl compatible path
+
+commit 9c72288a2d2b810745f5141607b7871d1b75aafb
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 00:05:01 2021 +0100
+
+    added a base path constant
+
+commit f4167d7b80ec36e8b2568bd8d39a0b04c2a2b84c
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Jan 5 00:04:39 2021 +0100
+
+    removed the strtolower from the getter
+
+commit 59e8bb5b8e1fc081b45cbdb17bc1090feb3e0dbd
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 23:09:57 2021 +0100
+
+    wsl needs lowercase file path
+
+commit 576d1881bfba5f8b0194d03c060c947c568c1c10
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 22:53:37 2021 +0100
+
+    Replacement wants some respect for the windows dir separator, too.
+
+commit bbec05b33c1546b5c36e77243b6e18b73946bff4
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 22:49:46 2021 +0100
+
+    Respect the windows dir separator.
+
+commit 5b65e3fb8a06d2002f7dbcd87a657b4b92089f73
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 22:42:51 2021 +0100
+
+    cleaning up
+
+commit b5e5fe2c465c52d1673198861f37d01a03a695c9
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 22:42:15 2021 +0100
+
+    fixed #12
+
+commit 20ca47f192c093afeb5525fbb6cdaa6a6592f1ef
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 22:24:39 2021 +0100
+
+    #11
+
+commit f364d16b6fca61edd1f1bf7a41f88c9b2e939ab1
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 22:03:57 2021 +0100
+
+    married the picture download and the call of the mlp.
+
+commit 600efde04b53250ad03d79a9c9d7a50ba9c9e7de
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 16:23:45 2021 +0100
+
+    Added the Picture class
+
+commit e598f40c06e54be0bfcd797d0b13d4136fe19eaa
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 15:17:56 2021 +0100
+
+    Renamed the app.
+
+commit cc880e3a6acf072bbf3fb1670e7177122e443ec9
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 15:15:08 2021 +0100
+
+    Split up functionality to its own classes and domains.
+
+commit 0f2975e89a4190cb7fb38deb5d7b2b74c84600c8
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 14:34:47 2021 +0100
+
+    Removed unused use statement of the DotEnv property
+
+commit a0e648d4896bd44cc7c0e30926dfbaad13e3f50d
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 14:34:24 2021 +0100
+
+    Removed the DotEnv property from the Application class.
+
+commit 9983799b33ef5bcff563233eff1909cf9b39fb03
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 14:33:22 2021 +0100
+
+    Extracted the config stuff to its own domain.
+
+commit ae41c2adffecbfd626ae246df762bf6c85fe41db
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 13:15:51 2021 +0100
+
+    Replaced direct  calls with the Config wrapper.
+
+commit 96b7ee406632fd5cd5518eb523e8a38741c308db
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 11:55:50 2021 +0100
+
+    Used dotenv config for the target picture storage path.
+
+commit 25fcfb31feede6b40c4e0abf6bf9f008847aa6d1
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 11:53:35 2021 +0100
+
+    Added the default path for the picture storage.
+
+commit 863206fe953f6c23377504d4498e996493c0e873
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Jan 4 11:52:49 2021 +0100
+
+    Introduced a configuration class as wrapper for the dotenv entries.
+
+commit b46a9b012c12542f4ab6e13e0c9b9422e04452e3
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 21:39:17 2020 +0100
+
+    Added a check if the directory tmp does exist and is writeable.
+
+commit c05884745541da12e613ab51d2835cae1408d4b2
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 21:15:28 2020 +0100
+
+    Introduced the .env.local functionality and made the debugging of the mlp easier.
+
+commit 53db97eebb8c696e2849e7617df646e4b09edba2
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 20:29:58 2020 +0100
+
+    Moved the API classes to their own folders.
+
+commit 0063165b21f08fff6a03e8a91a9dec2bab84c16c
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 20:20:43 2020 +0100
+
+    fixed #9
+
+commit e873ebd8b1c380ed35a5b6cae5f9bf184e48754e
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 16:33:52 2020 +0100
+
+    made big oop changes. moved mlp stuff into its own class.
+
+commit 64843a1560d9d86107625ae354a8f0f168bb9ff0
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 15:15:35 2020 +0100
+
+    #1. added error handling.
+
+commit 4fc95ee9dc74b3443fbe83e213bd23cf2aed91d2
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 15:00:00 2020 +0100
+
+    removed the function callDanbooruApi as it is an object now.
+
+commit 382812350efbbe475fb0898d38af434bd1875dbf
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 14:50:42 2020 +0100
+
+    #4, named parameters, return types.
+
+commit 8a2d9a2bac83b7183a5b4f9efee6d9898c4ca89f
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 14:41:29 2020 +0100
+
+    #8, fixed num pad key js.
+
+commit ec109b1929a906998f92c2abfcf12ad1e3bea053
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 29 14:27:34 2020 +0100
+
+    #7, addded more space between the rows for a better overview.
+
+commit 90015d92e55068efe20ed7d2f24aaa9a14836434
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Mon Dec 28 18:10:00 2020 +0100
+
+    Create ml.sh
+
+commit 2ff212003ba3aad325b17aa7fb12c17a24754e2c
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 18:05:44 2020 +0100
+
+    Update README.md
+
+commit ae7d4fc251bd686406f7db42fc821717da1313e3
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 18:03:10 2020 +0100
+
+    stupid backslashs
+
+commit 8b3771e0ded0004a07f3692d59a8a67e4050626e
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 18:02:32 2020 +0100
+
+    fixed the machine learning default command
+
+commit b6b4d7b6f62c2c5b23f6e6c35324bde62f9a407f
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 18:00:36 2020 +0100
+
+    moved information about the usage to the readme file.
+
+commit 2c9c36e701e9c1885ab31ca6a1d034f73fd9aad0
+Merge: 142fac5 803dd07
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 17:49:23 2020 +0100
+
+    Merge branch 'main' of github.com:Ramsterhad/DeepDanbooruTagAssist into main
+
+commit 142fac5ec3a01ebfe37f919fa2db9a0ce6c695e7
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 17:43:23 2020 +0100
+
+    added the dotenv library. introduced OOP a bit.
+
+commit 59a641fcd0200cc512cc5de9cbd11300c84ebec5
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 17:35:06 2020 +0100
+
+    added the dotenv library. introduced OOP a bit.
+
+commit 803dd0793a6cbd4185971e75e6cf3ff330e10481
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Mon Dec 28 17:22:12 2020 +0100
+
+    Update index.php
+    
+    api explain
+
+commit 4e00239cf8eb60d2370b8103ed1fb3ce6069faf3
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Mon Dec 28 16:55:11 2020 +0100
+
+    Update index.php
+    
+    api explain prt2
+
+commit 6f3d4416c519ea6bcf127900aad64d348ecfbfc1
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Mon Dec 28 16:46:33 2020 +0100
+
+    Update index.php
+    
+    api explain prt1
+
+commit c75b24c4028f8756e38abd4b1a9b07fd44cdf797
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Mon Dec 28 16:13:07 2020 +0100
+
+    Update index.php
+    
+    don't show large_file. Could eventually be an option to select to work with file_url or with large_file_url
+
+commit 3f6e16e56d80125b4a41716f67621b46fb85dcd8
+Author: reiuyi <67427951+reiuyi@users.noreply.github.com>
+Date:   Mon Dec 28 16:07:12 2020 +0100
+
+    Update index.php
+    
+    wsl bash
+
+commit 19e5274cf537ff7cccd3aa37243fa8efbf4ff0fd
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 15:48:58 2020 +0100
+
+    changed the gitignore to vc the vendor dir. As this will not be a installable by composer project.
+
+commit bb25e410cc43b0208902fe555409b02275365e2f
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 15:46:24 2020 +0100
+
+    introduced composer autoloader
+
+commit b3e4c4ab249d4ac268bb1be9233975ddb17dbcc1
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Mon Dec 28 15:28:32 2020 +0100
+
+    Update README.md
+
+commit cb691c20c8447413180a4eb35d968d23b69d54dc
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 23:30:01 2020 +0100
+
+    a little bit clean up
+
+commit b07ce10644764fda7fe41efe8319299c0fc062f3
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 23:22:11 2020 +0100
+
+    Update index.php
+    
+    removed the source part.
+
+commit b0b6e64452a12519feba36659365afcc2a2040d5
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 23:20:23 2020 +0100
+
+    Update index.php
+    
+    added no-referer to images tags.
+
+commit 308aaa14462cbb432c0969f0b3a934e83b2a811d
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 23:08:46 2020 +0100
+
+    mock mlp call, unknown + mlp tag output.
+    
+    - Added a mock mlp call.
+    - Added a function to compare existing tags with mlp tags to get unknown tags.
+    - Replaced the css tag newtag with tag.
+
+commit f40f6c1669a2e0eb06142793715ee11074c3de2e
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 21:24:31 2020 +0100
+
+    stupid debug output
+
+commit be287f39e7a940dc599bb1b1eea00df0b9aacd3e
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 21:06:28 2020 +0100
+
+    fixed two notices, undefined index and array to string
+    
+    PHP Notice:  Undefined index: danbooru_api_url in /usr/local/apache2/htdocs/public/index.php on line 92
+    PHP Notice:  Array to string conversion in /usr/local/apache2/htdocs/public/index.php on line 193
+
+commit ed103c27fc98d68c61090749416b3c4240fb271b
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 00:02:36 2020 +0100
+
+    removed print_r from the value.
+
+commit 31e95a88f46d2ec56bfb38d882d42c630ed5525a
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sun Dec 27 00:01:30 2020 +0100
+
+    a more verbose error message.
+
+commit 9e77bbf7091029b95628d0f456e0e9a9f6af99a2
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Sat Dec 26 23:43:23 2020 +0100
+
+    Update index.php
+    
+    changed number key codes to numpad key codes.
+
+commit 60ca7a5bd47ae46de0b5f4ff8f41e80889094145
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Wed Dec 23 14:02:24 2020 +0100
+
+    Update index.php
+    
+    added keypress event to unknown tags and an api mockup call.
+
+commit 8dd885ef2ba5631f8faf9e312f914921a8334720
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 22 15:47:19 2020 +0100
+
+    spacebar = reload, option to save own api url or to reset to default url
+
+commit 38671e5334b23997379a0f91b03aabb87771ce98
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 22 08:55:33 2020 +0100
+
+    Create index.php
+
+commit dd63177571c2e570a2b59812a6acd5a06d79e276
+Author: ramsterhad <ramsterhad@gmail.com>
+Date:   Tue Dec 22 08:54:30 2020 +0100
+
+    Initial commit

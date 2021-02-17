@@ -1,0 +1,165 @@
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+img {
+    max-width: 100%;
+}
+
+span {
+    display: inline-block;
+}
+
+/*.row {
+    padding-bottom: 20px;
+}*/
+
+.tag {
+    padding-right: 10px;
+}
+
+.error {
+    color: red;
+}
+
+[type="checkbox"]+span:not(.lever) {
+    padding-left: 25px;
+    padding-right: 30px;
+    color: #000;
+}
+
+.footer-help-row {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.page-footer {
+    padding-top: 20px;
+    color: #000;
+    background-color: #fff;
+    border-top: 1px #d0d0d0 solid;
+    border-radius: 3px;
+}
+
+.page-footer .footer-copyright {
+    color: #000;
+}
+
+
+#container-footer {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(51,51,51,0.08);
+}
+
+#a {
+    padding-left: 20px;
+    width: 20%;
+}
+
+#b {
+    padding-right: 20px;
+    width: 20%;
+    text-align: right;
+}
+
+.footer-copyright-right-item {
+    padding-left: 10px;
+}
+
+
+
+
+
+
+
+.new_tags_grid {
+    padding-bottom: 0;
+}
+
+.new_tags_grind_col {
+    white-space: nowrap;
+}
+
+div.row.new_tags_grid {
+    margin-bottom: 10px;
+}
+
+#id_tag_checkbox_submit {
+    display: none;
+}
+
+.url_form {
+    float: left;
+    margin:3px;
+}
+
+/* used by \Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform\TemplateHelper::tagsCssClassHelper */
+.unknownTag {
+    font-weight: bold;
+    font-size: 1.5em;
+    color: green;
+}
+/*stuff needed for righthand side images its also responsive uwu*/
+.container {
+    margin: 0 auto;
+    width: 95%;
+    margin-left: auto;
+    margin-right: 2%;
+    max-width: 100%;
+}
+.flex_cont {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}.hidden {
+    display: none;
+}
+.flex_right {
+    width: 60%;
+    max-width:900px;
+    flex:none;
+}
+.flex_left {
+    width: 40%;
+    max-width:70%;
+    width:unset!important;
+}
+.s2{
+    font-weight:bold;
+    max-width:100%;
+    width:unset!important
+    }
+.s10{
+    max-width:100%;
+    width:unset
+    }
+.row .col.s10 {
+       width:100%;
+    }
+@media only screen and (max-width: 920px){
+    .flex_cont {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}.hidden {
+    display: block;
+}
+.flex_right {
+    width: 100%!important;
+}
+.flex_left {
+    width: 100%!important;
+    max-width: 100%!important;
+}  
+}
