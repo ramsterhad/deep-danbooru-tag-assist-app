@@ -5,6 +5,8 @@
 # Activate the conda environment "ml", which contains deepdanbooru and its dependences
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate ml
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8 
 
 # Define the path to the tensorflow model
 PROJECTPATH="/mnt/f/deepdanbooru/deepdanbooru-v3-20200915-sgd-e30.zip/"
