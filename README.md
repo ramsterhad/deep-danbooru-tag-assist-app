@@ -2,8 +2,8 @@
 
 ## Installation
 
-Download the [ZIP](https://github.com/Ramsterhad/DeepDanbooruTagAssist/archive/main.zip) package from the 
-[main repository](https://github.com/Ramsterhad/DeepDanbooruTagAssist/tree/main) and unzip the files into the
+Download the [ZIP](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/main.zip) package from the 
+[main repository](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/tree/main) and unzip the files into the
 target directory of your webserver (e.g. apache: /var/www/html/public).
 
 ## Configuration
@@ -40,6 +40,39 @@ You can change the whole request URL also directly on the page in the input fiel
 overwrites the environment variable as long as the session cookie lives.
 
 
+### danbooru_user & danbooru_pass
+##### default
+````
+empty
+````
+##### about
+To be able to suggest new tags at Danbooru, you need to be logged in. To create a session you need to provide 
+credentials either by the login form or by putting them into the config file.   
+Please be aware that the API don't need or want your password from the Danbooru website. You must provide an API key, 
+which you can create at your profile page at Danbooru. Please see the 
+"[Authentication](https://danbooru.donmai.us/wiki_pages/help:api)" section at their API manual.
+
+
+### machine_learning_platform_repository_debug
+##### default
+````
+false
+````
+##### about
+If set to true, the actual MLP will not be called, but a defined array of example tags will be returned. This is for
+testing only and should not be used in production mode.
+
+
+### picture_storage
+##### default
+````
+tmp 
+````
+##### about
+The MLP needs a picture to scan it. The app downloads the main picture of the current shown post and needs to store it
+somewhere. Make sure the folder has fitting rights.
+
+
 ### limit_for_suggested_tags
 ##### default
 ````
@@ -49,7 +82,7 @@ overwrites the environment variable as long as the session cookie lives.
 Limits the checkboxes for suggested new tags.  
 By default a row contains 3 columns. So a number dividable by 3 is recommended.
 
-### Examples of danbooru api calls
+## Examples of danbooru api calls
 ````txt
 
 Members and anon cannot search for more than two tags at a time. Gold users can search for up to six tags, and Platinum and above users can search for up to twelve tags
