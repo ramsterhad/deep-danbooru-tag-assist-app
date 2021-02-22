@@ -135,7 +135,7 @@ $app->run();
                 <form action="index.php" method="post">
                     <?php
 
-                    $maxTags = $app->getCountedUnknownTagsLimitedByNine();
+                    $maxTags = $app->getCountedUnknownTagsLimitedByValue();
                     $keyIdent = 96; // numpad 0
                     /*
                      * $closeRow decides if a row gets a new column or if the row has to be closed and a new one started.
@@ -242,13 +242,6 @@ $app->run();
             <span class="footer-copyright-right-item">
                 <a class="text-lighten-4" href="https://github.com/Ramsterhad/DeepDanbooruTagAssist" target="_blank" rel="noreferrer">>Source Code</a>
             </span>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        <div class="container">
-
-            &copy; <span id="year"></span> reiuyi + Ramsterhad
-
         </div>
     </div>
 </footer>

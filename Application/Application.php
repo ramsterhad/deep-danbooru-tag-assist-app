@@ -214,10 +214,10 @@ class Application
      *
      * @return int
      */
-    public function getCountedUnknownTagsLimitedByNine(): int
+    public function getCountedUnknownTagsLimitedByValue(int $limit = 15): int
     {
         $maxTags = count($this->getUnknownTags());
-        return $maxTags > 9 ? 9 : $maxTags;
+        return $maxTags > $limit ? $limit : $maxTags;
     }
 
     public function isLoggedIn(): bool
