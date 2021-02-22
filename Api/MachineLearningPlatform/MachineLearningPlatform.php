@@ -96,8 +96,9 @@ class MachineLearningPlatform implements ApiContract
 
             // Filters for ( as we only want tags with a score.
             if (strpos($item, '(') !== false && !StringUtils::strposArray($item, $blacklist) !== false) {
-                $item = str_replace(['(', ')'], '', $item);
-                $tags[] = preg_split('/ /', $item);
+                $item = preg_split('/ /', $item);
+                $item[0] = str_replace(['(', ')'], '', $item[0]);
+                $tags[] = $item;
             }
         }
 
