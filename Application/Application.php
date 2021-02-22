@@ -62,7 +62,7 @@ class Application
             $this->danbooru = new Danbooru(Danbooru::loadEndpointAddress());
             $this->danbooru->callForTags();
 
-            $this->machineLearningPlatform = new MachineLearningPlatform(MachineLearningPlatform::loadEndpointAddress());
+            $this->machineLearningPlatform = new MachineLearningPlatform();
             $this->machineLearningPlatform->setPicture(new Picture($this->danbooru->getPost()->getPicOriginal()));
             $this->machineLearningPlatform->callForTags();
 
