@@ -10,7 +10,7 @@ target directory of your webserver (e.g. apache: /var/www/html/public).
 To adapt the configuration, create the file `.env.local` next to `.env` and copy the configuration parameter you want 
 to change to new file. 
 
-#### danbooru_api_url
+### danbooru_api_url
 ##### default
 https://danbooru.donmai.us/  
 ##### about
@@ -19,10 +19,10 @@ You can change the whole request URL also directly on the page in the input fiel
 overwrites the environment variable as long as the session cookie lives.
   
   
-#### danbooru_default_request
+### danbooru_default_request
 ##### default
 ````
-posts.json?limit=1&tags=order:random+rating:s  
+limit=1&tags=order:random+rating:s  
 ````
 ##### about
 This is the default request URL for the Danbooru platforms API request. During the process this string is going to be 
@@ -38,18 +38,16 @@ https://example.com/posts.json?bar
 ```
 You can change the whole request URL also directly on the page in the input field on top of it. The input field 
 overwrites the environment variable as long as the session cookie lives.
-  
-  
-#### machine_learning_platform_command
-##### default:
-````
-exec("wsl bash ~/ml.sh '/path/to/picture.jpg' '0.500'", $output, $retval);
-````
-##### about: 
-The command to execute the machine learning platform. Please be aware that the command must be surrounded by quotes
-as the command contains whitespaces. The quotes from the command itself have to be escaped. 
 
-## Usage
+
+### limit_for_suggested_tags
+##### default
+````
+15 
+````
+##### about
+Limits the checkboxes for suggested new tags.  
+By default a row contains 3 columns. So a number dividable by 3 is recommended.
 
 ### Examples of danbooru api calls
 ````txt

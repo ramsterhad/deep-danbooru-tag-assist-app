@@ -135,7 +135,7 @@ $app->run();
                 <form action="index.php" method="post">
                     <?php
 
-                    $maxTags = $app->getCountedUnknownTagsLimitedByValue();
+                    $maxTags = $app->getCountedUnknownTagsLimitedByValue((int) Config::get('limit_for_suggested_tags'));
                     $keyIdent = 96; // numpad 0
                     /*
                      * $closeRow decides if a row gets a new column or if the row has to be closed and a new one started.
