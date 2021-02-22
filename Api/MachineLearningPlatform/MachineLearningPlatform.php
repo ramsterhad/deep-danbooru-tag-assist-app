@@ -46,7 +46,7 @@ class MachineLearningPlatform implements ApiContract
      * entries, but not only tags, so we have to filter the output accordingly. It also filters specific tags
      * by blacklist.
      */
-    public function callForTags(): void
+    public function requestTags(): void
     {
         $this->picture->download();
 

@@ -53,7 +53,7 @@ class Danbooru implements ApiContract
         return true;
     }
 
-    public function callForTags(): void
+    public function requestTags(): void
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->endpoint);

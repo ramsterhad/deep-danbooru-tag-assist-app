@@ -60,11 +60,11 @@ class Application
 
             // Build the page
             $this->danbooru = new Danbooru(Danbooru::loadEndpointAddress());
-            $this->danbooru->callForTags();
+            $this->danbooru->requestTags();
 
             $this->machineLearningPlatform = new MachineLearningPlatform();
             $this->machineLearningPlatform->setPicture(new Picture($this->danbooru->getPost()->getPicOriginal()));
-            $this->machineLearningPlatform->callForTags();
+            $this->machineLearningPlatform->requestTags();
 
             // List the tags from Danbooru, the ML Platform and the difference between them
             // The unknown tags are later listed and registered with the numpad keys.
