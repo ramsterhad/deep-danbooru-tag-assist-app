@@ -13,23 +13,12 @@ use Ramsterhad\DeepDanbooruTagAssist\System\StringUtils;
 class MachineLearningPlatform implements ApiContract
 {
     private Collection $collection;
-    private string $endpoint;
 
     private Picture $picture;
-
-    public function __construct(string $endpoint)
-    {
-        $this->endpoint = $endpoint;
-    }
 
     public function setPicture(Picture $picture): void
     {
         $this->picture = $picture;
-    }
-
-    public static function loadEndpointAddress(): string
-    {
-        return '';
     }
 
     /**
