@@ -1,14 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\ApiContract;
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Tag;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Picture;
-use Ramsterhad\DeepDanbooruTagAssist\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\System\StringUtils;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
 class MachineLearningPlatform implements ApiContract
 {

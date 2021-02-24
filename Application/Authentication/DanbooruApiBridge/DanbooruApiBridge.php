@@ -3,8 +3,8 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge;
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Danbooru;
-use Ramsterhad\DeepDanbooruTagAssist\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
 /**
  * Bridge to the service \Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Danbooru.

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Configuration;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Configuration;
 
 
 interface ConfigContract

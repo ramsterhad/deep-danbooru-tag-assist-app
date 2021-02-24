@@ -2,10 +2,10 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist;
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Danbooru;
-use Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform\TemplateHelper;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\TemplateHelper;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
-use Ramsterhad\DeepDanbooruTagAssist\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
 require_once '../bootstrap.php';
 

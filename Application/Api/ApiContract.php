@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Api;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
 
 interface ApiContract
 {

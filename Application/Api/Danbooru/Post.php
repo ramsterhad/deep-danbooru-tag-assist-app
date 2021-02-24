@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 
 class Post
 {

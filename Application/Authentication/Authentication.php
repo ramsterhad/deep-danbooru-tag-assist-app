@@ -3,10 +3,10 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication;
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Exception\AuthenticationError;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
-use Ramsterhad\DeepDanbooruTagAssist\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
 class Authentication
 {

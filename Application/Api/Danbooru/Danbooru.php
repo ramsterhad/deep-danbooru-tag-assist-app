@@ -1,13 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\ApiContract;
-use Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Exception\AuthenticationError;
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
-use Ramsterhad\DeepDanbooruTagAssist\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\System\Json;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Application\System\Json;
 
 class Danbooru implements ApiContract
 {
@@ -58,9 +59,7 @@ class Danbooru implements ApiContract
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        if (!empty(Config::get('danbooru_user')) || !empty(Config::get('danbooru_pass'))) {
-            curl_setopt($ch, CURLOPT_USERPWD, Config::get('danbooru_user') . ':' . Config::get('danbooru_pass'));
-        }
+        curl_setopt($ch, CURLOPT_USERPWD, Session::get('username') . ':' . Session::get('api_key'));
         $result = curl_exec($ch);
         curl_close($ch);
         
@@ -127,14 +126,9 @@ class Danbooru implements ApiContract
          */
 
         if (!Json::isJson($result)) {
-            $type = gettype($result);
-            $returnValue = htmlentities(substr($result, 0, 30));
-
-            throw new \Exception(sprintf(
+            throw new \Exception(
                 'Error! Return value has to be a valid JSON, but I got something... strange &#45576;_&#45576;.',
-                $this->endpoint, $returnValue, $type
-            ));
-
+            );
         }
 
         $object = json_decode($result);
@@ -172,11 +166,7 @@ class Danbooru implements ApiContract
         foreach ($mustExist as $item) {
             if (!property_exists($object, $item)) {
                 throw new \Exception(
-                    sprintf(
-                        '( &#865;&#3232; &#662;&#815; &#865;&#3232;) Can\'t show you that. Maybe you don\'t have the permission to see the post?',
-                        $item,
-                        $this->endpoint
-                    )
+                    '( &#865;&#3232; &#662;&#815; &#865;&#3232;) Can\'t show you that. Maybe you don\'t have the permission to see the post?',
                 );
             }
         }
@@ -201,11 +191,9 @@ class Danbooru implements ApiContract
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 
         curl_setopt($ch, CURLOPT_POSTFIELDS, ['post[tag_string]' => $collection->toString()]);
-        if (!empty(Config::get('danbooru_user')) || !empty(Config::get('danbooru_pass'))) {
-            curl_setopt($ch, CURLOPT_USERPWD, Config::get('danbooru_user') . ':' . Config::get('danbooru_pass'));
-        }
+        curl_setopt($ch, CURLOPT_USERPWD, Session::get('username') . ':' . Session::get('api_key'));
         $result = curl_exec($ch);
-
+        // @todo result can be negative. add an error message for the frontend!
         curl_close($ch);
     }
 

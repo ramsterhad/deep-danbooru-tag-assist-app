@@ -12,6 +12,7 @@ class LoginForm
     /**
      * Checks if the form to store the credentials was fired.
      *
+     * @param Authentication $authentication
      * @throws \Exception
      */
     public function checkAuthenticationRequest(Authentication $authentication): void

@@ -4,10 +4,11 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Danbooru;
-use Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform\MachineLearningPlatform;
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Form\LoginForm;
 

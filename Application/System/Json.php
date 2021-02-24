@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\System;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\System;
 
 
 class Json

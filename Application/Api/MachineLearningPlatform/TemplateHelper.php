@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
 
 
 class TemplateHelper

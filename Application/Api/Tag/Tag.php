@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Api\Tag;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag;
 
 
 class Tag

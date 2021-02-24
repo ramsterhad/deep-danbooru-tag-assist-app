@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Configuration\DotEnv\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\DotEnv\Config;
 
 class Picture
 {
