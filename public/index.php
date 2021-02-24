@@ -31,7 +31,13 @@ $app->run();
 <header></header>
 <main>
 <div class="container">
-    <?php if (!$app->isLoggedIn()) : ?>
+    <?php if (!empty($app->getError())) : ?>
+        <div class="row error">
+            <div class="col s2"></div>
+            <div class="col s10"><?php echo $app->getError(); ?></div>
+        </div>
+    <?php endif; ?>
+    <?php if (!$app->isAuthenticated()) : ?>
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col s12">
@@ -68,15 +74,6 @@ $app->run();
     <div class="row">
         <div class="col s12"></div>
     </div>
-
-    <?php if (!empty($app->getError())) : ?>
-        <div class="row error">
-            <div class="col s2"></div>
-            <div class="col s10">Error! <?php echo $app->getError(); ?></div>
-        </div>
-    <?php endif; ?>
-
-
 
     <div class="row">
         <div class="col s2 hidden">danbooru</div>

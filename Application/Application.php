@@ -8,7 +8,8 @@ use Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
 use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Tag;
-use Ramsterhad\DeepDanbooruTagAssist\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Form\LoginForm;
 
 
 class Application
@@ -23,7 +24,7 @@ class Application
 
     private MachineLearningPlatform $machineLearningPlatform;
 
-    private bool $isLoggedIn = false;
+    private Authentication $authentication;
 
     private function __construct() {}
 
@@ -39,7 +40,21 @@ class Application
 
     public function startSession(): bool
     {
-        return session_start();
+        return Session::start();
+    }
+
+    public function authenticate(): void
+    {
+        $this->authentication = new Authentication();
+
+        // Check if the login form was submitted
+        $loginForm = new LoginForm();
+        $loginForm->checkAuthenticationRequest($this->authentication);
+
+        // If the user hasn't a session yet, try to auto-authenticate the user.
+        if (!$this->authentication->isAuthenticated()) {
+            $this->authentication->autoAuthentication();
+        }
     }
 
     public function run(): void
@@ -49,10 +64,8 @@ class Application
         $this->startSession();
 
         try {
-            // Check if a form was submitted
-            $this->checkLoginRequest();
 
-            $this->login();
+            $this->authenticate();
 
             $this->checkResetRequest();
             $this->checkSetApiUrlRequest();
@@ -86,56 +99,6 @@ class Application
     {
         $systemRequirements = new SystemRequirements();
         $systemRequirements->checkRequirementsForPictureHandling();
-    }
-
-    /**
-     * Checks if the form to store the credentials was fired. It actually doesn't log in the user, yet. This happens in
-     * \Ramsterhad\DeepDanbooruTagAssist\Application\Application::login.
-     *
-     * @throws \Exception
-     */
-    public function checkLoginRequest(): void
-    {
-        if (isset($_POST['login'])) {
-            $username = $_POST['username'] ?? '';
-            $apiKey = $_POST['api_key'] ?? '';
-
-            $danbooru = new Danbooru(Config::get('danbooru_api_url'));
-            if ($danbooru->login($username, $apiKey)) {
-                $_SESSION['username'] = $username;
-                $_SESSION['api_key'] = $apiKey;
-                Router::route('/');
-            }
-        }
-    }
-
-    /**
-     * Searches for session variables username and api_key. If they are existing then the config variables
-     * danbooru_user and danbooru_pass are overwritten by them. Which has an effect to the api call and which basically
-     * logs the user in.
-     * The session variables are only set in \Ramsterhad\DeepDanbooruTagAssist\Application\Application::checkLoginRequest.
-     * That means: When they are set, then the login was successfully.
-     *
-     * When the log in with the session variables wasn't successful, then try to log in with the config variables.
-     */
-    public function login(): void
-    {
-        if (isset($_SESSION['username']) && isset($_SESSION['api_key'])) {
-            Config::set('danbooru_user', $_SESSION['username']);
-            Config::set('danbooru_pass', $_SESSION['api_key']);
-            $this->isLoggedIn = true;
-        }
-
-        // if not logged in yet, try to log in with the config variables, if they were set.
-        if (!$this->isLoggedIn && !empty(Config::get('danbooru_user')) && !empty(Config::get('danbooru_pass'))) {
-
-            $danbooru = new Danbooru(Config::get('danbooru_api_url'));
-            if ($danbooru->login(Config::get('danbooru_user'), Config::get('danbooru_pass'))) {
-                $_SESSION['username'] = Config::get('danbooru_user');
-                $_SESSION['api_key'] = Config::get('danbooru_pass');
-                Router::route('/');
-            }
-        }
     }
 
     /**
@@ -221,8 +184,8 @@ class Application
         return $maxTags > $limit ? $limit : $maxTags;
     }
 
-    public function isLoggedIn(): bool
+    public function isAuthenticated(): bool
     {
-        return $this->isLoggedIn;
+        return $this->authentication->isAuthenticated() ?? false;
     }
 }

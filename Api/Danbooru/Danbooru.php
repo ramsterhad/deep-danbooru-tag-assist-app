@@ -4,6 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Api\ApiContract;
+use Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Api\Tag\Collection;
 use Ramsterhad\DeepDanbooruTagAssist\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\System\Json;
@@ -19,37 +20,36 @@ class Danbooru implements ApiContract
         $this->endpoint = $endpoint;
     }
 
-    public function login(string $username, string $apiKey): bool
+    public function authenticate(string $username, string $apiKey): bool
     {
-        $loginApiRequest = sprintf('%sprofile.json?login=%s&api_key=%s',
+        $apiRequest = sprintf('%sprofile.json?login=%s&api_key=%s',
             $this->endpoint,
             $username,
             $apiKey,
         );
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $loginApiRequest);
+        curl_setopt($ch, CURLOPT_URL, $apiRequest);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($ch);
         curl_close($ch);
 
         // No json as return value. This is bad.
         if (!Json::isJson($result)) {
-            throw new \Exception('The login service didn\'t return a nice response. -_-\'');
+            throw new AuthenticationError('The authentication service didn\'t return a nice response. -_-\'');
         }
 
         $result = json_decode($result);
 
         // The json couldn't be transformed to an object.
         if (!is_object($result)) {
-             throw new \Exception('Why is it like that? Why can\'t I get a clean answer?!');
+             throw new AuthenticationError('Why is it like that? Why can\'t I get a clean answer?!');
         }
 
         // Json didn't had the id property which every logged in user must have.
         if (!property_exists($result, 'id')) {
-            throw new \Exception('Excuse me? Whats your name and/or api key again? must. know. that.');
+            throw new AuthenticationError('Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.');
         }
-
         return true;
     }
 
@@ -131,7 +131,7 @@ class Danbooru implements ApiContract
             $returnValue = htmlentities(substr($result, 0, 30));
 
             throw new \Exception(sprintf(
-                'Error! Return value from the API URL %s must be a valid JSON but I got %s, of type %s.',
+                'Error! Return value has to be a valid JSON, but I got something... strange &#45576;_&#45576;.',
                 $this->endpoint, $returnValue, $type
             ));
 
@@ -151,12 +151,12 @@ class Danbooru implements ApiContract
 
         // We only should get one result. Not less, not more.
         if (count($object) > 1) {
-            throw new \Exception('Got too much O.O\'. Pls reload.');
+            throw new \Exception('Oh wow! Got way too much results! Pls check your API query. (&#180;&#65381;&#30410;&#65381;&#65344;*)');
         }
 
         // We got less than 0 result? Nothing?
         if (count($object) === 0) {
-            throw new \Exception('Got nothing. Again. Just nothing. -_-. Pls reload.');
+            throw new \Exception('Got nothing. &#175;\\_(&#12484;)_/&#175; Pls reload.');
         }
 
         $object = $object[0];
@@ -173,7 +173,7 @@ class Danbooru implements ApiContract
             if (!property_exists($object, $item)) {
                 throw new \Exception(
                     sprintf(
-                        'Maybe you don\'t have the permission to see the post?',
+                        '( &#865;&#3232; &#662;&#815; &#865;&#3232;) Can\'t show you that. Maybe you don\'t have the permission to see the post?',
                         $item,
                         $this->endpoint
                     )
