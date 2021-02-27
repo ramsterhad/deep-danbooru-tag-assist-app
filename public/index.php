@@ -117,14 +117,14 @@ $app->run();
         <div class="row">
             <div class="col s2">Danbooru tags</div>
             <div class="col s10">
-                <?php foreach ($app->getDanbooru()->getPost()->getTagCollection()->getTags() as $tag) : ?>
-                    <span class="tag"><?php echo $tag->getName();?></span>
+                <?php foreach ($app->getDanbooru()->getPost()->getTags() as $tag) : ?>
+                    <span class="tag"><?php echo TemplateHelper::tagsCssClassHelperColoredDanbooruTags($tag); ?></span>
                 <?php endforeach; ?>
             </div>
         </div>
         <div class="row">
             <div class="col s2">ML Plattform tags</div>
-            <div class="col s10"><?php echo TemplateHelper::tagsCssClassHelper($app->getMachineLearningPlatform()->getCollection(), $app->getUnknownTags()); ?></div>
+            <div class="col s10"><?php echo TemplateHelper::tagsCssClassHelperUnknownTags($app->getMachineLearningPlatform()->getCollection(), $app->getUnknownTags()); ?></div>
         </div>
         <div class="row">
             <div class="col s2">new tags</div>
@@ -176,7 +176,7 @@ $app->run();
                     <?php endfor; ?>
 
 
-                    <?php foreach ($app->getDanbooru()->getPost()->getTagCollection()->getTags() as $tag) : ?>
+                    <?php foreach ($app->getDanbooru()->getPost()->getTagCollection() as $tag) : ?>
                         <input type="hidden" name="tag_checkbox_existing_tags[]" value="<?php echo $tag->getName(); ?>">
                     <?php endforeach; ?>
 

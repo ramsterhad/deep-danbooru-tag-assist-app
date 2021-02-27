@@ -7,7 +7,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Form\LoginForm;
@@ -19,7 +19,7 @@ class Application
 
     private string $error = '';
 
-    private Collection $unknownTags;
+    private TagCollection $unknownTags;
 
     private Danbooru $danbooru;
 
@@ -129,7 +129,7 @@ class Application
         if (isset($_POST['name_tag_checkbox_submit']) && isset($_POST['tag_checkbox'])) {
 
             $id = (int) $_POST['tag_checkbox_post_id'];
-            $collection = new Collection();
+            $collection = new TagCollection();
 
             foreach ($_POST['tag_checkbox_existing_tags'] as $tag) {
                 $collection->add(new Tag($tag, '0.0'));
@@ -166,7 +166,7 @@ class Application
         return $this->machineLearningPlatform;
     }
 
-    public function getUnknownTags(): Collection
+    public function getUnknownTags(): TagCollection
     {
         return $this->unknownTags;
     }
