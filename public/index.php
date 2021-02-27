@@ -172,6 +172,9 @@ $app->run();
 
                             <?php --$closeRow; // Decreases the counter for each column by 1. ?>
                         <?php endfor; ?>
+                        <?php if ($closeRow > 0) : // In case the last row hadn't three columns. ?>
+                            </div>
+                        <?php endif; ?>
 
 
                         <?php foreach ($app->getDanbooru()->getPost()->getTagCollection()->getTags() as $tag) : ?>
