@@ -177,10 +177,10 @@ class Danbooru implements ApiContract
         }
 
         $tagCollection = new TagCollection();
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_general, Tag::DANBOORU_TAG_HEXCOLOR_GENERAL, $tagCollection);
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_character, Tag::DANBOORU_TAG_HEXCOLOR_CHARACTER, $tagCollection);
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_copyright, Tag::DANBOORU_TAG_HEXCOLOR_COPYRIGHT, $tagCollection);
         Post::convertDanbooruTagsToTagCollection($object->tag_string_artist, Tag::DANBOORU_TAG_HEXCOLOR_ARTIST, $tagCollection);
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_copyright, Tag::DANBOORU_TAG_HEXCOLOR_COPYRIGHT, $tagCollection);
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_character, Tag::DANBOORU_TAG_HEXCOLOR_CHARACTER, $tagCollection);
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_general, Tag::DANBOORU_TAG_HEXCOLOR_GENERAL, $tagCollection);
         Post::convertDanbooruTagsToTagCollection($object->tag_string_meta, Tag::DANBOORU_TAG_HEXCOLOR_META, $tagCollection);
 
         $this->post = new Post(
