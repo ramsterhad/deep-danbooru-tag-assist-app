@@ -51,6 +51,7 @@ class Danbooru implements ApiContract
         if (!property_exists($result, 'id')) {
             throw new AuthenticationError('Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.');
         }
+
         return true;
     }
 
@@ -135,7 +136,7 @@ class Danbooru implements ApiContract
 
         // If the return value is an object at this point, something went wrong.
         if (is_object($object) && property_exists($object, 'success') && $object->success === false) {
-            throw new \Exception('(╯︵╰,) Danbooru said no to your credentials.');
+            throw new AuthenticationError('(╯︵╰,) Danbooru said no to your credentials.');
         }
 
         // It needs to be an array or else we have an exception.
