@@ -43,6 +43,7 @@ class FrontpageController extends Controller
      * max number by 9.
      * The information is used for the frontend to build a matrix.
      *
+     * @param Collection $unknownTags
      * @param int $limit
      * @return int
      */
