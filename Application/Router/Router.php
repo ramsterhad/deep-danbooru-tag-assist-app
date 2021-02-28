@@ -47,8 +47,8 @@ final class Router
         ]
     ];
 
-    private $defaultControllerAlias = '';
-    private $defaultControllerMethod = 'index';
+    private string $defaultControllerAlias = '';
+    private string $defaultControllerMethod = 'index';
 
     private Controller $controller;
 
