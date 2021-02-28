@@ -11,5 +11,8 @@
   },
   "require-dev": {
     "symfony/dotenv": "^5.2"
+  },
+  "require": {
+    "symfony/yaml": "^5.2"
   }
 }

@@ -4,11 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Router;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\ApiUrlController;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\TagsController;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationFormController;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\LogoutController;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\FrontpageController;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Config\RouterConfig;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
 
 
@@ -20,35 +16,8 @@ final class Router
         '/' => 'index.php',
     ];
 
-    private array $controllerMap = [
-        ''              => FrontpageController::class,
-        'auth'          => AuthenticationFormController::class,
-        'logout'        => LogoutController::class,
-        'apiurl'        => ApiUrlController::class,
-        'pushnewtags'   => TagsController::class
-    ];
-
-    private array $actions = [
-        '' => [
-            'index',
-        ],
-        'auth' => [
-            'checkAuthenticationRequest',
-        ],
-        'logout' => [
-            'index',
-        ],
-        'apiurl' => [
-            'resetApiUrlToDefault',
-            'setCustomApiUrl',
-        ],
-        'pushnewtags' => [
-            'pushNewTagsToDanbooru',
-        ]
-    ];
-
-    private string $defaultControllerAlias = '';
-    private string $defaultControllerMethod = 'index';
+    private string $requestController;
+    private string $requestAction;
 
     private Controller $controller;
 
@@ -62,40 +31,13 @@ final class Router
         }
         return self::$instance;
     }
+
     public function hasRoute(string $route): bool
     {
         if (array_key_exists($route, $this->routes)) {
             return true;
         }
         return false;
-    }
-
-    public function hasController(string $controllerKey): bool
-    {
-        if (array_key_exists($controllerKey, $this->actions)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function hasControllerAction(string $controllerKey, string $action): bool
-    {
-        if (array_key_exists($controllerKey, $this->actions)) {
-
-            if (in_array($action, static::$instance->actions[$controllerKey])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public function getFullQualifiedNamespaceByAlias(string $alias): string
-    {
-        if (!array_key_exists($alias, $this->controllerMap)) {
-            throw new \Exception(sprintf('Unknown Alias "%s"', $alias));
-        }
-
-        return static::$instance->controllerMap[$alias];
     }
 
     public static function route(string $route): void
@@ -114,6 +56,41 @@ final class Router
      */
     public function processRequest(): void
     {
+        $this->readControllerAndActionFromRequest();
+        $routerConfig = $this->loadRouterConfigObject();
+
+        // In case the alias is unknown or empty, the default alias will be used.
+        if (!$routerConfig->hasAlias($this->requestController) || empty($this->requestController)) {
+            //@todo silent log
+            //throw new \Exception('has not controller ' . $controllerAlias);
+            $this->requestController = $routerConfig->getDefaultRoute()->getAlias();
+        }
+
+        $route = $routerConfig->getRouteByAlias($this->requestController);
+
+        // In case the method is unknown, then the default route is used.
+        if (!$route->hasMethod($this->requestAction)) {
+            $route = $routerConfig->getDefaultRoute();
+            $this->requestAction = $route->getMethods()[0];
+        }
+
+        $controllerFullQualifiedNamespacePath = $route->getFullQualifiedNamespacePath();
+        $this->controller = new $controllerFullQualifiedNamespacePath();
+
+        if (!($this->controller instanceof Controller)) {
+            throw new \Exception(
+                sprintf('I can\'t work with this thing "%s"!', $controllerFullQualifiedNamespacePath)
+            );
+        }
+
+        $this->controller->{$this->requestAction}();
+    }
+
+    /**
+     * Populates the properties requestController and requestAction.
+     */
+    private function readControllerAndActionFromRequest(): void
+    {
         $controllerAlias = $_GET['c'] ?? '';
         $action = $_GET['a'] ?? '';
 
@@ -123,31 +100,16 @@ final class Router
             $action = $_POST['a'] ?? '';
         }
 
-        if (!$this->hasController($controllerAlias)) {
-            //@todo silent log
-            throw new \Exception('has not controller ' . $controllerAlias);
-        }
+        $this->requestController = $controllerAlias;
+        $this->requestAction = $action;
+    }
 
-        if (!$this->hasControllerAction($controllerAlias, $action)) {
-            //@todo silent log
-            $controllerAlias = $this->defaultControllerAlias;
-            $action = $this->defaultControllerMethod;
-        }
-
-        $controllerNamespace = $this->getFullQualifiedNamespaceByAlias($controllerAlias);
-
-        $controller = new $controllerNamespace;
-
-        if (!($controller instanceof Controller)) {
-            throw new \Exception(sprintf('I can\'t work with this thing "%s"!', $controllerAlias));
-        }
-
-        if (!method_exists($controller, $action)) {
-            throw new \Exception(sprintf('Unknown method "%s" for controller "%s"', $action, $controller));
-        }
-
-        $controller->$action();
-        $this->controller = $controller;
+    private function loadRouterConfigObject(): RouterConfig
+    {
+        $rc = new RouterConfig();
+        $rc->loadConfig();
+        $rc->parseConfigFileToRoutes();
+        return $rc;
     }
 
     /**

@@ -189,6 +189,8 @@ $app->run();
                     <?php endforeach; ?>
 
                     <input type="hidden" name="tag_checkbox_post_id" value="<?php echo $app->get('danbooru')->getPost()->getId() ;?>">
+                    <input type="hidden" name="c" value="pushnewtags">
+                    <input type="hidden" name="a" value="pushNewTagsToDanbooru">
                     <button type="submit" id="id_tag_checkbox_submit" name="name_tag_checkbox_submit" class="tag_checkbox_submit"></button>
                 </form>
             </div>

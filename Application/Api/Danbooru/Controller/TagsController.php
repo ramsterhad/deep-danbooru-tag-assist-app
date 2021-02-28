@@ -14,23 +14,23 @@ class TagsController extends Controller
 {
     public function pushNewTagsToDanbooru(): void
     {
-        if (isset($_POST['tag_checkbox'])) {
+        $id = (int) $_POST['tag_checkbox_post_id'] ?? 0;
+        $existingTags = $_POST['tag_checkbox_existing_tags'] ?? [];
+        $markedTags = $_POST['tag_checkbox'] ?? [];
 
-            $id = (int) $_POST['tag_checkbox_post_id'];
-            $collection = new Collection();
+        $collection = new Collection();
 
-            foreach ($_POST['tag_checkbox_existing_tags'] as $tag) {
-                $collection->add(new Tag($tag, '0.0'));
-            }
-
-            foreach ($_POST['tag_checkbox'] as $tag) {
-                $collection->add(new Tag($tag, '0.0'));
-            }
-
-            $danbooru = new Danbooru('');
-            $danbooru->pushTags($id, $collection);
-
-            Router::route('/');
+        foreach ($existingTags as $tag) {
+            $collection->add(new Tag($tag, '0.0'));
         }
+
+        foreach ($markedTags as $tag) {
+            $collection->add(new Tag($tag, '0.0'));
+        }
+
+        $danbooru = new Danbooru('');
+        $danbooru->pushTags($id, $collection);
+
+        Router::route('/');
     }
 }
