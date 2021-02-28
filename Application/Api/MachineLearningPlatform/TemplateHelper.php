@@ -4,19 +4,20 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
 
 class TemplateHelper
 {
     /**
-     * @param Collection $machineLearningPlatform All tags found by the machine learning platform
-     * @param Collection $filteredTags Reduced filter collection from the machine learning platform,
-     *                                 reduced by Danbooru tags.
+     * @param TagCollection $machineLearningPlatform All tags found by the machine learning platform
+     * @param TagCollection $filteredTags Reduced filter collection from the machine learning platform,
+     *                                    reduced by Danbooru tags.
      *
      * @return string
      */
-    public static function tagsCssClassHelper(Collection $machineLearningPlatform, Collection $filteredTags): string
+    public static function tagsCssClassHelperUnknownTags(TagCollection $machineLearningPlatform, TagCollection $filteredTags): string
     {
         $mlpTagList = '';
 
@@ -38,5 +39,10 @@ class TemplateHelper
         }
 
         return $mlpTagList;
+    }
+
+    public static function tagsCssClassHelperColoredDanbooruTags(Tag $tag): string
+    {
+        return '<span style="color: '. $tag->getHexColor().';">'.$tag->getName().'</span>';
     }
 }

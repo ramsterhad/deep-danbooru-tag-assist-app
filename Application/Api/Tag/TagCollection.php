@@ -3,7 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag;
 
 
-class Collection implements \Countable
+class TagCollection implements \Countable
 {
     private array $tags = [];
 

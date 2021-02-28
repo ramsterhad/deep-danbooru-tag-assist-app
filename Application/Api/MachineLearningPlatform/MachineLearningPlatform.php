@@ -4,14 +4,14 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
 class MachineLearningPlatform implements ApiContract
 {
-    private Collection $collection;
+    private TagCollection $collection;
 
     private Picture $picture;
 
@@ -102,7 +102,7 @@ class MachineLearningPlatform implements ApiContract
         }
 
         arsort($tags);
-        $this->collection = new Collection();
+        $this->collection = new TagCollection();
 
         foreach ($tags as $tag) {
             $this->collection->add(new Tag($tag[1], $tag[0]));
@@ -111,7 +111,7 @@ class MachineLearningPlatform implements ApiContract
         $this->picture->delete();
     }
 
-    public function getCollection(): Collection
+    public function getCollection(): TagCollection
     {
         return $this->collection;
     }
@@ -121,13 +121,13 @@ class MachineLearningPlatform implements ApiContract
      * This function compares the Danbooru tags with the found ones from the MLP.
      * Only unknown tags, like found tags by the MLP which are not listed at Danbooru are returned.
      *
-     * @param Collection $tagsDanbooru
-     * @return Collection
+     * @param TagCollection $tagsDanbooru
+     * @return TagCollection
      *
      */
-    public function filterTagsFromMlpAgainstAlreadyKnownTags(Collection $tagsDanbooru): Collection
+    public function filterTagsFromMlpAgainstAlreadyKnownTags(TagCollection $tagsDanbooru): TagCollection
     {
-        $unknownTagCollection = new Collection();
+        $unknownTagCollection = new TagCollection();
 
         foreach ($this->collection->getTags() as $tag) {
 

@@ -3,7 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
 interface ApiContract
 {
@@ -13,8 +13,8 @@ interface ApiContract
     public function requestTags(): void;
 
     /**
-     * @return Collection
+     * @return TagCollection
      */
-    public function getCollection(): Collection;
+    public function getCollection(): TagCollection;
 
 }

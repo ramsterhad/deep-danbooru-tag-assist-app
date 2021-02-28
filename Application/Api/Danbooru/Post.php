@@ -4,8 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
 class Post
 {
@@ -14,19 +13,19 @@ class Post
     private string $picPreview;
     private string $picOriginal;
     private ?string $picLarge = null;
-    private Collection $collection;
+    private TagCollection $tagCollection;
 
     public function __construct(
         string $id,
         string $picPreview,
         string $picOriginal,
-        Collection $collection,
+        TagCollection $tags,
         ?string $picLarge
     ) {
         $this->id = $id;
         $this->picPreview = $picPreview;
         $this->picOriginal = $picOriginal;
-        $this->collection = $collection;
+        $this->tagCollection = $tags;
         $this->picLarge = $picLarge;
     }
 
@@ -50,20 +49,32 @@ class Post
         return $this->picLarge;
     }
 
-    public function getTagCollection(): Collection
+    public function getTags(): array
     {
-        return $this->collection;
+        return $this->tagCollection->getTags();
     }
 
-    public static function convertDanbooruTagStringToCollection(string $tags): Collection
+    public function getTagCollection(): TagCollection
     {
-        $tags = preg_split('/ /', $tags);
-        $collection = new Collection();
+        return $this->tagCollection;
+    }
 
-        foreach ($tags as $item) {
-            $collection->add(new Tag($item, '0.0'));
+    /**
+     * @param string $tags
+     * @param string $color
+     * @param TagCollection $collection
+     * @throws \Exception
+     */
+    public static function convertDanbooruTagsToTagCollection(string $tags, string $color, TagCollection $collection): void
+    {
+        if (strpos($color, '#') === false) {
+            throw new \Exception('I need a hex color, nothing else!');
         }
 
-        return $collection;
+        $tags = preg_split('/ /', $tags);
+
+        foreach ($tags as $item) {
+            $collection->add(new Tag($item, '0.0', $color));
+        }
     }
 }

@@ -8,6 +8,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
 
@@ -43,11 +44,11 @@ class FrontpageController extends Controller
      * max number by 9.
      * The information is used for the frontend to build a matrix.
      *
-     * @param Collection $unknownTags
+     * @param TagCollection $unknownTags
      * @param int $limit
      * @return int
      */
-    public function getCountedUnknownTagsLimitedByValue(Collection $unknownTags, int $limit = 15): int
+    public function getCountedUnknownTagsLimitedByValue(TagCollection $unknownTags, int $limit = 15): int
     {
         $maxTags = count($unknownTags);
         return $maxTags > $limit ? $limit : $maxTags;

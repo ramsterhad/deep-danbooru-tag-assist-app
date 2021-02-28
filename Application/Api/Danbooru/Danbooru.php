@@ -5,7 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Collection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Application\System\Json;
@@ -159,6 +159,11 @@ class Danbooru implements ApiContract
         $mustExist = [
             'id',
             'tag_string',
+            'tag_string_general',
+            'tag_string_character',
+            'tag_string_copyright',
+            'tag_string_artist',
+            'tag_string_meta',
             'preview_file_url',
             'file_url',
             'large_file_url',
@@ -172,18 +177,23 @@ class Danbooru implements ApiContract
             }
         }
 
-        $collection = Post::convertDanbooruTagStringToCollection($object->tag_string);
+        $tagCollection = new TagCollection();
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_artist, Tag::DANBOORU_TAG_HEXCOLOR_ARTIST, $tagCollection);
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_copyright, Tag::DANBOORU_TAG_HEXCOLOR_COPYRIGHT, $tagCollection);
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_character, Tag::DANBOORU_TAG_HEXCOLOR_CHARACTER, $tagCollection);
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_general, Tag::DANBOORU_TAG_HEXCOLOR_GENERAL, $tagCollection);
+        Post::convertDanbooruTagsToTagCollection($object->tag_string_meta, Tag::DANBOORU_TAG_HEXCOLOR_META, $tagCollection);
 
         $this->post = new Post(
             (string) $object->id,
             $object->preview_file_url,
             $object->file_url,
-            $collection,
+            $tagCollection,
             $object->large_file_url
         );
     }
 
-    public function pushTags(int $id, Collection $collection)
+    public function pushTags(int $id, TagCollection $collection)
     {
         $ch = curl_init();
 
@@ -203,7 +213,7 @@ class Danbooru implements ApiContract
         return $this->post;
     }
 
-    public function getCollection(): Collection
+    public function getCollection(): TagCollection
     {
         return $this->post->getTagCollection();
     }

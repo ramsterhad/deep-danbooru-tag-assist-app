@@ -19,7 +19,6 @@ class Application
 
     private array $templateVariables = [];
 
-
     private function __construct() {}
 
     private function __clone() {}
@@ -59,7 +58,6 @@ class Application
             Router::getInstance()->processRequest();
             $this->controller = Router::getInstance()->getController();
             $this->templateVariables = $this->controller->getTemplateVariables();
-
         } catch (\Exception $ex) {
             $this->error = $ex->getMessage();
         }
