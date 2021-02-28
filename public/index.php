@@ -8,7 +8,6 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
 require_once '../bootstrap.php';
-set_time_limit(2);
 
 $app = Application::getInstance();
 $app->run();
