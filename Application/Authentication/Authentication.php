@@ -8,7 +8,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridg
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
-class Authentication
+final class Authentication
 {
     /**
      * Tries to authenticate with the session variables username and api_key.
@@ -44,13 +44,17 @@ class Authentication
         try {
             // Try to login by session.
             $this->authenticateBySession();
-
-            // Still not logged in? Try it with the credentials from the config file.
-            if (!$this->isAuthenticated()) {
-                $this->authenticateByConfig();
-            }
         } catch (AuthenticationError $ex) {
 
+        }
+
+        // Still not logged in? Try it with the credentials from the config file.
+        if (!static::isAuthenticated()) {
+            try {
+                $this->authenticateByConfig();
+            } catch (AuthenticationError $ex) {
+
+            }
         }
     }
 
@@ -79,7 +83,7 @@ class Authentication
         Session::set('api_key', $key);
     }
 
-    public function isAuthenticated(): bool
+    public static function isAuthenticated(): bool
     {
         return (bool) Session::get('authenticated');
     }
@@ -87,5 +91,10 @@ class Authentication
     public function setIsAuthenticatedFlag(): void
     {
         Session::set('authenticated', true);
+    }
+
+    public function logout()
+    {
+        Session::destroy();
     }
 }

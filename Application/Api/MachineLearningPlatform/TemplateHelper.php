@@ -13,7 +13,7 @@ class TemplateHelper
     /**
      * @param TagCollection $machineLearningPlatform All tags found by the machine learning platform
      * @param TagCollection $filteredTags Reduced filter collection from the machine learning platform,
-     *                                 reduced by Danbooru tags.
+     *                                    reduced by Danbooru tags.
      *
      * @return string
      */

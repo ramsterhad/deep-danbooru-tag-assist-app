@@ -58,7 +58,8 @@ $app->run();
                     <div class="col s2">
                         <button type="submit" name="submit" class="btn waves-effect waves-light" >login</button>
                     </div>
-                    <input type="hidden" name="login" value="">
+                    <input type="hidden" name="c" value="auth">
+                    <input type="hidden" name="a" value="checkAuthenticationRequest">
                 </form>
             </div>
         </div>
@@ -84,12 +85,15 @@ $app->run();
                         <input id="input_id_danbooru_api_url" name="input_name_danbooru_api_url" type="text" value="<?php echo Danbooru::loadEndpointAddress();?>">
                         <label for="input_id_danbooru_api_url">danbooru api url</label>
                         <input type="hidden" name="set_danbooru_api_url" value="">
+                        <input type="hidden" name="c" value="apiurl">
+                        <input type="hidden" name="a" value="setCustomApiUrl">
                     </form>
                 </div>
                 <div class="col s2">
                     <button onclick="document.getElementById('form_set_danbooru_api_url').submit();" class="btn waves-effect waves-light url_form" type="submit" name="api_submit_save" title="save your custom api url"><i class="material-icons">save</i></button>
                     <form action="index.php" method="post" class="url_form" name="form2">
-                        <input type="hidden" name="reset_danbooru_api_url" value="">
+                        <input type="hidden" name="c" value="apiurl">
+                        <input type="hidden" name="a" value="resetApiUrlToDefault">
                         <button class="btn waves-effect waves-light" type="submit" name="api_submit_reset" title="reset to default api url"><i class="material-icons">undo</i></button>
                     </form>
                 </div>
@@ -103,28 +107,28 @@ $app->run();
 
         <div class="row">
             <div class="col s2">id</div>
-            <div class="col s10" style="width:unset"><a href="<?php echo Config::get('danbooru_api_url') . 'posts/' . $app->getDanbooru()->getPost()->getId();?>" target="_blank" rel="noreferrer"><?php echo $app->getDanbooru()->getPost()->getId();?></a></div>
+            <div class="col s10" style="width:unset"><a href="<?php echo Config::get('danbooru_api_url') . 'posts/' . $app->get('danbooru')->getPost()->getId();?>" target="_blank" rel="noreferrer"><?php echo $app->get('danbooru')->getPost()->getId();?></a></div>
         </div>
         <!--
         <div class="row">
             <div class="col s2">preview</div>
             <div class="col s10">
-                <img src="<?php echo $app->getDanbooru()->getPost()->getPicPreview(); ?>"><br>
-                <a href="<?php echo $app->getDanbooru()->getPost()->getPicPreview(); ?>" target="_blank" rel="noreferrer"><?php echo $app->getDanbooru()->getPost()->getPicPreview(); ?></a>
+                <img src="<?php echo $app->get('danbooru')->getPost()->getPicPreview(); ?>"><br>
+                <a href="<?php echo $app->get('danbooru')->getPost()->getPicPreview(); ?>" target="_blank" rel="noreferrer"><?php echo $app->get('danbooru')->getPost()->getPicPreview(); ?></a>
             </div>
         </div>
         -->
         <div class="row">
             <div class="col s2">Danbooru tags</div>
             <div class="col s10">
-                <?php foreach ($app->getDanbooru()->getPost()->getTags() as $tag) : ?>
+                <?php foreach ($app->get('danbooru')->getPost()->getTagCollection()->getTags() as $tag) : ?>
                     <span class="tag"><?php echo TemplateHelper::tagsCssClassHelperColoredDanbooruTags($tag); ?></span>
                 <?php endforeach; ?>
             </div>
         </div>
         <div class="row">
             <div class="col s2">ML Plattform tags</div>
-            <div class="col s10"><?php echo TemplateHelper::tagsCssClassHelperUnknownTags($app->getMachineLearningPlatform()->getCollection(), $app->getUnknownTags()); ?></div>
+            <div class="col s10"><?php echo TemplateHelper::tagsCssClassHelperUnknownTags($app->get('machineLearningPlatform')->getCollection(), $app->get('unknownTags')); ?></div>
         </div>
         <div class="row">
             <div class="col s2">new tags</div>
@@ -132,7 +136,10 @@ $app->run();
                 <form action="index.php" method="post">
                     <?php
 
-                    $maxTags = $app->getCountedUnknownTagsLimitedByValue((int) Config::get('limit_for_suggested_tags'));
+                    $maxTags = $app->getController()->getCountedUnknownTagsLimitedByValue(
+                        $app->get('unknownTags'),
+                        (int) Config::get('limit_for_suggested_tags')
+                    );
                     $keyIdent = 96; // numpad 0
                     /*
                      * $closeRow decides if a row gets a new column or if the row has to be closed and a new one started.
@@ -153,17 +160,17 @@ $app->run();
                             <span
                                 class="tag mlpTag"
                                 data-key="<?php echo $keyIdent + $i + 1;?>"
-                                id="ml_new_tag_<?php echo $app->getUnknownTags()->getTags()[$i]->getName();?>"
+                                id="ml_new_tag_<?php echo $app->get('unknownTags')->getTags()[$i]->getName();?>"
                             >
                                <label>
                                    <input
                                        type="checkbox"
                                        class="tag_checkbox"
                                        name="tag_checkbox[]"
-                                       value="<?php echo $app->getUnknownTags()->getTags()[$i]->getName() ;?>"
+                                       value="<?php echo $app->get('unknownTags')->getTags()[$i]->getName() ;?>"
                                    >
-                                   <span class="new_tags_grind_col" title="<?php echo $app->getUnknownTags()->getTags()[$i]->getScore(); ?>">
-                                       <a href="https://danbooru.donmai.us/wiki_pages/<?php echo $app->getUnknownTags()->getTags()[$i]->getName();?>" target="_blank" rel="noreferrer"><?php echo '[ '.($i + 1).' ] ' . $app->getUnknownTags()->getTags()[$i]->getName(); ?></a>
+                                   <span class="new_tags_grind_col" title="<?php echo $app->get('unknownTags')->getTags()[$i]->getScore(); ?>">
+                                       <a href="https://danbooru.donmai.us/wiki_pages/<?php echo $app->get('unknownTags')->getTags()[$i]->getName();?>" target="_blank" rel="noreferrer"><?php echo '[ '.($i + 1).' ] ' . $app->get('unknownTags')->getTags()[$i]->getName(); ?></a>
                                    </span>
                                </label>
                            </span>
@@ -175,12 +182,13 @@ $app->run();
                         <?php --$closeRow; // Decreases the counter for each column by 1. ?>
                     <?php endfor; ?>
 
-
-                    <?php foreach ($app->getDanbooru()->getPost()->getTagCollection() as $tag) : ?>
+                    <?php foreach ($app->get('danbooru')->getPost()->getTagCollection()->getTags() as $tag) : ?>
                         <input type="hidden" name="tag_checkbox_existing_tags[]" value="<?php echo $tag->getName(); ?>">
                     <?php endforeach; ?>
 
-                    <input type="hidden" name="tag_checkbox_post_id" value="<?php echo $app->getDanbooru()->getPost()->getId() ;?>">
+                    <input type="hidden" name="tag_checkbox_post_id" value="<?php echo $app->get('danbooru')->getPost()->getId() ;?>">
+                    <input type="hidden" name="c" value="pushnewtags">
+                    <input type="hidden" name="a" value="pushNewTagsToDanbooru">
                     <button type="submit" id="id_tag_checkbox_submit" name="name_tag_checkbox_submit" class="tag_checkbox_submit"></button>
                 </form>
             </div>
@@ -190,13 +198,13 @@ $app->run();
         <!-- file_url is the original (large resolution) file which has not been resized by *booru -->
         <div class="row">
             <div class="col s2 hidden">file_url</div>
-            <div class="col s10 full"><a href="<?php echo $app->getDanbooru()->getPost()->getPicOriginal();?>" target="_blank" rel="noreferrer"><span class="hidden"><?php echo $app->getDanbooru()->getPost()->getPicOriginal();?><br></span><img src="<?php echo $app->getDanbooru()->getPost()->getPicLarge(); ?>" referrerpolicy="no-referrer"></a></div>
+            <div class="col s10 full"><a href="<?php echo $app->get('danbooru')->getPost()->getPicOriginal();?>" target="_blank" rel="noreferrer"><span class="hidden"><?php echo $app->get('danbooru')->getPost()->getPicOriginal();?><br></span><img src="<?php echo $app->get('danbooru')->getPost()->getPicLarge(); ?>" referrerpolicy="no-referrer"></a></div>
         </div>
         <!-- Show large_file by unquoting -->
         <!--
     <div class="row">
         <div class="col s2">large_file_url</div>
-        <div class="col s10"><a href="<?php echo $app->getDanbooru()->getPost()->getPicLarge();?>" target="_blank" rel="noreferrer"><?php echo $app->getDanbooru()->getPost()->getPicLarge();?><br><img src="<?php echo $app->getDanbooru()->getPost()->getPicLarge(); ?>" referrerpolicy="no-referrer"></a></div>
+        <div class="col s10"><a href="<?php echo $app->get('danbooru')->getPost()->getPicLarge();?>" target="_blank" rel="noreferrer"><?php echo $app->get('danbooru')->getPost()->getPicLarge();?><br><img src="<?php echo $app->get('danbooru')->getPost()->getPicLarge(); ?>" referrerpolicy="no-referrer"></a></div>
     </div>
     -->
     </div>
@@ -234,7 +242,11 @@ $app->run();
         </div>
         <div id="b">
             <span class="footer-copyright-right-item">
-                <a class="text-lighten-4" href="https://github.com/Ramsterhad/DeepDanbooruTagAssist" target="_blank" rel="noreferrer">>Logout</a>
+                <form method="post" action="index.php">
+                    <input type="hidden" name="c" value="logout" />
+                    <input type="hidden" name="a" value="index" />
+                    <button type="submit" class="button-cosplays-as-link" value="Logout">> Logout</button>
+                </form>
             </span>
             <span class="footer-copyright-right-item">
                 <a class="text-lighten-4" href="https://github.com/Ramsterhad/DeepDanbooruTagAssist" target="_blank" rel="noreferrer">>Source Code</a>

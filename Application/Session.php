@@ -36,6 +36,7 @@ class Session
 
     public static function destroy(): void
     {
+        session_destroy();
         unset($_SESSION);
     }
 }
