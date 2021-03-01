@@ -5,6 +5,7 @@
 # Activate the conda environment "ml", which contains deepdanbooru and its dependences
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate ml
+# International python get rekt
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8 
 
