@@ -28,8 +28,11 @@ class MachineLearningPlatform implements ApiContract
      */
     private function preparePictureStoragePath(): string
     {
-        // Obtain full path
+        // Obtain full path to the picture
         $pathToPicture = $this->picture->getFullPathToFile();
+        
+        // If tensorflow lives on Windows Subsystem for Linux (WSL), the pathToPictures needs to be changed
+        // WSL START
         // Convert C:\ to /mnt/C/ (note: returns upper-case drive letter)
         $pathToPicture = preg_replace('/(\w):\\\\/', '/mnt/$1/', $pathToPicture);
         // Convert \ to /
@@ -37,6 +40,9 @@ class MachineLearningPlatform implements ApiContract
         // Convert any residual uppercase to lowercase
         $pathToPicture = strtolower($pathToPicture);
         // The above may fail if the image is stored in a path with a capital letter
+        // WSL END
+        
+        // Either WSL or native linux, return the obtained path:
         return $pathToPicture;
     }
 
@@ -55,6 +61,8 @@ class MachineLearningPlatform implements ApiContract
             // ml.sh accepts the path to a JPG or PNG image, and a certainty threshold. Tags with a certainty
             // lower than the threshold are not returned. The recognized tags will be returned to $output
             // 
+            // For linux servers, switch the lines below
+            // exec(" bash ../ml.sh '".$wsdlCompatiblePictureStoragePath."' '0.500'", $output, $retval);
             exec("wsl bash ~/ml.sh '".$wsdlCompatiblePictureStoragePath."' '0.500'", $output, $retval);
         } else {
             // Placeholder array, replaces the above exec()
