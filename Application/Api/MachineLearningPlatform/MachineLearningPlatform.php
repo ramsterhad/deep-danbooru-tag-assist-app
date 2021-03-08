@@ -14,6 +14,8 @@ class MachineLearningPlatform implements ApiContract
     private TagCollection $collection;
 
     private Picture $picture;
+    
+    private $colors; // Dominant color analyser
 
     public function setPicture(Picture $picture): void
     {
@@ -115,13 +117,25 @@ class MachineLearningPlatform implements ApiContract
         foreach ($tags as $tag) {
             $this->collection->add(new Tag($tag[1], $tag[0]));
         }
-
+        
+        // Tags are now recgonized. We can further play with the image before it gets deleted
+        // such as by analysing its dominant colors. Original bash script by Javier López
+        // http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
+        exec("bash ../dcolors.sh -r 50x50 -f hex -k 6 ".$wsdlCompatiblePictureStoragePath, $color_out, $color_retval);
+        $this->colors= $color_out;
+        
+        // Delete the image from the tmp directory
         $this->picture->delete();
     }
 
     public function getCollection(): TagCollection
     {
         return $this->collection;
+    }
+    
+    public function getColors()
+    {
+        return $this->colors;
     }
 
     /**
