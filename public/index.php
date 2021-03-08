@@ -299,6 +299,7 @@ $app->run();
         // </register Numpad keys>
 
         // Enter - execute api call to add new tags
+	// Prevent default behaviour, which is to open the selected item
         if (e.keyCode === 13) {
             e.preventDefault();
             document.getElementById('id_tag_checkbox_submit').focus();
