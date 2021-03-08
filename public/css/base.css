@@ -157,6 +157,11 @@ div.row.new_tags_grid {
 .row .col.s10 {
        width:100%;
     }
+    /*for the small color bars*/
+    .small{
+        height: 50px;
+        width: 100px;
+    }
 @media only screen and (max-width: 920px){
     .flex_cont {
     display: flex;
