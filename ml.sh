@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # This BASH script returns recognized visual features (tags) of the input image $1. Each tag has a minimal confidence $2
 # Example: bash ml.sh "/link/to/image.jpg" "0.500"
 
