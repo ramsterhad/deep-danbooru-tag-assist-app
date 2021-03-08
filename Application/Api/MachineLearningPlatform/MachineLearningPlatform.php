@@ -49,8 +49,8 @@ class MachineLearningPlatform implements ApiContract
     }
 
     /**
-     * The function triggers an analyse by an machine learning platform. The call returns a simpel array with multiple
-     * entries, but not only tags, so we have to filter the output accordingly. It also filters specific tags
+     * The function triggers an analysis by a machine learning platform. The call returns a simple array with multiple
+     * entries; confidence scores and tags, so we have to filter the output accordingly. It also filters specific tags
      * by blacklist.
      */
     public function requestTags(): void
@@ -119,12 +119,12 @@ class MachineLearningPlatform implements ApiContract
         }
         
         // Tags are now recgonized. We can further play with the image before it gets deleted
-        // such as by analysing its dominant colors. Original bash script by Javier López
+        // such as by analysing its dominant colors. Original bash script for color analysis by Javier López
         // http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
         exec("bash ../dcolors.sh -r 50x50 -f hex -k 6 ".$wsdlCompatiblePictureStoragePath, $color_out, $color_retval);
         $this->colors= $color_out;
         
-        // Delete the image from the tmp directory
+        // Delete the image from the tmp directory :(
         $this->picture->delete();
     }
 
