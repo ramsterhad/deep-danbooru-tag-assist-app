@@ -79,7 +79,7 @@ class Danbooru implements ApiContract
          * md5                       MD5 hash. Occasionally NOT correct
          * rating                    s/q/e
          * is_note_locked            Moderators and higher ranks can disable the creation of notes; text boxes
-         *  positioned at specified image coordinates
+         *                           positioned at specified image coordinates
          * is_rating_locked          Moderators and higher ranks can disable rating editing
          * is_status_locked          Moderators and higher ranks can disable status editing
          *                           (status: active/any/appealed/banned/deleted/flagged/modqueue/pending/unmoderated
@@ -126,6 +126,7 @@ class Danbooru implements ApiContract
          * preview_file_url          Link to thumbnail
          */
 
+        // Check if the result is a valid json
         if (!Json::isJson($result)) {
             throw new \Exception(
                 'Error! Return value has to be a valid JSON, but I got something... strange &#45576;_&#45576;.',
@@ -144,6 +145,7 @@ class Danbooru implements ApiContract
             throw new \Exception('Got an unexpected format. ⦿⽘⦿. Pls reload.');
         }
 
+        // The API URL must be set with limit=1, indicating the API to return only 1 result
         // We only should get one result. Not less, not more.
         if (count($object) > 1) {
             throw new \Exception('Oh wow! Got way too much results! Pls check your API query. (&#180;&#65381;&#30410;&#65381;&#65344;*)');
@@ -156,6 +158,8 @@ class Danbooru implements ApiContract
 
         $object = $object[0];
 
+        // Basic members don't have access to 'fringe' content. In that case, the API does not return the ID
+        // Example ID: <still to fill in>
         $mustExist = [
             'id',
             'tag_string',
@@ -167,7 +171,7 @@ class Danbooru implements ApiContract
             'preview_file_url',
             'file_url',
             'large_file_url',
-        ];
+        ]; // Actually I'm not sure what would happen if a post has zero tags? Does this still return a TRUE?
 
         foreach ($mustExist as $item) {
             if (!property_exists($object, $item)) {
@@ -177,6 +181,8 @@ class Danbooru implements ApiContract
             }
         }
 
+        // Tags have colors which describe their membership to the categories:
+        // artist, copyright, character, general, meta
         $tagCollection = new TagCollection();
         Post::convertDanbooruTagsToTagCollection($object->tag_string_artist, Tag::DANBOORU_TAG_HEXCOLOR_ARTIST, $tagCollection);
         Post::convertDanbooruTagsToTagCollection($object->tag_string_copyright, Tag::DANBOORU_TAG_HEXCOLOR_COPYRIGHT, $tagCollection);
