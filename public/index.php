@@ -106,6 +106,7 @@ $app->run();
                 <div class="col s2 " style="margin:auto;margin-left:0">id</div>
                 <div class="col s10" style="width:unset;margin:auto;margin-left:0"><a href="<?php echo Config::get('danbooru_api_url') . 'posts/' . $app->get('danbooru')->getPost()->getId();?>" target="_blank" rel="noreferrer"><?php echo $app->get('danbooru')->getPost()->getId();?></a></div>
 		<div class="flex_cont" style="margin: auto;margin-right: 0;padding-left: 2%;">
+<!-- Dominant color bar -->
 <style>
 .small{
         height: 50px;
@@ -299,7 +300,7 @@ $app->run();
         // </register Numpad keys>
 
         // Enter - execute api call to add new tags
-	// Prevent default behaviour, which is to open the selected item
+	// Prevent default browser behaviour, which is to open the selected item
         if (e.keyCode === 13) {
             e.preventDefault();
             document.getElementById('id_tag_checkbox_submit').focus();
