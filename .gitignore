@@ -1,3 +1,7 @@
 !tmp/.gitkeep
 
 .env.local
+
+# PHPUnit
+/.phpunit.cache
+.phpunit.result.cache
