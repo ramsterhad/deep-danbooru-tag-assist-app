@@ -314,12 +314,12 @@
     ),
     'symfony/dotenv' => 
     array (
-      'pretty_version' => 'v5.2.5',
-      'version' => '5.2.5.0',
+      'pretty_version' => 'v5.2.4',
+      'version' => '5.2.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f4f1b78f7b50aa7f1de3b038041063fbbab3218e',
+      'reference' => '783f12027c6b40ab0e93d6136d9f642d1d67cd6b',
     ),
     'symfony/polyfill-ctype' => 
     array (
