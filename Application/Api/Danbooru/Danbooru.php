@@ -140,7 +140,7 @@ class Danbooru implements ApiContract
         }
 
         // We want the transformed json to be an object (an object wrapped in an array).
-        $response = json_decode($response, false);
+        $response = $this->transformJsonStringToObject($response);
 
         /*
          * Danbooru doesn't know that we want only one post per request. So the response is always wrapped in an array
@@ -200,6 +200,11 @@ class Danbooru implements ApiContract
          * from Danbooru; normalised for our needs.
          */
         $this->post = $this->convertResponseObjectToPostObject($post, $object, $tagCollection);
+    }
+
+    protected function transformJsonStringToObject(string $json): array
+    {
+        return \json_decode($json, false);
     }
 
     protected function convertResponseObjectToPostObject(Post $post, \stdClass $object, TagCollection $tagCollection): Post
