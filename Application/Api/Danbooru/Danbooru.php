@@ -158,22 +158,11 @@ class Danbooru implements ApiContract
             throw new \Exception('That\'s not an object. What. Is. This.?');
         }
 
-        // Basic members don't have access to 'fringe' content. In that case, the API does not return the Id
-        // Example Id: @todo still to fill in
-        $mustExist = [
-            'id',
-            'tag_string',
-            'tag_string_general',
-            'tag_string_character',
-            'tag_string_copyright',
-            'tag_string_artist',
-            'tag_string_meta',
-            'preview_file_url',
-            'file_url',
-            'large_file_url',
-        ]; // @todo Actually I'm not sure what would happen if a post has zero tags? Does this still return a TRUE?
-
-        foreach ($mustExist as $item) {
+        /*
+         * Basic members don't have access to 'fringe' content. In that case, the API does not return the Id
+         * Example Id: @todo still to fill in
+         */
+        foreach ($this->listOfRequiredJsonProperties() as $item) {
             if (!property_exists($object, $item)) {
                 throw new \Exception(
                     '( &#865;&#3232; &#662;&#815; &#865;&#3232;) Can\'t show you that. Maybe you don\'t have the permission to see the post?',
@@ -264,11 +253,35 @@ class Danbooru implements ApiContract
             throw new \Exception('I need a hex color, nothing else!');
         }
 
+        // Nothing to do here, when $tags is an empty string.
+        if (empty($tags)) {
+            return;
+        }
+
         $tags = preg_split('/ /', $tags);
 
         foreach ($tags as $item) {
             $collection->add(new Tag($item, '0.0', $color));
         }
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function listOfRequiredJsonProperties(): array
+    {
+        return [
+            'id',
+            'tag_string',
+            'tag_string_general',
+            'tag_string_character',
+            'tag_string_copyright',
+            'tag_string_artist',
+            'tag_string_meta',
+            'preview_file_url',
+            'file_url',
+            'large_file_url',
+        ];
     }
 
     /**
