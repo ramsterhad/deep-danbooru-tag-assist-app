@@ -55,7 +55,7 @@ class Danbooru implements ApiContract
         return true;
     }
 
-    public function requestTags(): void
+    public function requestFromEndpoint(string $endpoint): string
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->endpoint);
@@ -63,68 +63,73 @@ class Danbooru implements ApiContract
         curl_setopt($ch, CURLOPT_USERPWD, Session::get('username') . ':' . Session::get('api_key'));
         $result = curl_exec($ch);
         curl_close($ch);
-        
-        /**
-         * The API returns the following 49 fields:
-         *
-         * Field                     Description and notes
-         *
-         * id                        Submission ID
-         * created_at                Date, time and timezone at submission
-         * updated_at                Date, time and timezone at last (tag?) field edit
-         * up_score                  No. of upvotes, can only be done by gold members and higher ranks
-         * down_score                No. of downvotes, can only be done by gold members and higher ranks
-         * score                     Calculated sum of up_score and down_score
-         * source                    URL or description of submission origin, if from pixiv, pixiv_id is populated
-         * md5                       MD5 hash. Occasionally NOT correct
-         * rating                    s/q/e
-         * is_note_locked            Moderators and higher ranks can disable the creation of notes; text boxes
-         *                           positioned at specified image coordinates
-         * is_rating_locked          Moderators and higher ranks can disable rating editing
-         * is_status_locked          Moderators and higher ranks can disable status editing
-         *                           (status: active/any/appealed/banned/deleted/flagged/modqueue/pending/unmoderated
-         * is_pending                Submission is not yet approved, but is visible and accessible
-         * is_flagged                Submission is flagged for deletion, but is visible and accessible
-         * is_deleted                Submission is deleted. Danbooru makes a distinction between soft-deleted (=hidden
-         *                           but accessible) and hard-deleted (not accessible, example: ID 6)
-         * uploader_id               User ID of uploader
-         * approver_id               User ID of approver
-         * pool_string               Submissions can be added to one or more pools (a group)
-         * last_noted_at             Date, time and timezone at last note change
-         * last_comment_bumped_at    Date, time and timezone at last comment bump. When commenting, users can choose
-         *                           not to "bump" with a checkbox.
-         * fav_count                 No. of times added to favourites
-         * tag_string                All tags
-         * tag_count                 No. of tags (general+artist+character+copyright+meta), does not include rating:s/q/e
-         * tag_count_general         No. of general tags (descriptive tags)
-         * tag_count_artist          No. of artist tags (most often 1, unless authored by multiple artists)
-         * tag_count_character       No. of character tags (Character names). Note that posts containing original
-         *                           characters are typically not tagged with character tags
-         * tag_count_copyright       No. of copyright tags (Series names)
-         * file_ext                  Extension
-         * file_size                 In bytes
-         * image_width               In pixels
-         * image_height              In pixels
-         * parent_id                 In addition to pools, submissions can have a "parent" and/or a "child".
-         *                           Typically for variations or reuploads in higher resolution
-         * has_children              See parent_id
-         * is_banned                 The artist requested removal of the submission. Does not imply status:deleted
-         * pixiv_id                  See source
-         * last_commented_at         Date, time and timezone of last comment. Also see last_comment_bumped_at
-         * has_active_children       Not sure?
-         * bit_flags                 Not sure?
-         * tag_count_meta            No. of meta tags
-         * has_large                 If image_width and/or image_height >= 850, a resized 850px image is generated
-         * has_visible_children      Not sure?
-         * tag_string_general        Same as tag_string, only general tags
-         * tag_string_character      Same as tag_string, only character tags
-         * tag_string_copyright      Same as tag_string, only copyright tags
-         * tag_string_artist         Same as tag_string, only artist tags
-         * tag_string_meta           Same as tag_string, only meta tags
-         * file_url                  Link to original (full resolution) file
-         * large_file_url            Link to resized (850 px) file
-         * preview_file_url          Link to thumbnail
-         */
+        return $result;
+    }
+
+    /**
+     * The API returns the following 49 fields:
+     *
+     * Field                     Description and notes
+     *
+     * id                        Submission ID
+     * created_at                Date, time and timezone at submission
+     * updated_at                Date, time and timezone at last (tag?) field edit
+     * up_score                  No. of upvotes, can only be done by gold members and higher ranks
+     * down_score                No. of downvotes, can only be done by gold members and higher ranks
+     * score                     Calculated sum of up_score and down_score
+     * source                    URL or description of submission origin, if from pixiv, pixiv_id is populated
+     * md5                       MD5 hash. Occasionally NOT correct
+     * rating                    s/q/e
+     * is_note_locked            Moderators and higher ranks can disable the creation of notes; text boxes
+     *                           positioned at specified image coordinates
+     * is_rating_locked          Moderators and higher ranks can disable rating editing
+     * is_status_locked          Moderators and higher ranks can disable status editing
+     *                           (status: active/any/appealed/banned/deleted/flagged/modqueue/pending/unmoderated
+     * is_pending                Submission is not yet approved, but is visible and accessible
+     * is_flagged                Submission is flagged for deletion, but is visible and accessible
+     * is_deleted                Submission is deleted. Danbooru makes a distinction between soft-deleted (=hidden
+     *                           but accessible) and hard-deleted (not accessible, example: ID 6)
+     * uploader_id               User ID of uploader
+     * approver_id               User ID of approver
+     * pool_string               Submissions can be added to one or more pools (a group)
+     * last_noted_at             Date, time and timezone at last note change
+     * last_comment_bumped_at    Date, time and timezone at last comment bump. When commenting, users can choose
+     *                           not to "bump" with a checkbox.
+     * fav_count                 No. of times added to favourites
+     * tag_string                All tags
+     * tag_count                 No. of tags (general+artist+character+copyright+meta), does not include rating:s/q/e
+     * tag_count_general         No. of general tags (descriptive tags)
+     * tag_count_artist          No. of artist tags (most often 1, unless authored by multiple artists)
+     * tag_count_character       No. of character tags (Character names). Note that posts containing original
+     *                           characters are typically not tagged with character tags
+     * tag_count_copyright       No. of copyright tags (Series names)
+     * file_ext                  Extension
+     * file_size                 In bytes
+     * image_width               In pixels
+     * image_height              In pixels
+     * parent_id                 In addition to pools, submissions can have a "parent" and/or a "child".
+     *                           Typically for variations or reuploads in higher resolution
+     * has_children              See parent_id
+     * is_banned                 The artist requested removal of the submission. Does not imply status:deleted
+     * pixiv_id                  See source
+     * last_commented_at         Date, time and timezone of last comment. Also see last_comment_bumped_at
+     * has_active_children       Not sure?
+     * bit_flags                 Not sure?
+     * tag_count_meta            No. of meta tags
+     * has_large                 If image_width and/or image_height >= 850, a resized 850px image is generated
+     * has_visible_children      Not sure?
+     * tag_string_general        Same as tag_string, only general tags
+     * tag_string_character      Same as tag_string, only character tags
+     * tag_string_copyright      Same as tag_string, only copyright tags
+     * tag_string_artist         Same as tag_string, only artist tags
+     * tag_string_meta           Same as tag_string, only meta tags
+     * file_url                  Link to original (full resolution) file
+     * large_file_url            Link to resized (850 px) file
+     * preview_file_url          Link to thumbnail
+     */
+    public function requestTags(): void
+    {
+        $result = $this->requestFromEndpoint($this->endpoint);
 
         // Check if the result is a valid json
         if (!Json::isJson($result)) {
