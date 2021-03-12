@@ -13,58 +13,30 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\System\Json;
 
 class Danbooru implements ApiContract
 {
-    private string $endpoint;
-
     private Post $post;
 
-    public function __construct(string $endpoint)
+    public function authenticate(Endpoint $endpoint, string $username, string $apiKey): bool
     {
-        $this->endpoint = $endpoint;
-    }
-
-    public function authenticate(string $username, string $apiKey): bool
-    {
-        $apiRequest = sprintf('%sprofile.json?login=%s&api_key=%s',
-            $this->endpoint,
-            $username,
-            $apiKey,
-        );
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiRequest);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        $response = $endpoint->authenticate(Config::get('danbooru_api_url'), $username, $apiKey);
 
         // No json as return value. This is bad.
-        if (!Json::isJson($result)) {
+        if (!Json::isJson($response)) {
             throw new AuthenticationError('The authentication service didn\'t return a nice response. -_-\'');
         }
 
-        $result = json_decode($result);
+        $response = \json_decode($response);
 
         // The json couldn't be transformed to an object.
-        if (!is_object($result)) {
+        if (!\is_object($response)) {
              throw new AuthenticationError('Why is it like that? Why can\'t I get a clean answer?!');
         }
 
         // Json didn't had the id property which every logged in user must have.
-        if (!property_exists($result, 'id')) {
+        if (!\property_exists($response, 'id')) {
             throw new AuthenticationError('Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.');
         }
 
         return true;
-    }
-
-    public function requestFromEndpoint(string $endpoint): string
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $endpoint);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, Session::get('username') . ':' . Session::get('api_key'));
-        $result = curl_exec($ch);
-        curl_close($ch);
-        return $result;
     }
 
     /**
@@ -130,11 +102,24 @@ class Danbooru implements ApiContract
      *
      * @param TagCollection $tagCollection
      * @param Post $post
+     * @param Endpoint $endpoint
+     * @param string $url
+     * @param string $username
+     * @param string $apiKey
+     * @throws Exception\EndpointException
      * @throws PostResponseException
      */
-    public function requestTags(TagCollection $tagCollection, Post $post): void
-    {
-        $response = $this->requestFromEndpoint($this->endpoint);
+    public function requestTags(
+        TagCollection $tagCollection,
+        Post $post,
+        Endpoint $endpoint
+    ): void {
+
+        $response = $endpoint->requestPost(
+            self::loadEndpointAddress(),
+            Session::get('username'),
+            Session::get('api_key')
+        );
 
         // Check if the result is a valid json
         if (!Json::isJson($response)) {
@@ -286,20 +271,21 @@ class Danbooru implements ApiContract
         }
     }
 
+    /**
+     * @param Endpoint $endpoint
+     * @param int $id
+     * @param TagCollection $collection
+     * @throws Exception\EndpointException
+     */
+    public function pushTags(Endpoint $endpoint, int $id, TagCollection $collection ): void {
 
-    public function pushTags(int $id, TagCollection $collection)
-    {
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, Config::get('danbooru_api_url') . 'posts/' . $id . '.json');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-
-        curl_setopt($ch, CURLOPT_POSTFIELDS, ['post[tag_string]' => $collection->toString()]);
-        curl_setopt($ch, CURLOPT_USERPWD, Session::get('username') . ':' . Session::get('api_key'));
-        $result = curl_exec($ch);
-        // @todo result can be negative. add an error message for the frontend!
-        curl_close($ch);
+        $endpoint->pushTags(
+            Config::get('danbooru_api_url'),
+            Session::get('username'),
+            Session::get('api_key'),
+            $id,
+            $collection
+        );
     }
 
     public function getPost(): Post
