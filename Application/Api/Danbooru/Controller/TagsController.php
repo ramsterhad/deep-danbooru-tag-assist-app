@@ -5,10 +5,13 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 class TagsController extends Controller
 {
@@ -28,8 +31,12 @@ class TagsController extends Controller
             $collection->add(new Tag($tag, '0.0'));
         }
 
-        $danbooru = new Danbooru('');
-        $danbooru->pushTags($id, $collection);
+        $danbooru = new Danbooru();
+        $danbooru->pushTags(
+            new Endpoint(),
+            $id,
+            $collection
+        );
 
         Router::route('/');
     }

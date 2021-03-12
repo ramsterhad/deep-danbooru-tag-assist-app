@@ -10,7 +10,7 @@ interface ApiContract
     /**
      * Executes the command to receive the tags.
      */
-    public function requestTags(): void;
+    //public function requestTags(): void;
 
     /**
      * @return TagCollection
