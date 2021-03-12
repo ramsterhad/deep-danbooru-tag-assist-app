@@ -15,18 +15,49 @@ class Post
     private ?string $picLarge = null;
     private TagCollection $tagCollection;
 
-    public function __construct(
-        string $id,
-        string $picPreview,
-        string $picOriginal,
-        TagCollection $tags,
-        ?string $picLarge
-    ) {
+    /**
+     * @param string $id
+     */
+    public function setId(string $id): Post
+    {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @param string $picPreview
+     */
+    public function setPicPreview(string $picPreview): Post
+    {
         $this->picPreview = $picPreview;
+        return $this;
+    }
+
+    /**
+     * @param string $picOriginal
+     */
+    public function setPicOriginal(string $picOriginal): Post
+    {
         $this->picOriginal = $picOriginal;
-        $this->tagCollection = $tags;
+        return $this;
+    }
+
+    /**
+     * @param string|null $picLarge
+     */
+    public function setPicLarge(?string $picLarge): Post
+    {
         $this->picLarge = $picLarge;
+        return $this;
+    }
+
+    /**
+     * @param TagCollection $tagCollection
+     */
+    public function setTagCollection(TagCollection $tagCollection): Post
+    {
+        $this->tagCollection = $tagCollection;
+        return $this;
     }
 
     public function getId(): string
@@ -57,24 +88,5 @@ class Post
     public function getTagCollection(): TagCollection
     {
         return $this->tagCollection;
-    }
-
-    /**
-     * @param string $tags
-     * @param string $color
-     * @param TagCollection $collection
-     * @throws \Exception
-     */
-    public static function convertDanbooruTagsToTagCollection(string $tags, string $color, TagCollection $collection): void
-    {
-        if (strpos($color, '#') === false) {
-            throw new \Exception('I need a hex color, nothing else!');
-        }
-
-        $tags = preg_split('/ /', $tags);
-
-        foreach ($tags as $item) {
-            $collection->add(new Tag($item, '0.0', $color));
-        }
     }
 }

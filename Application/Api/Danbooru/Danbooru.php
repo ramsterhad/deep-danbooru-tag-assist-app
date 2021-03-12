@@ -5,6 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
@@ -127,39 +128,49 @@ class Danbooru implements ApiContract
      * large_file_url            Link to resized (850 px) file
      * preview_file_url          Link to thumbnail
      */
-    public function requestTags(): void
+    public function requestTags(TagCollection $tagCollection, Post $post): void
     {
-        $result = $this->requestFromEndpoint($this->endpoint);
+        $response = $this->requestFromEndpoint($this->endpoint);
 
         // Check if the result is a valid json
-        if (!Json::isJson($result)) {
+        if (!Json::isJson($response)) {
             throw new \Exception(
                 'Error! Return value has to be a valid JSON, but I got something... strange &#45576;_&#45576;.',
             );
         }
 
-        $object = json_decode($result);
+        // We want the transformed json to be an object (an object wrapped in an array).
+        $response = json_decode($response, false);
 
-        // It needs to be an array or else we have an exception.
-        if (!is_array($object)) {
+        /*
+         * Danbooru doesn't know that we want only one post per request. So the response is always wrapped in an array
+         * structure, since it _could_ be that someone will request multiple posts at once.
+         *
+         * It needs to be an array or else we have an exception.
+         */
+        if (!is_array($response)) {
             throw new \Exception('Got an unexpected format. ⦿⽘⦿. Pls reload.');
         }
 
-        // The API URL must be set with limit=1, indicating the API to return only 1 result
-        // We only should get one result. Not less, not more.
-        if (count($object) > 1) {
+        // The API URL must be set with limit=1, indicating the API to return only 1 result.
+        if (count($response) > 1) {
             throw new \Exception('Oh wow! Got way too much results! Pls check your API query. (&#180;&#65381;&#30410;&#65381;&#65344;*)');
         }
 
         // We got less than 0 result? Nothing?
-        if (count($object) === 0) {
+        if (count($response) === 0) {
             throw new \Exception('Got nothing. &#175;\\_(&#12484;)_/&#175; Pls reload.');
         }
 
-        $object = $object[0];
+        // We said earlier, that the json string has to be transformed to be an object.
+        $object = $response[0];
 
-        // Basic members don't have access to 'fringe' content. In that case, the API does not return the ID
-        // Example ID: <still to fill in>
+        if (!is_object($object)) {
+            throw new \Exception('That\'s not an object. What. Is. This.?');
+        }
+
+        // Basic members don't have access to 'fringe' content. In that case, the API does not return the Id
+        // Example Id: @todo still to fill in
         $mustExist = [
             'id',
             'tag_string',
@@ -171,7 +182,7 @@ class Danbooru implements ApiContract
             'preview_file_url',
             'file_url',
             'large_file_url',
-        ]; // Actually I'm not sure what would happen if a post has zero tags? Does this still return a TRUE?
+        ]; // @todo Actually I'm not sure what would happen if a post has zero tags? Does this still return a TRUE?
 
         foreach ($mustExist as $item) {
             if (!property_exists($object, $item)) {
@@ -181,23 +192,91 @@ class Danbooru implements ApiContract
             }
         }
 
-        // Tags have colors which describe their membership to the categories:
-        // artist, copyright, character, general, meta
-        $tagCollection = new TagCollection();
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_artist, Tag::DANBOORU_TAG_HEXCOLOR_ARTIST, $tagCollection);
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_copyright, Tag::DANBOORU_TAG_HEXCOLOR_COPYRIGHT, $tagCollection);
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_character, Tag::DANBOORU_TAG_HEXCOLOR_CHARACTER, $tagCollection);
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_general, Tag::DANBOORU_TAG_HEXCOLOR_GENERAL, $tagCollection);
-        Post::convertDanbooruTagsToTagCollection($object->tag_string_meta, Tag::DANBOORU_TAG_HEXCOLOR_META, $tagCollection);
+        // Fills a collection of tags with the differenct tag categories by Danbooru.
+        $this->transformTagStringListsToCollection($object, $tagCollection);
 
-        $this->post = new Post(
-            (string) $object->id,
-            $object->preview_file_url,
-            $object->file_url,
-            $tagCollection,
-            $object->large_file_url
-        );
+        /*
+         * We have now all the information we need to transform the data into a Post object, which represents one entry
+         * from Danbooru; normalised for our needs.
+         */
+        $this->post = $this->convertResponseObjectToPostObject($post, $object, $tagCollection);
     }
+
+    protected function convertResponseObjectToPostObject(Post $post, \stdClass $object, TagCollection $tagCollection): Post
+    {
+        return $post
+            ->setId((string) $object->id)
+            ->setPicPreview($object->preview_file_url)
+            ->setPicOriginal($object->file_url)
+            ->setPicLarge($object->large_file_url)
+            ->setTagCollection($tagCollection)
+        ;
+    }
+
+    /**
+     * Tags have colors which describe their membership to the categories:
+     * artist, copyright, character, general, meta
+     *
+     * @param \stdClass $object
+     * @param TagCollection $tagCollection
+     * @throws PostResponseException
+     */
+    protected function transformTagStringListsToCollection(\stdClass $object, TagCollection $tagCollection): void
+    {
+        if (!property_exists($object, 'tag_string_artist')) {
+            throw new PostResponseException('Missing property "tag_string_artist".');
+        }
+
+        if (!property_exists($object, 'tag_string_copyright')) {
+            throw new PostResponseException('Missing property "tag_string_copyright".');
+        }
+
+        if (!property_exists($object, 'tag_string_character')) {
+            throw new PostResponseException('Missing property "tag_string_character".');
+        }
+
+        if (!property_exists($object, 'tag_string_general')) {
+            throw new PostResponseException('Missing property "tag_string_general".');
+        }
+
+        if (!property_exists($object, 'tag_string_meta')) {
+            throw new PostResponseException('Missing property "tag_string_meta".');
+        }
+
+        $this->addTagsFromResponseObjectToCollection($object->tag_string_artist, Tag::DANBOORU_TAG_HEXCOLOR_ARTIST, $tagCollection);
+        $this->addTagsFromResponseObjectToCollection($object->tag_string_copyright,Tag::DANBOORU_TAG_HEXCOLOR_COPYRIGHT, $tagCollection);
+        $this->addTagsFromResponseObjectToCollection($object->tag_string_character, Tag::DANBOORU_TAG_HEXCOLOR_CHARACTER, $tagCollection);
+        $this->addTagsFromResponseObjectToCollection($object->tag_string_general, Tag::DANBOORU_TAG_HEXCOLOR_GENERAL, $tagCollection);
+        $this->addTagsFromResponseObjectToCollection($object->tag_string_meta, Tag::DANBOORU_TAG_HEXCOLOR_META, $tagCollection);
+    }
+
+    /**
+     * Splits a tag string like "2019_rugby_world_cup fate/extra fate_(series)" into pieces:
+     * 2019_rugby_world_cup, fate/extra, fate_(series).
+     *
+     * Returns the pieces collected as a collection of tags.
+     *
+     * Since the tags are from Danbooru, the score is set to 0.0 as this information is part of a Tag object,
+     * but in this case not necessary.
+     *
+     * @param string $tags
+     * @param string $color
+     * @param TagCollection $collection
+     * @throws \Exception
+     */
+    protected function addTagsFromResponseObjectToCollection(string $tags, string $color, TagCollection $collection): void
+    {
+        if (strpos($color, '#') === false) {
+            throw new \Exception('I need a hex color, nothing else!');
+        }
+
+        $tags = preg_split('/ /', $tags);
+
+        foreach ($tags as $item) {
+            $collection->add(new Tag($item, '0.0', $color));
+        }
+    }
+
 
     public function pushTags(int $id, TagCollection $collection)
     {
