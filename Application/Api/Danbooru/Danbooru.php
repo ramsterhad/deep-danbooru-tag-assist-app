@@ -59,7 +59,7 @@ class Danbooru implements ApiContract
     public function requestFromEndpoint(string $endpoint): string
     {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->endpoint);
+        curl_setopt($ch, CURLOPT_URL, $endpoint);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERPWD, Session::get('username') . ':' . Session::get('api_key'));
         $result = curl_exec($ch);
@@ -127,6 +127,10 @@ class Danbooru implements ApiContract
      * file_url                  Link to original (full resolution) file
      * large_file_url            Link to resized (850 px) file
      * preview_file_url          Link to thumbnail
+     *
+     * @param TagCollection $tagCollection
+     * @param Post $post
+     * @throws PostResponseException
      */
     public function requestTags(TagCollection $tagCollection, Post $post): void
     {
@@ -192,7 +196,7 @@ class Danbooru implements ApiContract
             }
         }
 
-        // Fills a collection of tags with the differenct tag categories by Danbooru.
+        // Fills a collection of tags with the various tag categories by Danbooru.
         $this->transformTagStringListsToCollection($object, $tagCollection);
 
         /*
