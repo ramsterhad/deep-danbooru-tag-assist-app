@@ -140,11 +140,6 @@ class Danbooru implements ApiContract
 
         $object = json_decode($result);
 
-        // If the return value is an object at this point, something went wrong.
-        if (is_object($object) && property_exists($object, 'success') && $object->success === false) {
-            throw new AuthenticationError('(╯︵╰,) Danbooru said no to your credentials.');
-        }
-
         // It needs to be an array or else we have an exception.
         if (!is_array($object)) {
             throw new \Exception('Got an unexpected format. ⦿⽘⦿. Pls reload.');
