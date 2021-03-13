@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
@@ -12,7 +12,6 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Pic
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 class FrontpageController extends Controller
 {

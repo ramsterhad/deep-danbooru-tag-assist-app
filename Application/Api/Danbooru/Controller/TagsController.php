@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller;
@@ -8,10 +8,8 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 class TagsController extends Controller
 {

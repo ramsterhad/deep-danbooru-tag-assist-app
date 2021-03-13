@@ -1,12 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 final class Authentication
 {
