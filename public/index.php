@@ -105,27 +105,15 @@ $app->run();
             <div class="row flex_cont">
                 <div class="col s2 " style="margin:auto;margin-left:0">id</div>
                 <div class="col s10" style="width:unset;margin:auto;margin-left:0"><a href="<?php echo Config::get('danbooru_api_url') . 'posts/' . $app->get('danbooru')->getPost()->getId();?>" target="_blank" rel="noreferrer"><?php echo $app->get('danbooru')->getPost()->getId();?></a></div>
-		<div class="flex_cont" style="margin: auto;margin-right: 0;padding-left: 2%;">
-<!-- Dominant color bar -->
-<style>
-.small{
-        height: 50px;
-        width: 100px;
-    }
-</style>
-<?php
-		
-                foreach ($app->get('machineLearningPlatform')->getColors() as $colors) {
 
-                    # code...
-
-                    echo "<div class=\"small\" style=\"background-color:$colors;\"></div>";
-
-                }
-
-                ?>
-		</div>
-		</div>
+                <!-- <Dominant color bar> -->
+                <div class="flex_cont" style="margin: auto;margin-right: 0;padding-left: 2%;">
+                <?php foreach ($app->get('machineLearningPlatform')->getPicture()->getDominantColors() as $color) : ?>
+                    <div class="dominant-colors-box" style="background-color:<?php echo $color;?>"></div>
+                <?php endforeach; ?>
+                <!-- </Dominant color bar> -->
+		        </div>
+		    </div>
             <!--
             <div class="row">
                 <div class="col s2">preview</div>
@@ -282,7 +270,7 @@ $app->run();
     document.getElementById('year').innerHTML = new Date().getFullYear();
 
     // Listen if a key is pressed.
-    // If it is a num pad key, then an event bound to the new tags, identified by the class "mlpTag" is fired.
+    // If it is a num pad key, then an event bound to the new tags is fired, identified by the class "mlpTag".
     window.addEventListener('keydown', function(e) {
 
         // <register Numpad keys>
@@ -300,8 +288,8 @@ $app->run();
         // </register Numpad keys>
 
         // Enter - execute api call to add new tags
-	// Prevent default browser behaviour, which is to open the selected item
         if (e.keyCode === 13) {
+            // Prevent default browser behaviour, which is to open the selected item
             e.preventDefault();
             document.getElementById('id_tag_checkbox_submit').focus();
             document.getElementById('id_tag_checkbox_submit').click();

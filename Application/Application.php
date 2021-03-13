@@ -74,6 +74,11 @@ class Application
         $systemRequirements->checkRequirementsForPictureHandling();
     }
 
+    /**
+     * With trailing separator.
+     *
+     * @return string
+     */
     public static function getBasePath(): string
     {
         return BASE_PATH;
