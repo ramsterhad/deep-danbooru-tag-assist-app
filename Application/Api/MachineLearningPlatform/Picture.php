@@ -12,6 +12,7 @@ class Picture
     private string $url;
     private string $fullPathToFile;
     private ?\SplFileObject $file;
+    private array $dominantColors = [];
 
     public function __construct(string $url)
     {
@@ -62,5 +63,18 @@ class Picture
     public function getFullPathToFile(): string
     {
         return $this->fullPathToFile;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getDominantColors(): array
+    {
+        return $this->dominantColors;
+    }
+
+    public function setDominantColors(array $dominantColors): void
+    {
+        $this->dominantColors = $dominantColors;
     }
 }

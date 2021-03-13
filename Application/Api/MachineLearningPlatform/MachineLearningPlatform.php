@@ -6,6 +6,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
@@ -14,13 +15,6 @@ class MachineLearningPlatform implements ApiContract
     private TagCollection $collection;
 
     private Picture $picture;
-    
-    private $colors; // Dominant color analyser
-
-    public function setPicture(Picture $picture): void
-    {
-        $this->picture = $picture;
-    }
 
     /**
      * The Tensorflow-based RESnet runs on WSL (or native linux). The code as-is is suitable for running on Windows
@@ -118,24 +112,16 @@ class MachineLearningPlatform implements ApiContract
             $this->collection->add(new Tag($tag[1], $tag[0]));
         }
         
-        // Tags are now recgonized. We can further play with the image before it gets deleted
-        // such as by analysing its dominant colors. Original bash script for color analysis by Javier López
-        // http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
-        exec("bash ../dcolors.sh -r 50x50 -f hex -k 6 ".$wsdlCompatiblePictureStoragePath, $color_out, $color_retval);
-        $this->colors= $color_out;
-        
+        /*
+         * Tags are now recgonized. We can further play with the image before it gets deleted
+         * such as by analysing its dominant colors. Original bash script for color analysis by Javier López
+         * @link http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
+         */
+        exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->preparePictureStoragePath(), $colors);
+        $this->picture->setDominantColors($colors);
+
         // Delete the image from the tmp directory :(
         $this->picture->delete();
-    }
-
-    public function getCollection(): TagCollection
-    {
-        return $this->collection;
-    }
-    
-    public function getColors()
-    {
-        return $this->colors;
     }
 
     /**
@@ -171,5 +157,20 @@ class MachineLearningPlatform implements ApiContract
         }
 
         return $unknownTagCollection;
+    }
+
+    public function getCollection(): TagCollection
+    {
+        return $this->collection;
+    }
+
+    public function setPicture(Picture $picture): void
+    {
+        $this->picture = $picture;
+    }
+
+    public function getPicture(): Picture
+    {
+        return $this->picture;
     }
 }
