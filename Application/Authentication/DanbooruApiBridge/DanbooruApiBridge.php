@@ -6,7 +6,6 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruAp
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
 /**
  * Bridge to the service \Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Danbooru.
