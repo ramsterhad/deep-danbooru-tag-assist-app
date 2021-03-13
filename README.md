@@ -113,9 +113,21 @@ Maximum 5 megapixel:                  mpixels:..5
 Minimum 1 megapixel:                  mpixels:1..
 Random safe image 10mpixel:           https://danbooru.donmai.us/posts.json?limit=1&tags=order:random+rating:s+mpixels:..10
 
-````
+````  
+  
+  
+## Testing
 
-## Test
-````shell
-vendor/bin/phpunit -c tests/Unit/phpunit.xml
-````
+### Install the environment
+```shell
+git clone https://github.com/ramsterhad/deep-danbooru-tag-assist-app/ ddta
+cd ddta
+composer install
+```
+
+### Testing
+
+Execute all tests: `vendor/bin/phpunit -c tests/Unit/phpunit.xml`  
+
+Execute one test: 
+`vendor/bin/phpunit -c tests/Unit/phpunit.xml --filter testTransformJsonStringToObject`
