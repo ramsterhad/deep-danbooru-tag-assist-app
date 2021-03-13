@@ -17,32 +17,6 @@ class MachineLearningPlatform implements ApiContract
     private Picture $picture;
 
     /**
-     * The Tensorflow-based RESnet runs on WSL (or native linux). The code as-is is suitable for running on Windows
-     * with WSL but can be adapted to run on native linux
-     * The Windows image paths is converted to wsl
-     * Example: C:\path\to\picture.jpg becomes /mnt/c/path/to/picture.jpg
-     */
-    private function preparePictureStoragePath(): string
-    {
-        // Obtain full path to the picture
-        $pathToPicture = $this->picture->getFullPathToFile();
-        
-        // If tensorflow lives on Windows Subsystem for Linux (WSL), the pathToPictures needs to be changed
-        // WSL START
-        // Convert C:\ to /mnt/C/ (note: returns upper-case drive letter)
-        $pathToPicture = preg_replace('/(\w):\\\\/', '/mnt/$1/', $pathToPicture);
-        // Convert \ to /
-        $pathToPicture = str_replace('\\', '/', $pathToPicture);
-        // Convert any residual uppercase to lowercase
-        $pathToPicture = strtolower($pathToPicture);
-        // The above may fail if the image is stored in a path with a capital letter
-        // WSL END
-        
-        // Either WSL or native linux, return the obtained path:
-        return $pathToPicture;
-    }
-
-    /**
      * The function triggers an analysis by a machine learning platform. The call returns a simple array with multiple
      * entries; confidence scores and tags, so we have to filter the output accordingly. It also filters specific tags
      * by blacklist.
@@ -52,14 +26,7 @@ class MachineLearningPlatform implements ApiContract
         $this->picture->download();
 
         if (Config::get('machine_learning_platform_repository_debug') === 'false') {
-            $wsdlCompatiblePictureStoragePath = $this->preparePictureStoragePath();
-            //
-            // ml.sh accepts the path to a JPG or PNG image, and a certainty threshold. Tags with a certainty
-            // lower than the threshold are not returned. The recognized tags will be returned to $output
-            // 
-            // For linux servers, switch the lines below
-            // exec(" bash ../ml.sh '".$wsdlCompatiblePictureStoragePath."' '0.500'", $output, $retval);
-            exec("wsl bash ~/ml.sh '".$wsdlCompatiblePictureStoragePath."' '0.500'", $output, $retval);
+            exec('bash ' . Application::getBasePath() . 'ml.sh '.$this->picture->getFullPathToFile().' 0.500', $output);
         } else {
             // Placeholder array, replaces the above exec()
             $output = [
@@ -117,7 +84,7 @@ class MachineLearningPlatform implements ApiContract
          * such as by analysing its dominant colors. Original bash script for color analysis by Javier López
          * @link http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
          */
-        exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->preparePictureStoragePath(), $colors);
+        exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->picture->getFullPathToFile(), $colors);
         $this->picture->setDominantColors($colors);
 
         // Delete the image from the tmp directory :(
