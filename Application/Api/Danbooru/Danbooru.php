@@ -249,13 +249,13 @@ class Danbooru implements ApiContract
      */
     protected function addTagsFromResponseObjectToCollection(string $tags, string $color, TagCollection $collection): void
     {
-        if (strpos($color, '#') === false) {
-            throw new \Exception('I need a hex color, nothing else!');
-        }
-
-        // Nothing to do here, when $tags is an empty string.
+        // Nothing to do here, if $tags is an empty string.
         if (empty($tags)) {
             return;
+        }
+
+        if (strpos($color, '#') === false) {
+            throw new \Exception('I need a hex color, nothing else!');
         }
 
         $tags = preg_split('/ /', $tags);
