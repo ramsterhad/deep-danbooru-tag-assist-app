@@ -114,3 +114,8 @@ Minimum 1 megapixel:                  mpixels:1..
 Random safe image 10mpixel:           https://danbooru.donmai.us/posts.json?limit=1&tags=order:random+rating:s+mpixels:..10
 
 ````
+
+## Test
+````shell
+vendor/bin/phpunit -c tests/Unit/phpunit.xml
+````
