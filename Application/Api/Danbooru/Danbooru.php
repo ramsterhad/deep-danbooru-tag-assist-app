@@ -15,6 +15,19 @@ class Danbooru implements ApiContract
 {
     private Post $post;
 
+    private array $listOfRequiredJsonPropertiesFromDanbooruResponse = [
+        'id',
+        'tag_string',
+        'tag_string_general',
+        'tag_string_character',
+        'tag_string_copyright',
+        'tag_string_artist',
+        'tag_string_meta',
+        'preview_file_url',
+        'file_url',
+        'large_file_url',
+    ];
+
     public function authenticate(Endpoint $endpoint, string $username, string $apiKey): bool
     {
         $response = $endpoint->authenticate(Config::get('danbooru_api_url'), $username, $apiKey);
@@ -123,49 +136,54 @@ class Danbooru implements ApiContract
 
         // Check if the result is a valid json
         if (!Json::isJson($response)) {
-            throw new \Exception(
+            throw new PostResponseException(
                 'Error! Return value has to be a valid JSON, but I got something... strange &#45576;_&#45576;.',
+                PostResponseException::CODE_INVALID_JSON
             );
         }
 
-        // We want the transformed json to be an object (an object wrapped in an array).
-        $response = $this->transformJsonStringToObject($response);
-
         /*
-         * Danbooru doesn't know that we want only one post per request. So the response is always wrapped in an array
-         * structure, since it _could_ be that someone will request multiple posts at once.
-         *
-         * It needs to be an array or else we have an exception.
+         * We want the transformed json to be an object (an object wrapped in an array).
+         * Since this function promises to return an array, we don't need a further check if the return value is
+         * an array actually. If it wouldn't then it would break at this very place.
          */
-        if (!is_array($response)) {
-            throw new \Exception('Got an unexpected format. ⦿⽘⦿. Pls reload.');
-        }
+        $response = $this->transformJsonStringToObject($response);
 
         // The API URL must be set with limit=1, indicating the API to return only 1 result.
         if (count($response) > 1) {
-            throw new \Exception('Oh wow! Got way too much results! Pls check your API query. (&#180;&#65381;&#30410;&#65381;&#65344;*)');
+            throw new PostResponseException(
+                'Oh wow! Got way too much results! Pls check your API query. (&#180;&#65381;&#30410;&#65381;&#65344;*)',
+                PostResponseException::CODE_JSON_CONTAINS_MORE_THAN_ONE_ITEM
+            );
         }
 
         // We got less than 0 result? Nothing?
         if (count($response) === 0) {
-            throw new \Exception('Got nothing. &#175;\\_(&#12484;)_/&#175; Pls reload.');
+            throw new PostResponseException(
+                'Got nothing. &#175;\\_(&#12484;)_/&#175; Pls reload.',
+                PostResponseException::CODE_JSON_CONTAINS_NO_ITEM
+            );
         }
 
         // We said earlier, that the json string has to be transformed to be an object.
         $object = $response[0];
 
         if (!is_object($object)) {
-            throw new \Exception('That\'s not an object. What. Is. This.?');
+            throw new PostResponseException(
+                'That\'s not an object. What. Is. This.?',
+                PostResponseException::CODE_JSON_ITEM_IS_NOT_OBJECT
+            );
         }
 
         /*
          * Basic members don't have access to 'fringe' content. In that case, the API does not return the Id
          * Example Id: @todo still to fill in
          */
-        foreach ($this->listOfRequiredJsonProperties() as $item) {
+        foreach ($this->getListOfRequiredJsonPropertiesFromDanbooruResponse() as $item) {
             if (!property_exists($object, $item)) {
-                throw new \Exception(
+                throw new PostResponseException(
                     '( &#865;&#3232; &#662;&#815; &#865;&#3232;) Can\'t show you that. Maybe you don\'t have the permission to see the post?',
+                    PostResponseException::CODE_JSON_ITEM_IS_MISSING_PROPERTIES
                 );
             }
         }
@@ -180,6 +198,15 @@ class Danbooru implements ApiContract
         $this->post = $this->convertResponseObjectToPostObject($post, $object, $tagCollection);
     }
 
+    /**
+     * The method returns an array, but the function \json_decode is set to associative false. This is as we want it,
+     * as we expect from Danbooru an json, which has multiple objects (that's why associative is false), but wrapped in
+     * an array. So we will have an array with one item as result. And this item is converted to an object, instead of
+     * an associative array.
+     *
+     * @param string $json
+     * @return \stdClass[]
+     */
     protected function transformJsonStringToObject(string $json): array
     {
         return \json_decode($json, false);
@@ -266,25 +293,6 @@ class Danbooru implements ApiContract
     }
 
     /**
-     * @return string[]
-     */
-    protected function listOfRequiredJsonProperties(): array
-    {
-        return [
-            'id',
-            'tag_string',
-            'tag_string_general',
-            'tag_string_character',
-            'tag_string_copyright',
-            'tag_string_artist',
-            'tag_string_meta',
-            'preview_file_url',
-            'file_url',
-            'large_file_url',
-        ];
-    }
-
-    /**
      * @param Endpoint $endpoint
      * @param int $id
      * @param TagCollection $collection
@@ -299,6 +307,14 @@ class Danbooru implements ApiContract
             $id,
             $collection
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getListOfRequiredJsonPropertiesFromDanbooruResponse(): array
+    {
+        return $this->listOfRequiredJsonPropertiesFromDanbooruResponse;
     }
 
     public function getPost(): Post
