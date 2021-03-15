@@ -2,28 +2,30 @@ _default:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\FrontpageController
   action: index
 
-start:
+frontpage:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\FrontpageController
-  actions:
-    - index
+  action: index
 
 auth:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationFormController
-  actions:
-    - checkAuthenticationRequest
+  action: index
+
+authenticate:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationFormController
+  action: checkAuthenticationRequest
 
 logout:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\LogoutController
-  actions:
-    - index
+  action: index
 
-apiurl:
+apiurlreset:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\ApiUrlController
-  actions:
-    - resetApiUrlToDefault
-    - setCustomApiUrl
+  action: resetApiUrlToDefault
+
+apiurlset:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\ApiUrlController
+  action: setCustomApiUrl
 
 pushnewtags:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\TagsController
-  actions:
-    - pushNewTagsToDanbooru
+  action: pushNewTagsToDanbooru

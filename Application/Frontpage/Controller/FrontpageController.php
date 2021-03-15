@@ -11,15 +11,17 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Mac
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
-class FrontpageController extends Controller
+class FrontpageController implements Controller
 {
-    public function index(): void
+    public function index(): Response
     {
         if (!Authentication::isAuthenticated()) {
-            return;
+            Router::route('auth');
         }
 
         // Build the page
@@ -40,9 +42,14 @@ class FrontpageController extends Controller
             $danbooru->getPost()->getTagCollection()
         );
 
-        $this->assign('danbooru', $danbooru);
-        $this->assign('machineLearningPlatform', $machineLearningPlatform);
-        $this->assign('unknownTags', $unknownTags);
+        $response = new Response($this, 'Frontpage.frontpage.index');
+        $response->assign('danbooru', $danbooru);
+        $response->assign('machineLearningPlatform', $machineLearningPlatform);
+        $response->assign('unknownTags', $unknownTags);
+        $response->assign('dannboruApiUrl', Config::get('danbooru_api_url'));
+        $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
+
+        return $response;
     }
 
     /**

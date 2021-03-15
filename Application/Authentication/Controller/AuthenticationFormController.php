@@ -5,11 +5,17 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
-class AuthenticationFormController extends Controller
+class AuthenticationFormController implements Controller
 {
+    public function index(): Response
+    {
+        return new Response($this, 'Authentication.authentication_form.index');
+    }
+
     /**
      * Checks if the form to store the credentials was fired.
      *

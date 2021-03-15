@@ -28,14 +28,10 @@ class RouterConfig
             $route = new Route();
             $route->setAlias($alias);
             $route->setFullQualifiedNamespacePath($routeConfig['namespace']);
+            $route->setMethod($routeConfig['action']);
 
             if ($alias === '_default') {
-                $route->addMethod($routeConfig['action']);
                 $this->defaultRoute = $route;
-            } else {
-                foreach ($routeConfig['actions'] as $action) {
-                    $route->addMethod($action);
-                }
             }
 
             $this->routes[$alias] = $route;
