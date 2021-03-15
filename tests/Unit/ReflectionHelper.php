@@ -4,7 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Tests\Unit;
 
 
-class TestCase extends \PHPUnit\Framework\TestCase
+class ReflectionHelper
 {
     /**
      * @link https://stackoverflow.com/a/2798203
@@ -14,17 +14,15 @@ class TestCase extends \PHPUnit\Framework\TestCase
      * @return \ReflectionMethod
      * @throws \ReflectionException
      */
-    /*
-    protected static function getMethod(string $class, string $name): \ReflectionMethod
+    public static function getMethod(string $class, string $name): \ReflectionMethod
     {
         $class = new \ReflectionClass($class);
         $method = $class->getMethod($name);
         $method->setAccessible(true);
         return $method;
     }
-    */
-    /*
-    protected static function getProperty(string $class, string $name): \ReflectionMethod
+
+    public static function getProperty(string $class, string $name): \ReflectionProperty
     {
         $class = new \ReflectionClass($class);
         $property = $class->getProperty($name);
@@ -32,5 +30,4 @@ class TestCase extends \PHPUnit\Framework\TestCase
         //var_dump($reflectionProperty->getValue(new Foo));
         return $property;
     }
-    */
 }

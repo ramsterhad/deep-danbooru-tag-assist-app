@@ -106,7 +106,6 @@ final class Router
      */
     private function readControllerAndActionFromRequest(): void
     {
-
         $controllerAlias = array_key_first($_GET) ?? '';
 
         // If not get, then maybe post?
@@ -122,7 +121,7 @@ final class Router
         $this->requestController = $controllerAlias;
     }
 
-    private function loadRouterConfigObject(): void
+    public function loadRouterConfigObject(): void
     {
         $rc = new RouterConfig();
         $rc->loadConfig();

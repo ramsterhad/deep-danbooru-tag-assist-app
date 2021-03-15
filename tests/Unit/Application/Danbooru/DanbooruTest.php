@@ -10,6 +10,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResp
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use Ramsterhad\DeepDanbooruTagAssist\Tests\Unit\ReflectionHelper;
 use Ramsterhad\DeepDanbooruTagAssist\Tests\Unit\TestCase;
 
 class DanbooruTest extends TestCase
@@ -48,7 +49,7 @@ class DanbooruTest extends TestCase
     {
         $json = '[{"id":665,"tag_string":"foobar"}]';
 
-        $method = parent::getMethod(Danbooru::class, 'transformJsonStringToObject');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'transformJsonStringToObject');
         $transformedObject = $method->invokeArgs(new Danbooru(), [$json])[0];
 
         $this->assertIsObject($transformedObject);
@@ -78,7 +79,7 @@ class DanbooruTest extends TestCase
 
         $post = new Post();
 
-        $method = parent::getMethod(Danbooru::class, 'convertResponseObjectToPostObject');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'convertResponseObjectToPostObject');
         $method->invokeArgs(new Danbooru(), [$post, $stdObject, $collection]);
 
         $this->assertEquals('665', $post->getId());
@@ -101,7 +102,7 @@ class DanbooruTest extends TestCase
         $stdObject->tag_string_general = '';
         $stdObject->tag_string_meta = '';
 
-        $method = parent::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
         $method->invokeArgs(new Danbooru(), [$stdObject, new TagCollection()]);
     }
 
@@ -116,7 +117,7 @@ class DanbooruTest extends TestCase
         $stdObject->tag_string_general = '';
         $stdObject->tag_string_meta = '';
 
-        $method = parent::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
         $method->invokeArgs(new Danbooru(), [$stdObject, new TagCollection()]);
     }
 
@@ -131,7 +132,7 @@ class DanbooruTest extends TestCase
         $stdObject->tag_string_general = '';
         $stdObject->tag_string_meta = '';
 
-        $method = parent::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
         $method->invokeArgs(new Danbooru(), [$stdObject, new TagCollection()]);
     }
 
@@ -146,7 +147,7 @@ class DanbooruTest extends TestCase
         //$stdObject->tag_string_general = '';
         $stdObject->tag_string_meta = '';
 
-        $method = parent::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
         $method->invokeArgs(new Danbooru(), [$stdObject, new TagCollection()]);
     }
 
@@ -161,7 +162,7 @@ class DanbooruTest extends TestCase
         $stdObject->tag_string_general = '';
         //$stdObject->tag_string_meta = '';
 
-        $method = parent::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
         $method->invokeArgs(new Danbooru(), [$stdObject, new TagCollection()]);
     }
 
@@ -176,7 +177,7 @@ class DanbooruTest extends TestCase
 
         $collection = new TagCollection();
 
-        $method = parent::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'transformTagStringListsToCollection');
         $method->invokeArgs(new Danbooru(), [$stdObject, $collection]);
 
         $this->assertEquals($collection->getTags()[0]->getName(), 'artist');
@@ -203,7 +204,7 @@ class DanbooruTest extends TestCase
     public function testEmptyTagForAddTagsFromResponseObjectDoesntAddToCollection(): void
     {
         $collection = new TagCollection();
-        $method = parent::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
         $method->invokeArgs(new Danbooru(), ['', '#000000', $collection]);
         $this->assertEquals(0, $collection->count());
     }
@@ -211,14 +212,14 @@ class DanbooruTest extends TestCase
     public function testAddTagsFromResponseObjectAddsToCollection(): void
     {
         $collection = new TagCollection();
-        $method = parent::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
         $method->invokeArgs(new Danbooru(), ['tag1', '#000000', $collection]);
         $this->assertEquals(1, $collection->count());
         $this->assertEquals('tag1', $collection->getTags()[0]->getName());
 
 
         $collection = new TagCollection();
-        $method = parent::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
         $method->invokeArgs(new Danbooru(), ['tag1 tag2', '#000000', $collection]);
         $this->assertEquals(2, $collection->count());
         $this->assertEquals('tag1', $collection->getTags()[0]->getName());
@@ -226,7 +227,7 @@ class DanbooruTest extends TestCase
 
 
         $collection = new TagCollection();
-        $method = parent::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
         $method->invokeArgs(new Danbooru(), ['tag3(bracket) tag4_underscore', '#000000', $collection]);
         $this->assertEquals(2, $collection->count());
         $this->assertEquals('tag3(bracket)', $collection->getTags()[0]->getName());
@@ -237,13 +238,13 @@ class DanbooruTest extends TestCase
     {
         $this->expectException(\Exception::class);
 
-        $method = parent::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
         $method->invokeArgs(new Danbooru(), ['tag', 'wrongformat', new TagCollection()]);
     }
 
     public function testListOfRequiredJsonPropertiesHasExpectedProperties(): void
     {
-        $list = parent::getMethod(Danbooru::class, 'listOfRequiredJsonProperties')->invoke(new Danbooru());
+        $list = ReflectionHelper::getMethod(Danbooru::class, 'listOfRequiredJsonProperties')->invoke(new Danbooru());
 
         $this->assertIsArray($list);
 
