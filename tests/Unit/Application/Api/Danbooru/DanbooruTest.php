@@ -316,7 +316,7 @@ class DanbooruTest extends TestCase
 
         $post = new Post();
 
-        $method = parent::getMethod(Danbooru::class, 'convertResponseObjectToPostObject');
+        $method = ReflectionHelper::getMethod(Danbooru::class, 'convertResponseObjectToPostObject');
         $method->invokeArgs(new Danbooru(), [$post, $stdObject, $collection]);
 
         $this->assertEquals('665', $post->getId());
@@ -368,25 +368,4 @@ class DanbooruTest extends TestCase
         $method = ReflectionHelper::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
         $method->invokeArgs(new Danbooru(), ['tag', 'wrongformat', new TagCollection()]);
     }
-<<<<<<< HEAD:tests/Unit/Application/Api/Danbooru/DanbooruTest.php
-=======
-
-    public function testListOfRequiredJsonPropertiesHasExpectedProperties(): void
-    {
-        $list = ReflectionHelper::getMethod(Danbooru::class, 'listOfRequiredJsonProperties')->invoke(new Danbooru());
-
-        $this->assertIsArray($list);
-
-        $this->assertContains('id', $list);
-        $this->assertContains('tag_string', $list);
-        $this->assertContains('tag_string_general', $list);
-        $this->assertContains('tag_string_character', $list);
-        $this->assertContains('tag_string_copyright', $list);
-        $this->assertContains('tag_string_artist', $list);
-        $this->assertContains('tag_string_meta', $list);
-        $this->assertContains('preview_file_url', $list);
-        $this->assertContains('file_url', $list);
-        $this->assertContains('large_file_url', $list);
-    }
->>>>>>> introduce-templates:tests/Unit/Application/Danbooru/DanbooruTest.php
 }

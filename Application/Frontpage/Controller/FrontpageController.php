@@ -5,7 +5,14 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
 
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
