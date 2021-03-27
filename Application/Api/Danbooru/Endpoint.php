@@ -21,6 +21,8 @@ class Endpoint
         $ch = curl_init();
         \curl_setopt($ch, CURLOPT_URL, $apiRequestUrl);
         \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+        \curl_setopt($ch, CURLOPT_TIMEOUT, 3); //timeout in seconds
         $response = \curl_exec($ch);
         \curl_close($ch);
 
@@ -37,6 +39,8 @@ class Endpoint
         \curl_setopt($ch, CURLOPT_URL, $url);
         \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         \curl_setopt($ch, CURLOPT_USERPWD, $username . ':' . $apiKey);
+        \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+        \curl_setopt($ch, CURLOPT_TIMEOUT, 3);
         $response = \curl_exec($ch);
         \curl_close($ch);
 
@@ -63,6 +67,8 @@ class Endpoint
         \curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         \curl_setopt($ch, CURLOPT_POSTFIELDS, ['post[tag_string]' => $collection->toString()]);
         \curl_setopt($ch, CURLOPT_USERPWD, $username . ':' . $apiKey);
+        \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+        \curl_setopt($ch, CURLOPT_TIMEOUT, 120);
         $response = \curl_exec($ch);
         \curl_close($ch);
 
