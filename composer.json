@@ -17,6 +17,7 @@
         "symfony/yaml": "^5.2"
     },
     "scripts": {
-        "test": "vendor/bin/phpunit -c tests/Unit/phpunit.xml"
+        "test": "vendor/bin/phpunit -c tests/Unit/phpunit.xml",
+        "test-coverage": "vendor/bin/phpunit -c tests/Unit/phpunit.code-coverage.xml --coverage-html public/coverage/"
     }
 }
