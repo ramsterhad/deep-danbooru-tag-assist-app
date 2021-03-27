@@ -5,3 +5,5 @@
 # PHPUnit
 /.phpunit.cache
 .phpunit.result.cache
+public/coverage/
+tests/Unit/code-coverage/

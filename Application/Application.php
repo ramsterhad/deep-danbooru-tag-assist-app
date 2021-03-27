@@ -5,7 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
 
@@ -14,10 +14,6 @@ class Application
     private static ?self $instance = null;
 
     private string $error = '';
-
-    private Controller $controller;
-
-    private array $templateVariables = [];
 
     private function __construct() {}
 
@@ -56,10 +52,9 @@ class Application
 
         try {
             Router::getInstance()->processRequest();
-            $this->controller = Router::getInstance()->getController();
-            $this->templateVariables = $this->controller->getTemplateVariables();
         } catch (\Exception $ex) {
             $this->error = $ex->getMessage();
+        print_r($this->error);
         }
     }
 
@@ -87,17 +82,6 @@ class Application
     public function getError(): string
     {
         return $this->error;
-    }
-
-    public function getController(): Controller
-    {
-        return $this->controller;
-    }
-
-    public function get(string $key)
-    {
-        //@todo error handling
-        return $this->templateVariables[$key];
     }
 
     public function isAuthenticated(): bool

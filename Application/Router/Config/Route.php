@@ -12,7 +12,7 @@ class Route
 
     private string $fullQualifiedNamespacePath;
 
-    private array $methods = [];
+    private string $method;
 
     public function getAlias(): string
     {
@@ -40,34 +40,13 @@ class Route
         $this->fullQualifiedNamespacePath = $fullQualifiedNamespacePath;
     }
 
-    /**
-     * @return string[]
-     */
-    public function getMethods(): array
+    public function setMethod(string $method): void
     {
-        return $this->methods;
+        $this->method = $method;
     }
 
-    public function addMethod(string $method): void
+    public function getMethod(): string
     {
-        if (!method_exists($this->fullQualifiedNamespacePath, $method)) {
-            throw new RouterConfigException(
-                sprintf(
-                    'Route Config: method "%s" is not existing for namespace "%s".',
-                    $method,
-                    $this->fullQualifiedNamespacePath
-                )
-            );
-        }
-
-        $this->methods[] = $method;
-    }
-
-    public function hasMethod(string $method): bool
-    {
-        if (in_array($method, $this->methods)) {
-            return true;
-        }
-        return false;
+        return $this->method;
     }
 }

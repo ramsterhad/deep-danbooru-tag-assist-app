@@ -8,10 +8,11 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
+
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
-class TagsController extends Controller
+class TagsController implements Controller
 {
     public function pushNewTagsToDanbooru(): void
     {

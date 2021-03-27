@@ -11,7 +11,7 @@ require_once '../bootstrap.php';
 
 $app = Application::getInstance();
 $app->run();
-
+exit;
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -5,10 +5,10 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
-class ApiUrlController extends Controller
+class ApiUrlController implements Controller
 {
     /**
      * Reset the API URL to the default one

@@ -4,21 +4,19 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
 
-class FrontpageController extends Controller
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
+
+
+class FrontpageController implements Controller
 {
-    public function index(): void
+    public function index(): Response
     {
         if (!Authentication::isAuthenticated()) {
-            return;
+            Router::route('auth');
         }
 
         // Build the page
@@ -39,9 +37,14 @@ class FrontpageController extends Controller
             $danbooru->getPost()->getTagCollection()
         );
 
-        $this->assign('danbooru', $danbooru);
-        $this->assign('machineLearningPlatform', $machineLearningPlatform);
-        $this->assign('unknownTags', $unknownTags);
+        $response = new Response($this, 'Frontpage.frontpage.index');
+        $response->assign('danbooru', $danbooru);
+        $response->assign('machineLearningPlatform', $machineLearningPlatform);
+        $response->assign('unknownTags', $unknownTags);
+        $response->assign('dannboruApiUrl', Config::get('danbooru_api_url'));
+        $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
+
+        return $response;
     }
 
     /**

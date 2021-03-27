@@ -1,0 +1,17 @@
+<phpunit bootstrap="../../bootstrap.php">
+    <testsuites>
+        <testsuite name="all_tests">
+            <directory>.</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">../../Application/</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">Application/Router/templates/</directory>
+            <directory suffix=".php">Application/Authentication/templates/</directory>
+            <directory suffix=".php">Application/Frontpage/templates/</directory>
+        </exclude>
+    </coverage>
+</phpunit>
