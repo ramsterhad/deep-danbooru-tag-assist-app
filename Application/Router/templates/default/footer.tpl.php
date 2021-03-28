@@ -21,7 +21,7 @@
     </div>
     <div id="container-footer">
         <div id="a">
-            &copy; <span id="year"></span> reiuyi + Ramsterhad
+            &copy; <span id="year"></span> reiuyi + ramsterhad
         </div>
         <div id="b">
             <span class="footer-copyright-right-item">
