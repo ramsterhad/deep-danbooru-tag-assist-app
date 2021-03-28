@@ -34,19 +34,20 @@ class Danbooru implements ApiContract
 
         // No json as return value. This is bad.
         if (!Json::isJson($response)) {
-            throw new AuthenticationError('The authentication service didn\'t return a nice response. -_-\'');
+            throw new AuthenticationError(
+                'The authentication service didn\'t return a nice response. -_-\'',
+                AuthenticationError::CODE_RESPONSE_CONTAINED_INVALID_JSON
+            );
         }
 
         $response = \json_decode($response);
 
-        // The json couldn't be transformed to an object.
-        if (!\is_object($response)) {
-             throw new AuthenticationError('Why is it like that? Why can\'t I get a clean answer?!');
-        }
-
         // Json didn't had the id property which every logged in user must have.
         if (!\property_exists($response, 'id')) {
-            throw new AuthenticationError('Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.');
+            throw new AuthenticationError(
+                'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
+                AuthenticationError::CODE_RESPONSE_MISSING_PROPERTIES
+            );
         }
 
         return true;
@@ -200,7 +201,7 @@ class Danbooru implements ApiContract
 
     /**
      * The method returns an array, but the function \json_decode is set to associative false. This is as we want it,
-     * as we expect from Danbooru an json, which has multiple objects (that's why associative is false), but wrapped in
+     * as we expect from Danbooru a json, which has multiple objects (that's why associative is false), but wrapped in
      * an array. So we will have an array with one item as result. And this item is converted to an object, instead of
      * an associative array.
      *

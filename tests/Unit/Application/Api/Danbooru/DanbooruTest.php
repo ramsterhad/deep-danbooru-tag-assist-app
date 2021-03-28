@@ -6,6 +6,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Tests\Unit\Application\Api\Danbooru;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
@@ -367,5 +368,50 @@ class DanbooruTest extends TestCase
 
         $method = ReflectionHelper::getMethod(Danbooru::class, 'addTagsFromResponseObjectToCollection');
         $method->invokeArgs(new Danbooru(), ['tag', 'wrongformat', new TagCollection()]);
+    }
+
+    public function testAuthenticateThrowsAuthenticationExceptionBecauseNoJsonWasReturned(): void
+    {
+        $this->expectException(AuthenticationError::class);
+        $this->expectExceptionCode(AuthenticationError::CODE_RESPONSE_CONTAINED_INVALID_JSON);
+
+        $endpointMock = $this->createMock(Endpoint::class);
+        $endpointMock
+            ->expects($this->once())
+            ->method('authenticate')
+            ->willReturn('invalid json')
+        ;
+
+        $danbooru = new Danbooru();
+        $danbooru->authenticate($endpointMock, '', '');
+    }
+
+    public function testAuthenticateThrowsAuthenticationExceptionJsonCouldNotTransformedToAnObject(): void
+    {
+        $this->expectException(AuthenticationError::class);
+        $this->expectExceptionCode(AuthenticationError::CODE_RESPONSE_MISSING_PROPERTIES);
+
+        $endpointMock = $this->createMock(Endpoint::class);
+        $endpointMock
+            ->expects($this->once())
+            ->method('authenticate')
+            ->willReturn('{}')
+        ;
+
+        $danbooru = new Danbooru();
+        $danbooru->authenticate($endpointMock, '', '');
+    }
+
+    public function testAuthenticateReturnsTrueOnSuccess(): void
+    {
+        $endpointMock = $this->createMock(Endpoint::class);
+        $endpointMock
+            ->expects($this->once())
+            ->method('authenticate')
+            ->willReturn('{"id":1}')
+        ;
+
+        $danbooru = new Danbooru();
+        $this->assertTrue($danbooru->authenticate($endpointMock, '', ''));
     }
 }
