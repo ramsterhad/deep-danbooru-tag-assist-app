@@ -19,12 +19,12 @@ class Session
         return isset($_SESSION[$name]);
     }
 
-    public static function set(string $key, string $value): void
+    public static function set(string $key, /*mixed*/ $value): void
     {
         $_SESSION[$key] = $value;
     }
 
-    public static function get(string $key): string
+    public static function get(string $key) //: mixed
     {
         /* @todo Replace it with a silent log!
         if (!static::has($key)) {
