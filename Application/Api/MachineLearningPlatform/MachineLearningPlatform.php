@@ -91,41 +91,6 @@ class MachineLearningPlatform implements ApiContract
         $this->picture->delete();
     }
 
-    /**
-     *
-     * This function compares the Danbooru tags with the found ones from the MLP.
-     * Only unknown tags, like found tags by the MLP which are not listed at Danbooru are returned.
-     *
-     * @param TagCollection $tagsDanbooru
-     * @return TagCollection
-     *
-     */
-    public function filterTagsFromMlpAgainstAlreadyKnownTags(TagCollection $tagsDanbooru): TagCollection
-    {
-        $unknownTagCollection = new TagCollection();
-
-        foreach ($this->collection->getTags() as $tag) {
-
-            $knownTag = false; //Unknown by default, unless proven known
-
-            foreach ($tagsDanbooru->getTags() as $danbooruTag) {
-
-                if (trim($danbooruTag->getName()) === trim($tag->getName())) {
-                    // Tag is already known on danbooru:
-                    $knownTag = true;
-                    continue;
-                }
-            }
-
-            // Add unknown (!known) tags to $unknownTagCollection
-            if (!$knownTag) {
-                $unknownTagCollection->add($tag);
-            }
-        }
-
-        return $unknownTagCollection;
-    }
-
     public function getCollection(): TagCollection
     {
         return $this->collection;

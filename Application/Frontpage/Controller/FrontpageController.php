@@ -10,6 +10,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
@@ -40,9 +41,7 @@ class FrontpageController implements Controller
 
         // List the tags from Danbooru, the ML Platform and the difference between them
         // The unknown tags are later listed and registered with the numpad keys.
-        $unknownTags = $machineLearningPlatform->filterTagsFromMlpAgainstAlreadyKnownTags(
-            $danbooru->getPost()->getTagCollection()
-        );
+        $unknownTags = $danbooru->filterTagsAgainstAlreadyKnownTags($machineLearningPlatform->getCollection());
 
         $response = new Response($this, 'Frontpage.frontpage.index');
         $response->assign('danbooru', $danbooru);
