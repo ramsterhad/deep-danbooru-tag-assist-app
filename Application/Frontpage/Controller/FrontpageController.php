@@ -15,11 +15,11 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Excep
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Filter;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
-use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
 
 class FrontpageController implements Controller
@@ -64,12 +64,17 @@ class FrontpageController implements Controller
             $picture->delete();
         }
 
+        $filter = new Filter();
+
+        // Removes all tags with a score lass than $tags_min_score (see config).
+        $suggestedTags = $filter->filterTagsByScore($suggestedTags);
+
         // Removes the rating tags.
-        $suggestedTags = $this->filterSafeTags($suggestedTags);
+        $suggestedTags = $filter->filterSafeTags($suggestedTags);
 
         // Filter the known tags from Danbooru against the suggested tags and return the difference.
         // The unknown tags are later listed and registered with the numpad keys.
-        $unknownTags = $this->filterTagsAgainstAlreadyKnownTags($suggestedTags, $danbooru->getCollection());
+        $unknownTags = $filter->filterTagsAgainstAlreadyKnownTags($suggestedTags, $danbooru->getCollection());
 
         $response = new Response($this, 'Frontpage.frontpage.index');
         $response->assign('danbooru', $danbooru);
@@ -80,69 +85,6 @@ class FrontpageController implements Controller
         $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
 
         return $response;
-    }
-
-    /**
-     * This function compares the Danbooru tags with given ones and returns a tag collection of unknown tags.
-     *
-     * @param TagCollection $collection
-     * @return TagCollection
-     *
-     */
-    public function filterTagsAgainstAlreadyKnownTags(
-        TagCollection $suggestedTags,
-        TagCollection $danbooruTags
-    ): TagCollection {
-        $unknownTagCollection = new TagCollection();
-
-        foreach ($suggestedTags->getTags() as $tag) {
-
-            $knownTag = false; //Unknown by default, unless proven known
-
-            foreach ($danbooruTags->getTags() as $danbooruTag) {
-
-                if (trim($danbooruTag->getName()) === trim($tag->getName())) {
-                    // Tag is already known on danbooru:
-                    $knownTag = true;
-                    continue;
-                }
-            }
-
-            // Add unknown (!known) tags to $unknownTagCollection
-            if (!$knownTag) {
-                $unknownTagCollection->add($tag);
-            }
-        }
-
-        return $unknownTagCollection;
-    }
-
-    /**
-     * Filters the rating tags from the result.
-     *
-     * @param TagCollection $collection
-     * @return TagCollection
-     */
-    public function filterSafeTags(TagCollection $collection): TagCollection
-    {
-        $blacklist = [
-            'rating:s',
-            'rating:safe',
-            'rating:q',
-            'rating:questionable',
-            'rating:e',
-            'rating:explicit',
-        ];
-
-        $filtered = new TagCollection();
-
-        foreach ($collection->getTags() as $tag) {
-            if (StringUtils::strposArray($tag->getName(), $blacklist) === false) {
-                $filtered->add($tag);
-            }
-        }
-
-        return $filtered;
     }
 
     /**

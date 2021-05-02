@@ -72,6 +72,13 @@ false
 If set to true, the actual MLP will not be called, but a defined array of example tags will be returned. This is for
 testing only and should not be used in production mode.
 
+### tags_min_score
+##### default
+````
+0.500
+````
+##### about
+Tags got an rating by the machine learning platform. From 1 to 0. The threshold 0.500 is well tested. 
 
 ### picture_storage
 ##### default
