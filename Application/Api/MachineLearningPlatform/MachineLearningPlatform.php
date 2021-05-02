@@ -9,7 +9,6 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
 class MachineLearningPlatform implements ApiContract
 {
@@ -51,20 +50,11 @@ class MachineLearningPlatform implements ApiContract
             ];
         }
 
-        // Tag blacklist
-        // The majority of the tags used to train the resNET were SFW. This model is therefore not suitable for
-        // accurate assessment of s/q/e status
-        $blacklist = [
-            'rating:s',
-            'rating:q',
-            'rating:e',
-        ];
-
         $tags = [];
         foreach ($output as $item) {
 
             // Filters for ( as we only want tags with a score.
-            if (strpos($item, '(') !== false && !StringUtils::strposArray($item, $blacklist) !== false) {
+            if (strpos($item, '(') !== false) {
                 $item = preg_split('/ /', $item);
                 $item[0] = str_replace(['(', ')'], '', $item[0]);
                 $tags[] = $item;
