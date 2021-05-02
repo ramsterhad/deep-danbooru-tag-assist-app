@@ -36,5 +36,9 @@
         </div>
     </div>
 </footer>
+<script type="text/javascript">
+    // Copyright year
+    document.getElementById('year').innerHTML = new Date().getFullYear();
+</script>
 </body>
 </html>

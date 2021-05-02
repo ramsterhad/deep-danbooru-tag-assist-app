@@ -4,6 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
@@ -23,8 +24,6 @@ class MachineLearningPlatform implements ApiContract
      */
     public function requestTags(): void
     {
-        $this->picture->download();
-
         if (Config::get('machine_learning_platform_repository_debug') === 'false') {
             exec('bash ' . Application::getBasePath() . 'ml.sh '.$this->picture->getFullPathToFile().' 0.500', $output);
         } else {
@@ -78,17 +77,6 @@ class MachineLearningPlatform implements ApiContract
         foreach ($tags as $tag) {
             $this->collection->add(new Tag($tag[1], $tag[0]));
         }
-        
-        /*
-         * Tags are now recgonized. We can further play with the image before it gets deleted
-         * such as by analysing its dominant colors. Original bash script for color analysis by Javier López
-         * @link http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
-         */
-        exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->picture->getFullPathToFile(), $colors);
-        $this->picture->setDominantColors($colors);
-
-        // Delete the image from the tmp directory :(
-        $this->picture->delete();
     }
 
     public function getCollection(): TagCollection

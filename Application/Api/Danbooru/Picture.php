@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
@@ -63,6 +63,16 @@ class Picture
     public function getFullPathToFile(): string
     {
         return $this->fullPathToFile;
+    }
+
+    /**
+     * Analysing the dominant colors of the picture. Original bash script for color analysis by Javier López
+     * @link http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
+     */
+    public function calculateDominantColors(): void
+    {
+        \exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->getFullPathToFile(), $colors);
+        $this->dominantColors = $colors;
     }
 
     /**

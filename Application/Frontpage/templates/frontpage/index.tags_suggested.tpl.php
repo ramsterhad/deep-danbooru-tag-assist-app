@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col s2">ML Plattform tags</div>
-    <div class="col s10"><?php echo \Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\TemplateHelper::tagsCssClassHelperUnknownTags($response->get('machineLearningPlatform')->getCollection(), $response->get('unknownTags')); ?></div>
+    <div class="col s2">Suggested tags</div>
+    <div class="col s10"><?php echo $response->getController()->tagsCssClassHelperUnknownTags($response->get('suggestedTags'), $response->get('unknownTags')); ?></div>
 </div>
 <div class="row">
     <div class="col s2">new tags</div>

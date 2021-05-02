@@ -7,9 +7,11 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
@@ -35,19 +37,42 @@ class FrontpageController implements Controller
             new Endpoint()
         );
 
-        $machineLearningPlatform = new MachineLearningPlatform();
-        $machineLearningPlatform->setPicture(new Picture($danbooru->getPost()->getPicOriginal()));
-        $machineLearningPlatform->requestTags();
+        $picture = new Picture($danbooru->getPost()->getPicOriginal());
+        $picture->download();
+        $picture->calculateDominantColors();
 
-        // List the tags from Danbooru, the ML Platform and the difference between them
+        // Try to use pre predicted tags. If something fails with the database, use the machine learning platform api.
+        try {
+            $predictedTagsDatabase = new PredictedTagsDatabase();
+            $predictedTagsDatabase->requestTags(
+                $danbooru->getPost()->getId(),
+                new \Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Endpoint()
+            );
+
+            $suggestedTags = $predictedTagsDatabase->getCollection();
+
+        } catch (PredictedTagsDatabaseInvalidResponseException $ex) {
+
+            $machineLearningPlatform = new MachineLearningPlatform();
+            $machineLearningPlatform->setPicture($picture);
+            $machineLearningPlatform->requestTags();
+
+            $suggestedTags = $machineLearningPlatform->getCollection();
+
+        } finally {
+            $picture->delete();
+        }
+
+        // Filter the known tags from Danbooru against the suggested tags and return the difference.
         // The unknown tags are later listed and registered with the numpad keys.
-        $unknownTags = $danbooru->filterTagsAgainstAlreadyKnownTags($machineLearningPlatform->getCollection());
+        $unknownTags = $danbooru->filterTagsAgainstAlreadyKnownTags($suggestedTags);
 
         $response = new Response($this, 'Frontpage.frontpage.index');
         $response->assign('danbooru', $danbooru);
-        $response->assign('machineLearningPlatform', $machineLearningPlatform);
+        $response->assign('suggestedTags', $suggestedTags);
+        $response->assign('picture', $picture);
         $response->assign('unknownTags', $unknownTags);
-        $response->assign('dannboruApiUrl', Config::get('danbooru_api_url'));
+        $response->assign('danbooruApiUrl', Config::get('danbooru_api_url'));
         $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
 
         return $response;
@@ -66,5 +91,41 @@ class FrontpageController implements Controller
     {
         $maxTags = count($unknownTags);
         return $maxTags > $limit ? $limit : $maxTags;
+    }
+
+    /**
+     * @param TagCollection $suggestedTags All suggested tags
+     * @param TagCollection $filteredTags Reduced filter collection from the machine learning platform,
+     *                                    reduced by Danbooru tags.
+     *
+     * @return string
+     */
+    public function tagsCssClassHelperUnknownTags(TagCollection $suggestedTags, TagCollection $filteredTags): string
+    {
+        $mlpTagList = '';
+
+        foreach ($suggestedTags->getTags() as $tag) {
+            $isNew = false;
+
+            foreach ($filteredTags->getTags() as $filteredTag) {
+                if ($tag->getName() === $filteredTag->getName()) {
+                    $isNew = true;
+                    continue;
+                }
+            }
+
+            if ($isNew) {
+                $mlpTagList .= '<span class="tag unknownTag">' .$tag->getName() . '</span>';
+            } else {
+                $mlpTagList .= '<span class="tag">' . $tag->getName() . '</span>';
+            }
+        }
+
+        return $mlpTagList;
+    }
+
+    public function tagsCssClassHelperColoredDanbooruTags(Tag $tag): string
+    {
+        return '<span style="color: '. $tag->getHexColor().';">'.$tag->getName().'</span>';
     }
 }

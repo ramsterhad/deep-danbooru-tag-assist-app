@@ -4,7 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\Picture;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
 class SystemRequirements
