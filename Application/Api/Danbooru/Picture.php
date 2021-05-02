@@ -23,21 +23,21 @@ class Picture
 
     public function download(): bool
     {
-        $ch = curl_init($this->url);
-        $fp = fopen($this->fullPathToFile, 'w');
+        $ch = \curl_init($this->url);
+        $fp = \fopen($this->fullPathToFile, 'w');
 
-        curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_AUTOREFERER, false);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
+        \curl_setopt($ch, CURLOPT_URL, $this->url);
+        \curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        \curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+        \curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        \curl_setopt($ch, CURLOPT_HEADER, 0);
 
-        $return = curl_exec($ch);
-        $hasWroteFile = fwrite($fp, $return);
+        $return = \curl_exec($ch);
+        $hasWroteFile = \fwrite($fp, $return);
 
-        fclose($fp);
-        curl_close($ch);
+        \fclose($fp);
+        \curl_close($ch);
 
         return (bool) $return && $hasWroteFile;
     }
@@ -46,7 +46,7 @@ class Picture
     {
         // https://www.php.net/manual/de/class.splfileobject.php#113149
         $this->file = null;
-        return unlink($this->fullPathToFile);
+        return \unlink($this->fullPathToFile);
     }
 
     /**
