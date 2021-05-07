@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
@@ -23,21 +23,21 @@ class Picture
 
     public function download(): bool
     {
-        $ch = curl_init($this->url);
-        $fp = fopen($this->fullPathToFile, 'w');
+        $ch = \curl_init($this->url);
+        $fp = \fopen($this->fullPathToFile, 'w');
 
-        curl_setopt($ch, CURLOPT_URL, $this->url);
-        curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_AUTOREFERER, false);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
+        \curl_setopt($ch, CURLOPT_URL, $this->url);
+        \curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        \curl_setopt($ch, CURLOPT_AUTOREFERER, false);
+        \curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        \curl_setopt($ch, CURLOPT_HEADER, 0);
 
-        $return = curl_exec($ch);
-        $hasWroteFile = fwrite($fp, $return);
+        $return = \curl_exec($ch);
+        $hasWroteFile = \fwrite($fp, $return);
 
-        fclose($fp);
-        curl_close($ch);
+        \fclose($fp);
+        \curl_close($ch);
 
         return (bool) $return && $hasWroteFile;
     }
@@ -46,7 +46,7 @@ class Picture
     {
         // https://www.php.net/manual/de/class.splfileobject.php#113149
         $this->file = null;
-        return unlink($this->fullPathToFile);
+        return \unlink($this->fullPathToFile);
     }
 
     /**
@@ -63,6 +63,16 @@ class Picture
     public function getFullPathToFile(): string
     {
         return $this->fullPathToFile;
+    }
+
+    /**
+     * Analysing the dominant colors of the picture. Original bash script for color analysis by Javier López
+     * @link http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
+     */
+    public function calculateDominantColors(): void
+    {
+        \exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->getFullPathToFile(), $colors);
+        $this->dominantColors = $colors;
     }
 
     /**

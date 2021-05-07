@@ -4,11 +4,11 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
 class MachineLearningPlatform implements ApiContract
 {
@@ -23,8 +23,6 @@ class MachineLearningPlatform implements ApiContract
      */
     public function requestTags(): void
     {
-        $this->picture->download();
-
         if (Config::get('machine_learning_platform_repository_debug') === 'false') {
             exec('bash ' . Application::getBasePath() . 'ml.sh '.$this->picture->getFullPathToFile().' 0.500', $output);
         } else {
@@ -52,20 +50,11 @@ class MachineLearningPlatform implements ApiContract
             ];
         }
 
-        // Tag blacklist
-        // The majority of the tags used to train the resNET were SFW. This model is therefore not suitable for
-        // accurate assessment of s/q/e status
-        $blacklist = [
-            'rating:s',
-            'rating:q',
-            'rating:e',
-        ];
-
         $tags = [];
         foreach ($output as $item) {
 
             // Filters for ( as we only want tags with a score.
-            if (strpos($item, '(') !== false && !StringUtils::strposArray($item, $blacklist) !== false) {
+            if (strpos($item, '(') !== false) {
                 $item = preg_split('/ /', $item);
                 $item[0] = str_replace(['(', ')'], '', $item[0]);
                 $tags[] = $item;
@@ -78,52 +67,6 @@ class MachineLearningPlatform implements ApiContract
         foreach ($tags as $tag) {
             $this->collection->add(new Tag($tag[1], $tag[0]));
         }
-        
-        /*
-         * Tags are now recgonized. We can further play with the image before it gets deleted
-         * such as by analysing its dominant colors. Original bash script for color analysis by Javier López
-         * @link http://javier.io/blog/en/2015/09/30/using-imagemagick-and-kmeans-to-find-dominant-colors-in-images.html
-         */
-        exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->picture->getFullPathToFile(), $colors);
-        $this->picture->setDominantColors($colors);
-
-        // Delete the image from the tmp directory :(
-        $this->picture->delete();
-    }
-
-    /**
-     *
-     * This function compares the Danbooru tags with the found ones from the MLP.
-     * Only unknown tags, like found tags by the MLP which are not listed at Danbooru are returned.
-     *
-     * @param TagCollection $tagsDanbooru
-     * @return TagCollection
-     *
-     */
-    public function filterTagsFromMlpAgainstAlreadyKnownTags(TagCollection $tagsDanbooru): TagCollection
-    {
-        $unknownTagCollection = new TagCollection();
-
-        foreach ($this->collection->getTags() as $tag) {
-
-            $knownTag = false; //Unknown by default, unless proven known
-
-            foreach ($tagsDanbooru->getTags() as $danbooruTag) {
-
-                if (trim($danbooruTag->getName()) === trim($tag->getName())) {
-                    // Tag is already known on danbooru:
-                    $knownTag = true;
-                    continue;
-                }
-            }
-
-            // Add unknown (!known) tags to $unknownTagCollection
-            if (!$knownTag) {
-                $unknownTagCollection->add($tag);
-            }
-        }
-
-        return $unknownTagCollection;
     }
 
     public function getCollection(): TagCollection

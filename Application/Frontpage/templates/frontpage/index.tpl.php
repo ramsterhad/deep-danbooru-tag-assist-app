@@ -27,7 +27,7 @@
 
             <!-- tags -->
             <?php require_once 'index.tags_danbooru.tpl.php'; ?>
-            <?php require_once 'index.tags_mlp.tpl.php'; ?>
+            <?php require_once 'index.tags_suggested.tpl.php'; ?>
 
         </div> <!-- end flex_left -->
         <div class="flex_right">
@@ -41,9 +41,6 @@
 
 
 <script type="text/javascript">
-
-    // Copyright year
-    document.getElementById('year').innerHTML = new Date().getFullYear();
 
     // Listen if a key is pressed.
     // If it is a num pad key, then an event bound to the new tags is fired, identified by the class "mlpTag".

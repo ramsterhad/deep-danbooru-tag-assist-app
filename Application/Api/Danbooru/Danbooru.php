@@ -311,6 +311,39 @@ class Danbooru implements ApiContract
     }
 
     /**
+     * This function compares the Danbooru tags with given ones and returns a tag collection of unknown tags.
+     *
+     * @param TagCollection $collection
+     * @return TagCollection
+     *
+     */
+    public function filterTagsAgainstAlreadyKnownTags(TagCollection $collection): TagCollection
+    {
+        $unknownTagCollection = new TagCollection();
+
+        foreach ($collection->getTags() as $tag) {
+
+            $knownTag = false; //Unknown by default, unless proven known
+
+            foreach ($this->post->getTags() as $danbooruTag) {
+
+                if (trim($danbooruTag->getName()) === trim($tag->getName())) {
+                    // Tag is already known on danbooru:
+                    $knownTag = true;
+                    continue;
+                }
+            }
+
+            // Add unknown (!known) tags to $unknownTagCollection
+            if (!$knownTag) {
+                $unknownTagCollection->add($tag);
+            }
+        }
+
+        return $unknownTagCollection;
+    }
+
+    /**
      * @return string[]
      */
     public function getListOfRequiredJsonPropertiesFromDanbooruResponse(): array
