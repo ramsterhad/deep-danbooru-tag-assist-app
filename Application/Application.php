@@ -54,7 +54,7 @@ class Application
             Router::getInstance()->processRequest();
         } catch (\Exception $ex) {
             $this->error = $ex->getMessage();
-        print_r($this->error);
+            //print_r($this->error);
         }
     }
 

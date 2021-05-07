@@ -11,6 +11,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
@@ -45,19 +46,14 @@ class FrontpageController implements Controller
         // Try to use pre predicted tags. If something fails with the database, use the machine learning platform api.
         try {
             $predictedTagsDatabase = new PredictedTagsDatabase();
-            $predictedTagsDatabase->requestTags(
-                $danbooru->getPost()->getId(),
-                new \Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Endpoint()
-            );
-
+            $predictedTagsDatabase->requestTags($danbooru->getPost()->getId());
             $suggestedTags = $predictedTagsDatabase->getCollection();
 
-        } catch (PredictedTagsDatabaseInvalidResponseException $ex) {
+        } catch (DatabaseException|PredictedTagsDatabaseInvalidResponseException $ex) {
 
             $machineLearningPlatform = new MachineLearningPlatform();
             $machineLearningPlatform->setPicture($picture);
             $machineLearningPlatform->requestTags();
-
             $suggestedTags = $machineLearningPlatform->getCollection();
 
         } finally {
@@ -65,13 +61,10 @@ class FrontpageController implements Controller
         }
 
         $filter = new Filter();
-
         // Removes all tags with a score lass than $tags_min_score (see config).
         $suggestedTags = $filter->filterTagsByScore($suggestedTags);
-
         // Removes the rating tags.
         $suggestedTags = $filter->filterSafeTags($suggestedTags);
-
         // Filter the known tags from Danbooru against the suggested tags and return the difference.
         // The unknown tags are later listed and registered with the numpad keys.
         $unknownTags = $filter->filterTagsAgainstAlreadyKnownTags($suggestedTags, $danbooru->getCollection());

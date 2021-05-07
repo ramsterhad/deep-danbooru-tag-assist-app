@@ -4,35 +4,26 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\EndpointException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\System\Json;
-use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
 class PredictedTagsDatabase implements ApiContract
 {
     private TagCollection $collection;
 
     /**
-     *
-     *
      * @param string $id
-     * @param Endpoint $endpoint
      * @throws PredictedTagsDatabaseInvalidResponseException
      * @throws \JsonException
-     * @throws \Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\EndpointException
+     * @throws DatabaseException
      */
-    public function requestTags(string $id, Endpoint $endpoint): void
+    public function requestTags(string $id): void
     {
-        try {
-            $response = $endpoint->requestPredictedTags($this->getEndpointAddress(), $id);
-        } catch (EndpointException $ex) {
-            throw new PredictedTagsDatabaseInvalidResponseException('Could not call the endpoint.');
-        }
+        $response = (new Database())->get((int) $id);
 
         if (!Json::isJson($response)) {
             throw new \JsonException('The predicted tags database did not return a valid json for id "' . $id . '".');
