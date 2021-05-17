@@ -32,6 +32,8 @@ class Database
             $filename = '0' . $id;
         }
 
+        // index.php is in /var/www/html/public
+        // the database is relatively in ../db
         // /var/www/html/db/000.txt
         $targetFilename =  Application::getBasePath() . 'db/' . $filename . '.txt';
 
