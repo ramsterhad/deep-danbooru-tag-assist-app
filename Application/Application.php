@@ -53,9 +53,19 @@ class Application
         try {
             Router::getInstance()->processRequest();
         } catch (\Exception $ex) {
-            $this->error = $ex->getMessage();
-            //print_r($this->error);
+            $this->displayError($ex);
         }
+    }
+
+    public function displayError(\Exception $exception): void
+    {
+        $str = '<h1>Oops!</h1>';
+        $str .= 'A wild error appeared! Please stay calm and go back to the <a href="index.php?_default">start page</a>.<br>';
+        $str .= '<br>Further information: <br>';
+        $str .= 'Message: ' . $exception->getMessage() . '<br>';
+        $str .= 'Stack Trace: '.$exception->getTraceAsString().'<br>';
+        echo $str;
+        exit;
     }
 
     /**
