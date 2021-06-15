@@ -176,6 +176,13 @@ class Danbooru implements ApiContract
             );
         }
 
+        if (property_exists($object, 'success') && $object->success === false) {
+            throw new AuthenticationError(
+                'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
+                AuthenticationError::CODE_RESPONSE_INVALID_CREDENTIALS
+            );
+        }
+
         /*
          * Basic members don't have access to 'fringe' content. In that case, the API does not return the Id
          * Example Id: @todo still to fill in
@@ -210,7 +217,13 @@ class Danbooru implements ApiContract
      */
     protected function transformJsonStringToObject(string $json): array
     {
-        return \json_decode($json, false);
+        $result = \json_decode($json, false);
+
+        if (!is_array($result)) {
+            $result = [$result];
+        }
+
+        return $result;
     }
 
     protected function convertResponseObjectToPostObject(Post $post, \stdClass $object, TagCollection $tagCollection): Post
