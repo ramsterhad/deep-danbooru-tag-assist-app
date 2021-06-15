@@ -1,5 +1,10 @@
 !tmp/.gitkeep
 
+db/
+
+log/
+!log/.gitkeep
+
 .env.local
 
 # PHPUnit
