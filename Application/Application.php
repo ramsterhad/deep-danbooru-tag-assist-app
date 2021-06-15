@@ -5,6 +5,9 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\Logger;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
@@ -53,17 +56,22 @@ class Application
         try {
             Router::getInstance()->processRequest();
         } catch (\Exception $ex) {
-            $this->displayError($ex);
+
+            $error = sprintf('code: %d%s%s', $ex->getCode(), \PHP_EOL, $ex->getTraceAsString());
+
+            $logger = new ErrorLogger();
+            $logger->log($error);
+
+            $this->displayErrorAndExit($ex);
         }
     }
 
-    public function displayError(\Exception $exception): void
+    public function displayErrorAndExit(\Exception $exception): void
     {
         $str = '<h1>Oops!</h1>';
         $str .= 'A wild error appeared! Please stay calm and go back to the <a href="index.php?_default">start page</a>.<br>';
         $str .= '<br>Further information: <br>';
-        $str .= 'Message: ' . $exception->getMessage() . '<br>';
-        $str .= 'Stack Trace: '.$exception->getTraceAsString().'<br>';
+        $str .= $exception->getMessage();
         echo $str;
         exit;
     }
