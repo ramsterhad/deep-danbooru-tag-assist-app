@@ -38,6 +38,11 @@ class FrontpageController implements Controller
             new Post(),
             new Endpoint()
         );
+        
+        // Show advanced level of statistics
+        if (Config::get('detailed_debug') === 'true') {
+            var_dump($danbooru);
+        }
 
         $picture = new Picture($danbooru->getPost()->getPicOriginal());
         $picture->download();
