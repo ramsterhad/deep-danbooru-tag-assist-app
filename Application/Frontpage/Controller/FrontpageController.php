@@ -17,6 +17,8 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Predi
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Filter;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\Logger;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
@@ -38,11 +40,6 @@ class FrontpageController implements Controller
             new Post(),
             new Endpoint()
         );
-        
-        // Show advanced level of statistics
-        if (Config::get('detailed_debug') === 'true') {
-            var_dump($danbooru);
-        }
 
         $picture = new Picture($danbooru->getPost()->getPicOriginal());
         $picture->download();
@@ -63,6 +60,14 @@ class FrontpageController implements Controller
 
         } finally {
             $picture->delete();
+        }
+
+        // Show advanced level of statistics
+        if (Config::get('detailed_debug')) {
+            $logPath = Logger::getDefaultDestinationDirectory() . $danbooru->getPost()->getId() . '.log';
+            $logger = new RequestLogger($logPath);
+            $logger->log(\print_r($danbooru, true));
+            $logger->log(\print_r($predictedTagsDatabase ?? $machineLearningPlatform, true));
         }
 
         $filter = new Filter();

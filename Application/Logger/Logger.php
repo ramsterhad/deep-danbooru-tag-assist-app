@@ -21,7 +21,7 @@ class Logger
     public function log(string $message): void
     {
         if ($this->destination === null) {
-            $this->destination = $this->getDefaultDestinationDirectory() . $this->getDefaultDestinationFile();
+            $this->destination = self::getDefaultDestinationDirectory() .self::getDefaultDestinationFile();
         }
 
         $message = \sprintf('%s: %s', $this->getDate(), $message);
@@ -29,12 +29,12 @@ class Logger
         $this->write($this->destination, $message);
     }
 
-    protected function getDefaultDestinationDirectory(): string
+    public static function getDefaultDestinationDirectory(): string
     {
         return Application::getBasePath() . 'log' . \DIRECTORY_SEPARATOR;
     }
 
-    protected function getDefaultDestinationFile(): string
+    public static function getDefaultDestinationFile(): string
     {
         return 'default.log';
     }

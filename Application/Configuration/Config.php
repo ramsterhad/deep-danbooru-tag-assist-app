@@ -24,13 +24,30 @@ class Config
     }
     private function __clone() {}
 
-    public static function get(string $name): string
+    /**
+     * If a boolean is recognised the method returns the boolean, otherwise a string.
+     *
+     * @param string $name
+     * @return string|bool
+     * @throws \Exception
+     */
+    public static function get(string $name) /*string|bool*/
     {
         if (!self::has($name)) {
             throw new \Exception(sprintf('Config parameter %s is unknown!', $name));
         }
 
-        return $_ENV[$name];
+        $variable = $_ENV[$name];
+
+        if ($variable === 'true') {
+            return true;
+        }
+
+        if ($variable === 'false') {
+            return false;
+        }
+
+        return $variable;
     }
 
     public static function has(string $name): bool

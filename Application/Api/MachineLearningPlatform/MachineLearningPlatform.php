@@ -23,7 +23,7 @@ class MachineLearningPlatform implements ApiContract
      */
     public function requestTags(): void
     {
-        if (Config::get('machine_learning_platform_repository_debug') === 'false') {
+        if (Config::get('machine_learning_platform_repository_debug') === false) {
             exec('bash ' . Application::getBasePath() . 'ml.sh '.$this->picture->getFullPathToFile().' 0.500', $output);
         } else {
             // Placeholder array, replaces the above exec()
