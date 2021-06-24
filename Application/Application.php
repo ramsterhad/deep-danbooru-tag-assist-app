@@ -6,9 +6,6 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\Logger;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
 
