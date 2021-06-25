@@ -36,7 +36,7 @@ final class Authentication
      * When the login with the session variables wasn't successful, then it tries to authenticate with the config variables.
      *
      * it catches the \Ramsterhad\DeepDanbooruTagAssist\Api\Danbooru\Exception\AuthenticationError Exception, since
-     * it wasn't an active request by the user, but a helper function. When the user tries to authenticate it an error
+     * it wasn't an active request by the user, but a helper function. When the user tries to authenticate and an error
      * appears, then - of course - the message must be forwarded.
      */
     public function autoAuthentication()
