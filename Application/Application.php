@@ -4,8 +4,13 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
 
@@ -52,14 +57,23 @@ class Application
 
         try {
             Router::getInstance()->processRequest();
-        } catch (\Exception $ex) {
 
-            $error = sprintf('code: %d%s%s', $ex->getCode(), \PHP_EOL, $ex->getTraceAsString());
+        // No logging needed.
+        } catch (AuthenticationError $e) {
+            $this->displayErrorAndExit($e);
 
-            $logger = new ErrorLogger();
-            $logger->log($error);
+        // Only log if debug mode is activated.
+        } catch (PostResponseException $e) {
+            if (Config::get('debug')) {
+                (new RequestLogger())->log($e->getStacktraceWithCode());
+            }
+            $this->displayErrorAndExit($e);
 
-            $this->displayErrorAndExit($ex);
+        // Log always.
+        } catch (Exception $e) {
+
+            (new ErrorLogger())->log($e->getStacktraceWithCode());
+            $this->displayErrorAndExit($e);
         }
     }
 

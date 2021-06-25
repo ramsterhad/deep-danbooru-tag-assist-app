@@ -6,7 +6,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Logger;
 
 class ErrorLogger extends Logger
 {
-    public static function getDefaultDestinationFile(): string
+    public function getDefaultDestinationFile(): string
     {
         return 'error.log';
     }

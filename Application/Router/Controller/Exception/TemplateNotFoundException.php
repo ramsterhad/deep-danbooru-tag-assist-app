@@ -4,7 +4,9 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Exception;
 
 
-class TemplateNotFoundException extends \Exception
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
+
+class TemplateNotFoundException extends Exception
 {
 
 }

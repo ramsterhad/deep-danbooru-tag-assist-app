@@ -21,7 +21,7 @@ class Logger
     public function log(string $message): void
     {
         if ($this->destination === null) {
-            $this->destination = self::getDefaultDestinationDirectory() .self::getDefaultDestinationFile();
+            $this->destination = $this->getDefaultDestinationDirectory() . $this->getDefaultDestinationFile();
         }
 
         $message = \sprintf('%s: %s', $this->getDate(), $message);
@@ -29,14 +29,24 @@ class Logger
         $this->write($this->destination, $message);
     }
 
-    public static function getDefaultDestinationDirectory(): string
+    public function getDefaultDestinationDirectory(): string
     {
         return Application::getBasePath() . 'log' . \DIRECTORY_SEPARATOR;
     }
 
-    public static function getDefaultDestinationFile(): string
+    public function getDefaultDestinationFile(): string
     {
         return 'default.log';
+    }
+
+    /**
+     * Removes the username and the token from the stacktrace.
+     * @param string $stacktrace
+     * @return string
+     */
+    protected function sanitiseCredentials(string $stacktrace): string
+    {
+        return preg_replace('/authenticate\((.*)\)/', 'authenticate($username, $token)', $stacktrace);
     }
 
     private function getDate(): string
@@ -46,7 +56,11 @@ class Logger
     
     private function write(string $destination, string $message): void
     {
+        $message = $this->sanitiseCredentials($message);
+
         $message .= \PHP_EOL;
         \file_put_contents($destination, $message, \FILE_APPEND);
     }
+
+
 }

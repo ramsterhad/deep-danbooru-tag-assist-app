@@ -4,7 +4,9 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception;
 
 
-class EndpointException extends \Exception
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
+
+class EndpointException extends Exception
 {
 
 }

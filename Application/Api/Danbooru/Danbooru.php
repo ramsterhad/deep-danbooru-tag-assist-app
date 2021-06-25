@@ -166,7 +166,7 @@ class Danbooru implements ApiContract
             );
         }
 
-        // We said earlier, that the json string has to be transformed to be an object.
+        // We said earlier that the json string has to be transformed to be an object.
         $object = $response[0];
 
         if (!is_object($object)) {
@@ -176,6 +176,7 @@ class Danbooru implements ApiContract
             );
         }
 
+        // Wrong credentials.
         if (property_exists($object, 'success') && $object->success === false) {
             throw new AuthenticationError(
                 'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
@@ -183,10 +184,7 @@ class Danbooru implements ApiContract
             );
         }
 
-        /*
-         * Basic members don't have access to 'fringe' content. In that case, the API does not return the Id
-         * Example Id: @todo still to fill in
-         */
+        // Basic members don't have access to 'fringe' content. In that case, the API does not return the Id.
         foreach ($this->getListOfRequiredJsonPropertiesFromDanbooruResponse() as $item) {
             if (!property_exists($object, $item)) {
                 throw new PostResponseException(

@@ -4,4 +4,6 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception;
 
 
-class PredictedTagsDatabaseException extends \Exception {}
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
+
+class PredictedTagsDatabaseException extends Exception {}

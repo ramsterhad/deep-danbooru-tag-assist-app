@@ -4,7 +4,9 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception;
 
 
-class PostResponseException extends \Exception
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
+
+class PostResponseException extends Exception
 {
     const CODE_INVALID_JSON = 100;
     const CODE_JSON_CONTAINS_NO_ITEM = 101;

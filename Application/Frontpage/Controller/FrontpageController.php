@@ -64,7 +64,7 @@ class FrontpageController implements Controller
 
         // Show advanced level of statistics
         if (Config::get('detailed_debug')) {
-            $logPath = Logger::getDefaultDestinationDirectory() . $danbooru->getPost()->getId() . '.log';
+            $logPath = (new Logger())->getDefaultDestinationDirectory() . $danbooru->getPost()->getId() . '.log';
             $logger = new RequestLogger($logPath);
             $logger->log(\print_r($danbooru, true));
             $logger->log(\print_r($predictedTagsDatabase ?? $machineLearningPlatform, true));

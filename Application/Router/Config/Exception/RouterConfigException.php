@@ -4,7 +4,9 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Router\Config\Exception;
 
 
-class RouterConfigException extends \Exception
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
+
+class RouterConfigException extends Exception
 {
 
 }
