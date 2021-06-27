@@ -90,6 +90,16 @@ somewhere. Make sure the folder has fitting rights.
 Limits the checkboxes for suggested new tags.  
 By default a row contains 3 columns. So a number dividable by 3 is recommended.
 
+
+### debug
+##### default
+````
+false
+````
+##### about
+Activates a logging for Post Responses, e.g. the answer from the danbooru platform.  
+
+
 ## Examples of danbooru api calls
 ````txt
 
