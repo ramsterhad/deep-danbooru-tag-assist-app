@@ -58,12 +58,6 @@ class Application
         try {
             Router::getInstance()->processRequest();
 
-        // No logging needed.
-        } catch (AuthenticationError $e) {
-            Session::set('wrong_credentials', true);
-            Router::route('auth');
-
-        // Only log if debug mode is activated.
         } catch (PostResponseException $e) {
             if (Config::get('debug')) {
                 (new RequestLogger())->log($e->getStacktraceWithCode());

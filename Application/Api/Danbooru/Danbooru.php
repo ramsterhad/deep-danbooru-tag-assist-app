@@ -5,6 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
@@ -44,7 +45,7 @@ class Danbooru implements ApiContract
 
         // Json didn't had the id property which every logged in user must have.
         if (!\property_exists($response, 'id')) {
-            throw new AuthenticationError(
+            throw new InvalidCredentials(
                 'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
                 AuthenticationError::CODE_RESPONSE_MISSING_PROPERTIES
             );
@@ -178,9 +179,9 @@ class Danbooru implements ApiContract
 
         // Wrong credentials.
         if (property_exists($object, 'success') && $object->success === false) {
-            throw new AuthenticationError(
+            throw new InvalidCredentials(
                 'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
-                AuthenticationError::CODE_RESPONSE_INVALID_CREDENTIALS
+                InvalidCredentials::CODE_RESPONSE_INVALID_CREDENTIALS
             );
         }
 
