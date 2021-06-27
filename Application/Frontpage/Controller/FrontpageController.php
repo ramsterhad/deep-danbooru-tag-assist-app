@@ -62,14 +62,6 @@ class FrontpageController implements Controller
             $picture->delete();
         }
 
-        // Show advanced level of statistics
-        if (Config::get('detailed_debug')) {
-            $logPath = (new Logger())->getDefaultDestinationDirectory() . $danbooru->getPost()->getId() . '.log';
-            $logger = new RequestLogger($logPath);
-            $logger->log(\print_r($danbooru, true));
-            $logger->log(\print_r($predictedTagsDatabase ?? $machineLearningPlatform, true));
-        }
-
         $filter = new Filter();
         // Removes all tags with a score lass than $tags_min_score (see config).
         $suggestedTags = $filter->filterTagsByScore($suggestedTags);
