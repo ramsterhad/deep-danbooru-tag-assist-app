@@ -4,6 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
+use http\Cookie;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
@@ -62,6 +63,8 @@ class Application
             if (Config::get('debug')) {
                 (new RequestLogger())->log($e->getStacktraceWithCode());
             }
+
+            setcookie('danbooru_api_url', '', 0);
             $this->displayErrorAndExit($e);
 
         // Log always.
