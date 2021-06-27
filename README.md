@@ -124,18 +124,59 @@ Random safe image 10mpixel:           https://danbooru.donmai.us/posts.json?limi
 ````  
   
   
-## Testing
 
-### Install the environment
+## Development
+
+### Debugging
+
+Configuration for PHPStorm
+```text
+Run/Debug Configurations::PHP Web Page
+
+Name: localhost
+
+Configuration
+Server: Docker (see below)
+Start URL: /
+```
+
+```text
+Servers
+
+Name: Docker
+Host: localhost : Port 80
+(yes) Use path mappings
+
+/danbooru/data/www/ -> /usr/local/apache2/htdocs
+```
+
+
+### Testing
+
+#### Install the environment
 ```shell
 git clone https://github.com/ramsterhad/deep-danbooru-tag-assist-app/ ddta
 cd ddta
 composer install
 ```
 
-### Testing
+#### PHPUnit
 
 Execute all tests: `vendor/bin/phpunit -c tests/Unit/phpunit.xml`  
 
 Execute one test: 
 `vendor/bin/phpunit -c tests/Unit/phpunit.xml --filter testTransformJsonStringToObject`
+
+#### PHPUnit Debugging
+
+Configuration for PHPStorm
+```text
+Run/Debug Configurations::PHP Script
+
+Name: phpunit
+
+Configuration
+
+File: vendor/phpunit/phpunit/phpunit
+Arguments: ../../../tests .
+```
