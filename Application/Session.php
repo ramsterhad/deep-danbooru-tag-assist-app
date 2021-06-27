@@ -34,6 +34,13 @@ class Session
         return static::has($key) ? $_SESSION[$key] : '';
     }
 
+    public static function delete(string $key): void
+    {
+        if (static::has($key)) {
+            unset($_SESSION[$key]);
+        }
+    }
+
     public static function destroy(): void
     {
         session_destroy();

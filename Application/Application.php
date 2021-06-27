@@ -60,7 +60,8 @@ class Application
 
         // No logging needed.
         } catch (AuthenticationError $e) {
-            $this->displayErrorAndExit($e);
+            Session::set('wrong_credentials', true);
+            Router::route('auth');
 
         // Only log if debug mode is activated.
         } catch (PostResponseException $e) {

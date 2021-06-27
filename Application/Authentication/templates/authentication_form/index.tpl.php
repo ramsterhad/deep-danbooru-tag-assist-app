@@ -21,5 +21,10 @@
                 <input type="hidden" name="r" value="authenticate">
             </form>
         </div>
+        <?php if ($response->has('authentication_wrong_credentials')) : ?>
+        <div class="row">
+            <p>Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.</p>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
