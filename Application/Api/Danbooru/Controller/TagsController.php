@@ -8,9 +8,11 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\StatisticLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 class TagsController implements Controller
 {
@@ -37,6 +39,24 @@ class TagsController implements Controller
             $collection
         );
 
+        $this->logStatistics($id, $markedTags);
+
         Router::route('/');
+    }
+
+    /**
+     * Writes the log files with the following data: <date> <time> <username> <id> <added tags>
+     * @param array $markedTags
+     */
+    private function logStatistics(int $id, array $markedTags): void
+    {
+        $statistic = \sprintf(
+            '%s %s %s',
+            Session::get('username'),
+            $id,
+            \implode(',', $markedTags)
+        );
+
+        (new StatisticLogger())->log($statistic);
     }
 }

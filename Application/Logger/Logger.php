@@ -54,13 +54,11 @@ class Logger
         return $date = \date('Y.m.d H:i:s', \time());
     }
     
-    private function write(string $destination, string $message): void
+    protected function write(string $destination, string $message): void
     {
         $message = $this->sanitiseCredentials($message);
 
         $message .= \PHP_EOL;
         \file_put_contents($destination, $message, \FILE_APPEND);
     }
-
-
 }
