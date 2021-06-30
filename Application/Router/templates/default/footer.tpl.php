@@ -25,13 +25,13 @@
         </div>
         <div id="b">
             <span class="footer-copyright-right-item">
+                <a class="text-lighten-4" href="https://github.com/Ramsterhad/DeepDanbooruTagAssist" target="_blank" rel="noreferrer">>Source Code</a>
+            </span>
+            <span class="footer-copyright-right-item">
                 <form method="post" action="index.php">
                     <input type="hidden" name="r" value="logout" />
                     <button type="submit" class="button-cosplays-as-link" value="Logout">> Logout</button>
                 </form>
-            </span>
-            <span class="footer-copyright-right-item">
-                <a class="text-lighten-4" href="https://github.com/Ramsterhad/DeepDanbooruTagAssist" target="_blank" rel="noreferrer">>Source Code</a>
             </span>
         </div>
     </div>
