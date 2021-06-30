@@ -54,7 +54,7 @@ class TagsController implements Controller
             '%s %s %s',
             Session::get('username'),
             $id,
-            \implode(',', $markedTags)
+            \implode(chr(9), $markedTags)
         );
 
         (new StatisticLogger())->log($statistic);
