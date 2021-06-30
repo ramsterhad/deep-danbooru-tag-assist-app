@@ -24,7 +24,7 @@ class Logger
             $this->destination = $this->getDefaultDestinationDirectory() . $this->getDefaultDestinationFile();
         }
 
-        $message = \sprintf('%s: %s', $this->getDate(), $message);
+        $message = \sprintf('%s %s', $this->getDate(), $message);
 
         $this->write($this->destination, $message);
     }
