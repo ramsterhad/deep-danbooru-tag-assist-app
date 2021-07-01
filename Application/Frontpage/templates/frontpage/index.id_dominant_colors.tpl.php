@@ -7,6 +7,6 @@
         <?php foreach ($response->get('picture')->getDominantColors() as $color) : ?>
             <div class="dominant-colors-box" style="background-color:<?php echo $color;?>"></div>
         <?php endforeach; ?>
-        <!-- </Dominant color bar> -->
     </div>
+    <!-- </Dominant color bar> -->
 </div>

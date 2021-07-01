@@ -71,7 +71,8 @@ class Picture
      */
     public function calculateDominantColors(): void
     {
-        \exec('bash ' . Application::getBasePath() . 'dcolors.sh -r 50x50 -f hex -k 6 ' . $this->getFullPathToFile(), $colors);
+        $pathToFile = \sprintf('%s', Application::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'dcolors.sh');
+        \exec('bash ' . $pathToFile . ' -r 50x50 -f hex -k 6 ' . $this->getFullPathToFile(), $colors);
         $this->dominantColors = $colors;
     }
 
