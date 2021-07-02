@@ -20,13 +20,10 @@
         </div>
     </div>
     <div id="container-footer">
-        <div id="a">
+        <div id="footer-left">
             &copy; <span id="year"></span> reiuyi + ramsterhad
         </div>
-        <div id="b">
-            <span class="footer-copyright-right-item">
-                <a class="text-lighten-4" href="https://github.com/Ramsterhad/DeepDanbooruTagAssist" target="_blank" rel="noreferrer">>Source Code</a>
-            </span>
+        <div id="footer-right">
             <span class="footer-copyright-right-item">
                 <form method="post" action="index.php">
                     <input type="hidden" name="r" value="logout" />

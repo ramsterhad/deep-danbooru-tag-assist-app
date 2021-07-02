@@ -62,12 +62,12 @@ span {
     background-color: rgba(51,51,51,0.08);
 }
 
-#a {
+#footer-left {
     padding-left: 20px;
     width: 20%;
 }
 
-#b {
+#footer-right {
     padding-right: 20px;
     width: 20%;
     text-align: right;
@@ -128,7 +128,8 @@ div.row.new_tags_grid {
     display: flex;
     flex-direction: row;
     width: 100%;
-}.hidden {
+}
+.hidden {
     display: none;
 }
 .flex_right {
@@ -185,4 +186,27 @@ div.row.new_tags_grid {
 .dominant-colors-box {
     height: 50px;
     width: 100px;
+}
+
+.login_box {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.login_box_login_button { /* left */
+    width: 40%;
+}
+
+.login_box_apiurl_helper_text { /* right */
+    width: 60%;
+    flex:none;
+    text-align: right;
+    font-size: smaller;
+}
+
+.text-vertikal-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
