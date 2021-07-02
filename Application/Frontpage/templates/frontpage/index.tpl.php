@@ -62,14 +62,14 @@
 
         // Enter - execute api call to add new tags or save changed API URL.
         if (e.keyCode === 13) {
+            // Prevent default browser behaviour, which is to open the selected item
             e.preventDefault();
 
             // Check if the URL input field is focused. If yes, save the new URL.
             if (document.activeElement === document.getElementById('input_id_danbooru_api_url')) {
                 document.getElementById('form_set_danbooru_api_url').submit();
-            // else fire the checked tags to danbooru
             } else {
-                // Prevent default browser behaviour, which is to open the selected item
+                // else fire the checked tags to danbooru
                 document.getElementById('form_submit_tags').submit();
             }
         }
