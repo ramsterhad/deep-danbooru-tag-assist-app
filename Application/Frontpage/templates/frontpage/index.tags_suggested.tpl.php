@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col s2">new tags</div>
     <div class="col s10">
-        <form action="index.php" method="post">
+        <form action="index.php" method="post" id="form_submit_tags">
             <?php
 
             $maxTags = $response->getController()->getCountedUnknownTagsLimitedByValue(
