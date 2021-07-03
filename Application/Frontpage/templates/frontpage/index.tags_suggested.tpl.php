@@ -1,10 +1,10 @@
 <div class="row">
-    <div class="col s2">Suggested tags</div>
-    <div class="col s10"><?php echo $response->getController()->tagsCssClassHelperUnknownTags($response->get('suggestedTags'), $response->get('unknownTags')); ?></div>
+    <div class="col-lg-2">Suggested tags</div>
+    <div class="col-lg-10"><?php echo $response->getController()->tagsCssClassHelperUnknownTags($response->get('suggestedTags'), $response->get('unknownTags')); ?></div>
 </div>
 <div class="row">
-    <div class="col s2">new tags</div>
-    <div class="col s10">
+    <div class="col-lg-2">new tags</div>
+    <div class="col-lg-10">
         <form action="index.php" method="post" id="form_submit_tags">
             <?php
 
@@ -25,37 +25,36 @@
                 ?>
 
                 <?php if ($i % 3 === 0) : ?>
-                    <?php $closeRow = 2; // Opens a new row. If not, a new column will be appended to the previous column. ?>
-                    <div class="row new_tags_grid">
+                <?php $closeRow = 2; // Opens a new row. If not, a new column will be appended to the previous column. ?>
+                <div class="row new_tags_grid">
                 <?php endif; ?>
-
-                <div class="col s4">
-                    <span
-                        class="tag mlpTag"
-                        data-key="<?php echo $keyIdent + $i + 1;?>"
-                        id="ml_new_tag_<?php echo $response->get('unknownTags')->getTags()[$i]->getName();?>"
-                    >
-                        <label>
-                            <input
-                               type="checkbox"
-                               class="tag_checkbox"
-                               name="tag_checkbox[]"
-                               value="<?php echo $response->get('unknownTags')->getTags()[$i]->getName() ;?>"
-                            >
-                            <span class="new_tags_grind_col" title="<?php echo $response->get('unknownTags')->getTags()[$i]->getScore(); ?>">
-                               <a href="https://danbooru.donmai.us/wiki_pages/<?php echo $response->get('unknownTags')->getTags()[$i]->getName();?>" target="_blank" rel="noreferrer"><?php echo '[ '.($i + 1).' ] ' . $response->get('unknownTags')->getTags()[$i]->getName(); ?></a>
-                            </span>
-                        </label>
-                    </span>
-                </div>
-                <?php if ($closeRow === 0) : // Ends the row. ?>
+                    <div class="col-lg-4">
+                        <span
+                            class="tag mlpTag"
+                            data-key="<?php echo $keyIdent + $i + 1;?>"
+                            id="ml_new_tag_<?php echo $response->get('unknownTags')->getTags()[$i]->getName();?>"
+                        >
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    class="tag_checkbox"
+                                    name="tag_checkbox[]"
+                                    value="<?php echo $response->get('unknownTags')->getTags()[$i]->getName() ;?>"
+                                >
+                                <span class="new_tags_grind_col" title="<?php echo $response->get('unknownTags')->getTags()[$i]->getScore(); ?>">
+                                   <a href="https://danbooru.donmai.us/wiki_pages/<?php echo $response->get('unknownTags')->getTags()[$i]->getName();?>" target="_blank" rel="noreferrer"><?php echo '[ '.($i + 1).' ] ' . $response->get('unknownTags')->getTags()[$i]->getName(); ?></a>
+                                </span>
+                            </label>
+                        </span>
                     </div>
+                <?php if ($closeRow === 0) : // Ends the row. ?>
+                </div>
                 <?php endif; ?>
 
                 <?php --$closeRow; // Decreases the counter for each column by 1. ?>
             <?php endfor; ?>
             <?php if ($closeRow > -1) : // In case the last row hadn't three columns. ?>
-                </div>
+            </div>
             <?php endif; ?>
 
             <?php foreach ($response->get('danbooru')->getPost()->getTagCollection()->getTags() as $tag) : ?>

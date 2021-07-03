@@ -1,37 +1,43 @@
-<div class="row">&nbsp;</div>
-<div class="row">
-    <div class="col s12">
-        <h3 class="center-align">Deep Danbooru Tag Assist 3000</h3>
-    </div>
+
+
+<div class="container text-center header logo-header">
+    <div class="slogan">Deep Danbooru Tag Assistant </div><img src="img/header_logo.png" class="logo">
 </div>
-<!--
-<div class="row">
 
-    <div class="col s2"></div>
-    <div class="col s10">
--->
-        <div class="row">
-            <form action="index.php" method="post">
-                <input type="text" name="username" placeholder="username">
-                <input type="text" name="api_key" placeholder="api key">
-                <span class="login_box">
-                    <span class="login_box_login_button"><button type="submit" name="submit" class="btn waves-effect waves-light" >login</button></span>
-                    <span class="login_box_apiurl_helper_text login-apikey-text text-vertikal-flex">No API key yet?&nbsp;<a href="https://danbooru.donmai.us/wiki_pages/help:api" target="_blank">Get one!</a></span>
-                    <input type="hidden" name="r" value="authenticate">
-                </span>
-            </form>
-        </div>
-        <div class="row">
-            <div class="col s12">
-
+<div class="container authentication_box">
+    <form action="index.php" method="post">
+        <div class="row mb-3">
+            <label for="username" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="text" name="username" class="form-control" id="username">
             </div>
         </div>
-        <?php if ($response->has('authentication_wrong_credentials')) : ?>
-        <div class="row">
-            <p>Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.</p>
+        <div class="row mb-3">
+            <label for="api_key" class="col-sm-2 col-form-label">API key</label>
+            <div class="col-sm-10">
+                <input type="text" name="api_key" class="form-control" id="api_key">
+            </div>
         </div>
-        <?php endif; ?>
-<!--
-    </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-7 offset-sm-2">
+                <span>No API key yet?&nbsp;<a href="https://danbooru.donmai.us/wiki_pages/help:api" target="_blank">Get one!</a></span>
+            </div>
+            <div class="col-sm-3">
+                <button type="submit" name="submit" class="btn btn-primary float-right">Login</button>
+            </div>
+        </div>
+
+
+        <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+                <?php if ($response->has('authentication_wrong_credentials')) : ?>
+                    <span>
+                        <p>Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.</p>
+                    </span>
+                <?php endif; ?>
+            </div>
+        </div>
+        <input type="hidden" name="r" value="authenticate">
+    </form>
 </div>
--->

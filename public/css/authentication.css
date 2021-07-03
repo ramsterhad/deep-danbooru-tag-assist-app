@@ -1,0 +1,12 @@
+.authentication_box {
+    max-width: 500px;
+}
+
+.float-right {
+    float: right;
+}
+
+.header {
+    padding-top: 10%;
+    padding-bottom: 40px;
+}

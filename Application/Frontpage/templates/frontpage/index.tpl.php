@@ -1,19 +1,15 @@
-<header></header>
-<main>
-<div class="container">
 
-    <div class="flex_cont">
-
-        <div class="flex_left">
-
+<div class="container-fluid overflow-hidden">
+    <div class="row">
+        <div class="col-lg-6">
             <div class="row">
-                <div class="col s12">
-                    <h3 class="center-align">Deep Danbooru Tag Assist 3000</h3>
+                <div class="logo-header">
+                    <div class="slogan">Deep Danbooru Tag Assistant </div><img src="img/header_logo.png" class="logo">
                 </div>
             </div>
 
             <div class="row">
-                <div class="col s12"></div>
+                <div class="col-lg-12"></div>
             </div>
 
             <!-- danboooru api url -->
@@ -22,22 +18,18 @@
             <!-- post id and dominant color -->
             <?php require_once 'index.id_dominant_colors.tpl.php'; ?>
 
-            <!-- preview picture, disabled by default @todo-->
-            <?php require_once 'index.preview_picture.tpl.php'; ?>
-
             <!-- tags -->
             <?php require_once 'index.tags_danbooru.tpl.php'; ?>
             <?php require_once 'index.tags_suggested.tpl.php'; ?>
 
+
         </div> <!-- end flex_left -->
-        <div class="flex_right">
 
+        <div class="col-lg-6">
             <?php require_once 'index.picture.tpl.php'; ?>
-
         </div> <!-- end flex_right -->
-
-    </div> <!-- end flex content -->
-</main>
+    </div>
+</div>
 
 
 <script type="text/javascript">
