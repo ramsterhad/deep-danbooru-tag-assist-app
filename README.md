@@ -4,13 +4,17 @@ Web-based assist application for an AI-based multi-label image classification sy
 ![screenshot](ddta_screenshot.png?raw=true "DDTA screenshot")
 **[LIVE functional production server, login with danbooru username and API key](https://ddta.henta.hu/ "DDTA LIVE functional demonstration and production server").**  
 *PLEASE BEWARE: SELECTED & SUBMITTED TAGS ARE ADDED TO DANBOORU FOR REAL*.  
-An API key can be created and removed on your profile page: https://danbooru.donmai.us/profile
+An API key can be created and removed on your profile page: https://danbooru.donmai.us/profile. Please see https://danbooru.donmai.us/wiki_pages/help:api for further information.
 
 ## Data availability
-We precomputed the images present in [Gwern's danbooru2020 SFW dataset](https://www.gwern.net/Danbooru2020 "Gwen's danbooru 2020 SFW subset dataset") using the 4 RESNET models released by [KichangKim](https://github.com/KichangKim/DeepDanbooru "KichangKim´s DeepDanbooru") for deepdanbooru using a threshold of 0.100. In total, 3227713 images were classified using the 4 models, giving 12910852 tag prediction strings. The data is available under [releases](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/tag/danbooru2020 "DDTA danbooru 2020 SFW subset dataset tag prediction releases")
+We precomputed the images present in [Gwern's danbooru2020 SFW dataset](https://www.gwern.net/Danbooru2020 
+"Gwen's danbooru 2020 SFW subset dataset") using the 4 RESNET models released by 
+[KichangKim](https://github.com/KichangKim/DeepDanbooru "KichangKim´s DeepDanbooru") for deepdanbooru using a threshold 
+of 0.100. In total, 3.227.713 images were classified using the 4 models, giving 12.910.852 tag prediction strings. The data 
+is available under [releases](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/tag/danbooru2020 "DDTA danbooru 2020 SFW subset dataset tag prediction releases")
 
 ## Installation
-Deepdanbooru tag assist requires php8. Deepdanbooru and its dependencies can be installed inside a Miniconda environment
+Deepdanbooru tag assist requires PHP 8. Deepdanbooru and its dependencies can be installed inside a Miniconda environment
 ```shell
 wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
 bash https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
@@ -48,7 +52,7 @@ Deepdanbooru is called by [ml.sh](bin/ml.sh "ml.sh").
 Change `source` to the Miniconda directory (e.g. /home/username/miniconda3/etc/profile.d/conda.sh)  
 Change `PROJECTPATH` to the RESNET model directory (e.g. /home/username/deepdanbooru-v3-20200915-sgd-e30/
 
-To adapt the configuration of DDTA, adapt the `.env` file or create `.env.local`. 
+To adapt the configuration of DDTA, adapt the `.env` file or create `.env.local` so an update doesn't overwrite your configuration. 
 
 | Parameter                                  | default value                      |
 |--------------------------------------------|------------------------------------|
@@ -63,10 +67,14 @@ To adapt the configuration of DDTA, adapt the `.env` file or create `.env.local`
 | debug                                      | false                              |
 
 ### danbooru_api_url
-This is the default API domain for the Danbooru platforms API. At this moment, only danbooru.donmai.us and its derivative domains are supported. Support for other \*boorus using compatible APIs will follow in future releases. URL must end in a trailing slash. You can change the whole request URL also directly on the page in the input field on top of it. The input field overwrites the environment variable as long as the session cookie lives.
+The default API domain for the Danbooru platforms API. At this moment, only danbooru.donmai.us and its derivative domains 
+are supported. Support for other \*boorus using compatible APIs will follow in future releases. URL must end in a trailing 
+slash. You can change the whole request URL also directly on the page in the input field on top of it. The input field 
+overwrites the environment variable as long as the session cookie lives.
   
 ### danbooru_default_request
-This is the default request URL for the Danbooru platforms API request. During the process this string is going to be appended to the config variable `danbooru_api_url`: `${danbooru_api_url}.'posts.json?'.${danbooru_default_request}`. For example:
+The default request URL for the Danbooru platforms API request. During the process this string is going to be appended 
+to the config variable `danbooru_api_url`: `${danbooru_api_url}.'posts.json?'.${danbooru_default_request}`. For example:
 ```
 danbooru_api_url=https://example.com/
 danbooru_default_request=bar
@@ -75,22 +83,30 @@ becomes:
 
 https://example.com/posts.json?bar
 ```
-You can change the whole request URL also directly on the page in the input field on top of it. The input field overwrites the environment variable as long as the session cookie lives.
+You can change the whole request URL also directly on the page in the input field on top of it. The input field overwrites 
+the environment variable as long as the session cookie lives.
 
 ### danbooru_user & danbooru_pass
-To be able to submit new tags to Danbooru, you need to be a registered member and provide your API credentials. To create a session you need to provide credentials in the form of your username and API key. Alternatively, credentials can be placed into the `.env` config file when locally hosting ddta. The API key is different from your password and can be created at your profile page at Danbooru. Please see the "[Authentication](https://danbooru.donmai.us/wiki_pages/help:api)" section at their API manual.
+To be able to submit new tags to Danbooru, you need to be a registered member and provide your API credentials.
+To create a session you need to provide credentials in the form of your username and API key. Alternatively, credentials 
+can be placed into the `.env` config file when locally hosting ddta. The API key is different from your password and can 
+be created at your profile page at Danbooru. Please see the [Authentication](https://danbooru.donmai.us/wiki_pages/help:api)
+section at their API manual.
 
 ### machine_learning_platform_repository_debug
-If set to true, the actual MLP will not be called, but a defined array of example tags will be returned. This is for testing only and should not be used in production.
+If set to true, the actual MLP will not be called, but a defined array of example tags will be returned. This is for 
+testing only and should not be used in production.
 
 ### tags_min_score
 Tags got a confidence score by the machine learning platform. From 1 to 0. The threshold 0.500 is well tested. 
 
 ### picture_storage
-The image is downloaded from danbooru and temporarily locally stored in case it is to be forwarded to the machine learning platform (MLP). Needs write access.
+The image is downloaded from danbooru and temporarily locally stored in case it is to be forwarded to the machine 
+learning platform (MLP). Needs write access.
 
 ### limit_for_suggested_tags
-Limits the checkboxes for suggested new tags. By default a row contains 3 columns. So a number dividable by 3 is recommended. Using the numpad, the first 9 suggested tags can be toggled on/off. 
+Limits the checkboxes for suggested new tags. By default a row contains 3 columns. So a number dividable by 3 is 
+recommended. Using the numpad, the first 9 suggested tags can be toggled on/off. 
 
 ### debug
 Activates a logging for Post Responses, e.g. the answer from the danbooru platform.  
