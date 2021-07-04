@@ -1,15 +1,11 @@
 
-<div class="container-fluid overflow-hidden">
+<div class="container-fluid overflow-hidden frontpage">
     <div class="row">
         <div class="col-lg-6">
             <div class="row">
                 <div class="logo-header">
                     <div class="slogan">Deep Danbooru Tag Assistant </div><img src="img/header_logo.png" class="logo">
                 </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12"></div>
             </div>
 
             <!-- danboooru api url -->
@@ -25,7 +21,7 @@
 
         </div> <!-- end flex_left -->
 
-        <div class="col-lg-6">
+        <div class="col-lg-6 text-center">
             <?php require_once 'index.picture.tpl.php'; ?>
         </div> <!-- end flex_right -->
     </div>

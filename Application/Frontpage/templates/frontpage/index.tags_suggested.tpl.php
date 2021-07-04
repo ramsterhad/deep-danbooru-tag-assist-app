@@ -1,10 +1,18 @@
-<div class="row">
-    <div class="col-lg-2">Suggested tags</div>
-    <div class="col-lg-10"><?php echo $response->getController()->tagsCssClassHelperUnknownTags($response->get('suggestedTags'), $response->get('unknownTags')); ?></div>
+<div class="row top-buffer">
+    <div class="col-lg column-header">Suggested tags</div>
 </div>
 <div class="row">
-    <div class="col-lg-2">new tags</div>
-    <div class="col-lg-10">
+    <div class="col-lg">
+        <?php echo $response->getController()->tagsCssClassHelperUnknownTags($response->get('suggestedTags'), $response->get('unknownTags')); ?>
+    </div>
+</div>
+
+
+<div class="row top-buffer">
+    <div class="col-lg column-header">Tags to submit</div>
+</div>
+<div class="row">
+    <div class="col-lg">
         <form action="index.php" method="post" id="form_submit_tags">
             <?php
 
@@ -54,7 +62,7 @@
                 <?php --$closeRow; // Decreases the counter for each column by 1. ?>
             <?php endfor; ?>
             <?php if ($closeRow > -1) : // In case the last row hadn't three columns. ?>
-            </div>
+            </div> <!--25 26 bug!-->
             <?php endif; ?>
 
             <?php foreach ($response->get('danbooru')->getPost()->getTagCollection()->getTags() as $tag) : ?>

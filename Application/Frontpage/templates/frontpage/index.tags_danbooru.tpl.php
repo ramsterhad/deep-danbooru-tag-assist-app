@@ -1,6 +1,8 @@
+<div class="row top-buffer">
+    <div class="col-lg-2 column-header">Danbooru tags</div>
+</div>
 <div class="row">
-    <div class="col s2">Danbooru tags</div>
-    <div class="col s10">
+    <div class="col-lg-10">
         <?php foreach ($response->get('danbooru')->getPost()->getTagCollection()->getTags() as $tag) : ?>
             <span class="tag">
                 <a href="https://danbooru.donmai.us/wiki_pages/<?php echo $tag->getName(); ?>" target="_blank" rel="noreferrer">

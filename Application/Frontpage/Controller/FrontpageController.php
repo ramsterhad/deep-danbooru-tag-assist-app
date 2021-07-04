@@ -119,9 +119,9 @@ class FrontpageController implements Controller
             }
 
             if ($isNew) {
-                $mlpTagList .= '<span class="tag unknownTag">' .$tag->getName() . '</span>';
+                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' .$tag->getName() . '</div>';
             } else {
-                $mlpTagList .= '<span class="tag">' . $tag->getName() . '</span>';
+                $mlpTagList .= '<div class="tag suggested-tags">' . $tag->getName() . '</div>';
             }
         }
 

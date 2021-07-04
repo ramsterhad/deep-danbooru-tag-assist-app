@@ -2,6 +2,14 @@ body {
     background-color: #f4f6ff;
 }
 
+a:link { text-decoration: none; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:active { text-decoration: none; }
+
+.hidden {
+    display: none;
+}
 
 .logo-header {
     display: flex;
@@ -23,7 +31,7 @@ body {
 
 
 .container-footer {
-    padding: 10px 30px 10px 30px;
+    padding: 30px 60px 30px 60px;
 }
 
 .button-cosplays-as-link {
@@ -37,8 +45,62 @@ body {
     cursor: pointer;
 }
 
+/* Frontpage */
+.frontpage {
+    padding: 60px 60px 0 60px;
+}
+
+.top-buffer-headline {
+    margin-top:100px;
+}
+
+.top-buffer {
+    margin-top: 60px;
+}
+
+.column-header {
+    font-weight: 700;
+}
 
 /* proposed tags */
 #id_tag_checkbox_submit {
     display: none;
+}
+.danbooru-id {
+    float: left;
+    padding-right: 60px;
+}
+.dominant-colors-box {
+    height: 50px;
+    width: 100px;
+    float: left;
+}
+
+.tag {
+    float: left;
+    padding-right: 10px;
+}
+
+.suggested-tags {
+    font-size: 1.5em;
+    font-weight: 100;
+}
+
+/* used by \Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform\TemplateHelper::tagsCssClassHelper */
+.unknownTag {
+    font-weight: bold;
+    color: green;s
+}
+
+
+.new_tags_grid {
+    padding-bottom: 0;
+}
+
+.new_tags_grind_col {
+    white-space: nowrap;
+}
+
+div.row.new_tags_grid {
+    margin-bottom: 10px;
 }
