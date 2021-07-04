@@ -4,7 +4,7 @@
         <div class="col-lg-6">
             <div class="row">
                 <div class="logo-header">
-                    <div class="slogan">Deep Danbooru Tag Assistant </div><img src="img/header_logo.png" class="logo">
+                    <div class="slogan">Deep Danbooru Tag Assist </div><img src="img/header_logo.png" class="logo">
                 </div>
             </div>
 
