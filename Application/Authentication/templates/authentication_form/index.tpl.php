@@ -1,7 +1,7 @@
 
 
 <div class="container text-center header logo-header">
-    <div class="slogan">Deep Danbooru Tag Assistant </div><img src="img/header_logo.png" class="logo">
+    <div class="slogan">Deep Danbooru Tag Assist </div><img src="img/header_logo.png" class="logo">
 </div>
 
 <div class="container authentication_box">
