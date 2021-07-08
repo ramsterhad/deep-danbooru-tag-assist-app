@@ -6,7 +6,7 @@
         id="ml_new_tag_<?php echo $response->get('unknownTags')->getTags()[$i]->getName();?>"
     >
         <input
-            class="form-check-input"
+            class="form-check-input tag_checkbox"
             type="checkbox"
             name="tag_checkbox[]"
             value="<?php echo $response->get('unknownTags')->getTags()[$i]->getName() ;?>"
