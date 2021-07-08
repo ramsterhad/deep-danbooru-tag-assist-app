@@ -119,13 +119,20 @@ class FrontpageController implements Controller
             }
 
             if ($isNew) {
-                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' .$tag->getName() . '</div>';
+                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' . $this->addWikiLink($tag->getName()) . '</div>';
             } else {
-                $mlpTagList .= '<div class="tag suggested-tags">' . $tag->getName() . '</div>';
+                $mlpTagList .= '<div class="tag suggested-tags">' . $this->addWikiLink($tag->getName()) . '</div>';
             }
         }
 
         return $mlpTagList;
+    }
+
+    protected function addWikiLink(string $title): string
+    {
+        $url = '<a href="https://danbooru.donmai.us/wiki_pages/%s" class="suggested-tag" target="_blank" rel="noreferrer">%s</a>';
+        $url = sprintf($url, $title, $title);
+        return $url;
     }
 
     public function tagsCssClassHelperColoredDanbooruTags(Tag $tag): string

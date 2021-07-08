@@ -119,6 +119,8 @@ a:active { text-decoration: none; }
     font-weight: 100;
 }
 
+a.suggested-tag { text-decoration: none; color: inherit;}
+
 /* used by \Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform\TemplateHelper::tagsCssClassHelper */
 .unknownTag {
     font-weight: bold;
