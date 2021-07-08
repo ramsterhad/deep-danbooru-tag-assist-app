@@ -29,3 +29,7 @@ apiurlset:
 pushnewtags:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\TagsController
   action: pushNewTagsToDanbooru
+
+test:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Test\TestController
+  action: index

@@ -32,9 +32,7 @@
         <div class="row mb-3">
             <div class="col-sm-10 offset-sm-2">
                 <?php if ($response->has('authentication_wrong_credentials')) : ?>
-                    <span>
-                        <p>Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.</p>
-                    </span>
+                    <p class="error-box">Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.</p>
                 <?php endif; ?>
             </div>
         </div>

@@ -26,10 +26,17 @@
             </div>
 
             <div class="col-sm-4">
-                <form method="post" action="index.php">
-                    <input type="hidden" name="r" value="logout" />
-                    <button type="submit" class="button-cosplays-as-link float-right" value="Logout">> Logout</button>
-                </form>
+                <div class="row">
+                    <div class="col-lg"><div class="button-cosplays-as-link float-right">Cookies? <</div></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg">
+                        <form method="post" action="index.php">
+                            <input type="hidden" name="r" value="logout" />
+                            <button type="submit" class="button-cosplays-as-link float-right" value="Logout">Logout <</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

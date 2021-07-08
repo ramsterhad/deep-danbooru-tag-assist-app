@@ -2,10 +2,34 @@ body {
     background-color: #f4f6ff;
 }
 
+textarea:focus,
+input[type="text"]:focus,
+input[type="checkbox"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+    border-color: rgba(90, 90, 90, 0.8);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07) inset, 0 0 8px rgba(76, 76, 76, 0.6);
+    outline: 0 none;
+}
+
 a:link { text-decoration: none; }
 a:visited { text-decoration: none; }
 a:hover { text-decoration: none; }
 a:active { text-decoration: none; }
+
+
 
 .hidden {
     display: none;
@@ -30,7 +54,13 @@ a:active { text-decoration: none; }
     padding-right: 10px;
 }
 
-
+.error-box {
+    color: firebrick;
+    border: 1px firebrick solid;
+    font-size: larger;
+    border-radius: 0.25rem;
+    padding: 5px;
+}
 
 
 .container-footer {
