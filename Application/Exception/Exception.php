@@ -8,6 +8,6 @@ class Exception extends \Exception
 {
     public function getStacktraceWithCode(): string
     {
-        return \sprintf('code: %d%s%s', $this->getCode(), \PHP_EOL, $this->getTraceAsString());
+        return \sprintf('code: %d,%s%s%s', $this->getCode(), $this->getMessage(), \PHP_EOL, $this->getTraceAsString());
     }
 }
