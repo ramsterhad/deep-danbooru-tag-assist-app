@@ -9,6 +9,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Cont
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Exception\TemplateNotFoundException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\DefaultController;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 
 final class Router
@@ -95,7 +96,7 @@ final class Router
 
         require_once (new DefaultController())->header()->getFullPathToTemplateFile();
 
-        $vars = $response->getTemplateVariables(); // Accessible in the templates.
+        //$vars = $response->getTemplateVariables(); // Accessible in the templates. // TODO
         require_once $response->getFullPathToTemplateFile();
 
         require_once (new DefaultController())->footer()->getFullPathToTemplateFile();

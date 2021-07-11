@@ -45,14 +45,6 @@ class Response
         return $this;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getTemplateVariables(): array
-    {
-        return $this->templateVariables;
-    }
-
     public function has(string $key): bool
     {
         if (isset($this->templateVariables[$key])) {
