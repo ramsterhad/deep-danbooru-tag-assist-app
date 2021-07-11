@@ -46,7 +46,9 @@ class Logger
      */
     protected function sanitiseCredentials(string $stacktrace): string
     {
-        return preg_replace('/authenticate\((.*)\)/', 'authenticate($username, $token)', $stacktrace);
+        $stacktrace = preg_replace('/authenticate\((.*)\)/', 'authenticate($username, $token)', $stacktrace);
+        $stacktrace = preg_replace('/Endpoint->requestPost\((.*)\)/', 'Endpoint->requestPost($endpoint, $username, $token)', $stacktrace);
+        return $stacktrace;
     }
 
     private function getDate(): string
