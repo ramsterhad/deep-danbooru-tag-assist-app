@@ -4,7 +4,7 @@
 </form>
 
 <div class="row top-buffer-headline">
-    <div class="col-lg-10">
+    <div class="col-lg-12">
         <form action="index.php" method="post" class="" id="form_set_danbooru_api_url">
             <div class="input-group">
                 <span class="input-group-text">API URL</span>
