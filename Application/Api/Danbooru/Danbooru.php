@@ -178,10 +178,25 @@ class Danbooru implements ApiContract
         }
 
         // Wrong credentials.
-        if (property_exists($object, 'success') && $object->success === false) {
+        if (
+            property_exists($object, 'success') &&
+            $object->success === false &&
+            strpos($object->message, 'SessionLoader::AuthenticationFailure') !== false
+        ) {
             throw new InvalidCredentials(
                 'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
                 InvalidCredentials::CODE_RESPONSE_INVALID_CREDENTIALS
+            );
+        }
+
+        // Any other error message directly from Danbooru.
+        if (
+            property_exists($object, 'success') &&
+            $object->success === false
+        ) {
+            throw new PostResponseException(
+                'Danbooru said "'.$object->message.'". (╯︵╰,)',
+                PostResponseException::CODE_DANBOORU_ERROR_MESSAGE
             );
         }
 
