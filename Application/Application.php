@@ -64,7 +64,7 @@ class Application
                 (new RequestLogger())->log($e->getStacktraceWithCode());
             }
 
-            setcookie('danbooru_api_url', '', 0);
+            \setcookie('danbooru_api_url', '', 0);
             $this->displayErrorAndExit($e);
 
         // Log always.
