@@ -19,13 +19,13 @@
     },
     "autoload": {
         "files": [
-          "function.php"
+            "function.php"
         ]
     },
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
-            "dev-master": "2.2-dev"
+            "dev-main": "2.4-dev"
         },
         "thanks": {
             "name": "symfony/contracts",

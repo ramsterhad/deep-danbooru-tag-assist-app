@@ -67,6 +67,7 @@ use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
+use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
@@ -275,12 +276,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $output = '';
 
     /**
-     * @var string
+     * @var ?string
      */
     private $outputExpectedRegex;
 
     /**
-     * @var string
+     * @var ?string
      */
     private $outputExpectedString;
 
@@ -305,7 +306,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $outputRetrievedForAssertion = false;
 
     /**
-     * @var Snapshot
+     * @var ?Snapshot
      */
     private $snapshot;
 
@@ -1530,12 +1531,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if ($this->expectedException !== null) {
-                $this->assertThat(
-                    $exception,
-                    new ExceptionConstraint(
-                        $this->expectedException
-                    )
-                );
+                if ($this->expectedException === Error::class) {
+                    $this->assertThat(
+                        $exception,
+                        LogicalOr::fromConstraints(
+                            new ExceptionConstraint(Error::class),
+                            new ExceptionConstraint(\Error::class)
+                        )
+                    );
+                } else {
+                    $this->assertThat(
+                        $exception,
+                        new ExceptionConstraint(
+                            $this->expectedException
+                        )
+                    );
+                }
             }
 
             if ($this->expectedExceptionMessage !== null) {

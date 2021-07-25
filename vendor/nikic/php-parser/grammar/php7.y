@@ -20,6 +20,11 @@ top_statement_list:
             if ($nop !== null) { $1[] = $nop; } $$ = $1; }
 ;
 
+ampersand:
+      T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG
+    | T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG
+;
+
 reserved_non_modifiers:
       T_INCLUDE | T_INCLUDE_ONCE | T_EVAL | T_REQUIRE | T_REQUIRE_ONCE | T_LOGICAL_OR | T_LOGICAL_XOR | T_LOGICAL_AND
     | T_INSTANCEOF | T_NEW | T_CLONE | T_EXIT | T_IF | T_ELSEIF | T_ELSE | T_ENDIF | T_ECHO | T_DO | T_WHILE
@@ -28,12 +33,12 @@ reserved_non_modifiers:
     | T_FUNCTION | T_CONST | T_RETURN | T_PRINT | T_YIELD | T_LIST | T_SWITCH | T_ENDSWITCH | T_CASE | T_DEFAULT
     | T_BREAK | T_ARRAY | T_CALLABLE | T_EXTENDS | T_IMPLEMENTS | T_NAMESPACE | T_TRAIT | T_INTERFACE | T_CLASS
     | T_CLASS_C | T_TRAIT_C | T_FUNC_C | T_METHOD_C | T_LINE | T_FILE | T_DIR | T_NS_C | T_HALT_COMPILER | T_FN
-    | T_MATCH
+    | T_MATCH | T_ENUM
 ;
 
 semi_reserved:
       reserved_non_modifiers
-    | T_STATIC | T_ABSTRACT | T_FINAL | T_PRIVATE | T_PROTECTED | T_PUBLIC
+    | T_STATIC | T_ABSTRACT | T_FINAL | T_PRIVATE | T_PROTECTED | T_PUBLIC | T_READONLY
 ;
 
 identifier_ex:
@@ -327,7 +332,12 @@ non_empty_variables_list:
 
 optional_ref:
       /* empty */                                           { $$ = false; }
-    | '&'                                                   { $$ = true; }
+    | ampersand                                             { $$ = true; }
+;
+
+optional_arg_ref:
+      /* empty */                                           { $$ = false; }
+    | T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG                 { $$ = true; }
 ;
 
 optional_ellipsis:
@@ -356,6 +366,18 @@ class_declaration_statement:
             $this->checkInterface($$, #3); }
     | optional_attributes T_TRAIT identifier '{' class_statement_list '}'
           { $$ = Stmt\Trait_[$3, ['stmts' => $5, 'attrGroups' => $1]]; }
+    | optional_attributes T_ENUM identifier enum_scalar_type implements_list '{' class_statement_list '}'
+          { $$ = Stmt\Enum_[$3, ['scalarType' => $4, 'implements' => $5, 'stmts' => $7, 'attrGroups' => $1]];
+            $this->checkEnum($$, #3); }
+;
+
+enum_scalar_type:
+      /* empty */                                           { $$ = null; }
+    | ':' type                                              { $$ = $2; }
+
+enum_case_expr:
+      /* empty */                                           { $$ = null; }
+    | '=' expr                                              { $$ = $2; }
 ;
 
 class_entry_type:
@@ -493,7 +515,7 @@ new_else_single:
 
 foreach_variable:
       variable                                              { $$ = array($1, false); }
-    | '&' variable                                          { $$ = array($2, true); }
+    | ampersand variable                                    { $$ = array($2, true); }
     | list_expr                                             { $$ = array($1, false); }
     | array_short_syntax                                    { $$ = array($1, false); }
 ;
@@ -513,16 +535,20 @@ optional_visibility_modifier:
     | T_PUBLIC                  { $$ = Stmt\Class_::MODIFIER_PUBLIC; }
     | T_PROTECTED               { $$ = Stmt\Class_::MODIFIER_PROTECTED; }
     | T_PRIVATE                 { $$ = Stmt\Class_::MODIFIER_PRIVATE; }
+    | T_READONLY                { $$ = Stmt\Class_::MODIFIER_READONLY; }
 ;
 
 parameter:
-      optional_attributes optional_visibility_modifier optional_type_without_static optional_ref optional_ellipsis plain_variable
+      optional_attributes optional_visibility_modifier optional_type_without_static
+      optional_arg_ref optional_ellipsis plain_variable
           { $$ = new Node\Param($6, null, $3, $4, $5, attributes(), $2, $1);
             $this->checkParam($$); }
-    | optional_attributes optional_visibility_modifier optional_type_without_static optional_ref optional_ellipsis plain_variable '=' expr
+    | optional_attributes optional_visibility_modifier optional_type_without_static
+      optional_arg_ref optional_ellipsis plain_variable '=' expr
           { $$ = new Node\Param($6, $8, $3, $4, $5, attributes(), $2, $1);
             $this->checkParam($$); }
-    | optional_attributes optional_visibility_modifier optional_type_without_static optional_ref optional_ellipsis error
+    | optional_attributes optional_visibility_modifier optional_type_without_static
+      optional_arg_ref optional_ellipsis error
           { $$ = new Node\Param(Expr\Error[], null, $3, $4, $5, attributes(), $2, $1); }
 ;
 
@@ -582,7 +608,7 @@ non_empty_argument_list:
 
 argument:
       expr                                                  { $$ = Node\Arg[$1, false, false]; }
-    | '&' variable                                          { $$ = Node\Arg[$2, true, false]; }
+    | ampersand variable                                    { $$ = Node\Arg[$2, true, false]; }
     | T_ELLIPSIS expr                                       { $$ = Node\Arg[$2, false, true]; }
     | identifier_ex ':' expr
           { $$ = new Node\Arg($3, false, false, attributes(), $1); }
@@ -637,6 +663,8 @@ class_statement:
           { $$ = Stmt\ClassMethod[$5, ['type' => $2, 'byRef' => $4, 'params' => $7, 'returnType' => $9, 'stmts' => $10, 'attrGroups' => $1]];
             $this->checkClassMethod($$, #2); }
     | T_USE class_name_list trait_adaptations               { $$ = Stmt\TraitUse[$2, $3]; }
+    | optional_attributes T_CASE identifier enum_case_expr semi
+         { $$ = Stmt\EnumCase[$3, $4, $1]; }
     | error                                                 { $$ = null; /* will be skipped */ }
 ;
 
@@ -698,6 +726,7 @@ member_modifier:
     | T_STATIC                                              { $$ = Stmt\Class_::MODIFIER_STATIC; }
     | T_ABSTRACT                                            { $$ = Stmt\Class_::MODIFIER_ABSTRACT; }
     | T_FINAL                                               { $$ = Stmt\Class_::MODIFIER_FINAL; }
+    | T_READONLY                                            { $$ = Stmt\Class_::MODIFIER_READONLY; }
 ;
 
 property_declaration_list:
@@ -742,7 +771,7 @@ expr:
     | list_expr '=' expr                                    { $$ = Expr\Assign[$1, $3]; }
     | array_short_syntax '=' expr                           { $$ = Expr\Assign[$1, $3]; }
     | variable '=' expr                                     { $$ = Expr\Assign[$1, $3]; }
-    | variable '=' '&' variable                             { $$ = Expr\AssignRef[$1, $4]; }
+    | variable '=' ampersand variable                       { $$ = Expr\AssignRef[$1, $4]; }
     | new_expr                                              { $$ = $1; }
     | match                                                 { $$ = $1; }
     | T_CLONE expr                                          { $$ = Expr\Clone_[$2]; }
@@ -769,7 +798,8 @@ expr:
     | expr T_LOGICAL_AND expr                               { $$ = Expr\BinaryOp\LogicalAnd[$1, $3]; }
     | expr T_LOGICAL_XOR expr                               { $$ = Expr\BinaryOp\LogicalXor[$1, $3]; }
     | expr '|' expr                                         { $$ = Expr\BinaryOp\BitwiseOr [$1, $3]; }
-    | expr '&' expr                                         { $$ = Expr\BinaryOp\BitwiseAnd[$1, $3]; }
+    | expr T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG expr   { $$ = Expr\BinaryOp\BitwiseAnd[$1, $3]; }
+    | expr T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG expr       { $$ = Expr\BinaryOp\BitwiseAnd[$1, $3]; }
     | expr '^' expr                                         { $$ = Expr\BinaryOp\BitwiseXor[$1, $3]; }
     | expr '.' expr                                         { $$ = Expr\BinaryOp\Concat    [$1, $3]; }
     | expr '+' expr                                         { $$ = Expr\BinaryOp\Plus      [$1, $3]; }
@@ -829,18 +859,18 @@ expr:
     | T_YIELD_FROM expr                                     { $$ = Expr\YieldFrom[$2]; }
     | T_THROW expr                                          { $$ = Expr\Throw_[$2]; }
 
-    | T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr
+    | T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr %prec T_THROW
           { $$ = Expr\ArrowFunction[['static' => false, 'byRef' => $2, 'params' => $4, 'returnType' => $6, 'expr' => $8, 'attrGroups' => []]]; }
-    | T_STATIC T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr
+    | T_STATIC T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr %prec T_THROW
           { $$ = Expr\ArrowFunction[['static' => true, 'byRef' => $3, 'params' => $5, 'returnType' => $7, 'expr' => $9, 'attrGroups' => []]]; }
     | T_FUNCTION optional_ref '(' parameter_list ')' lexical_vars optional_return_type block_or_error
           { $$ = Expr\Closure[['static' => false, 'byRef' => $2, 'params' => $4, 'uses' => $6, 'returnType' => $7, 'stmts' => $8, 'attrGroups' => []]]; }
     | T_STATIC T_FUNCTION optional_ref '(' parameter_list ')' lexical_vars optional_return_type       block_or_error
           { $$ = Expr\Closure[['static' => true, 'byRef' => $3, 'params' => $5, 'uses' => $7, 'returnType' => $8, 'stmts' => $9, 'attrGroups' => []]]; }
 
-    | attributes T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr
+    | attributes T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr %prec T_THROW
           { $$ = Expr\ArrowFunction[['static' => false, 'byRef' => $3, 'params' => $5, 'returnType' => $7, 'expr' => $9, 'attrGroups' => $1]]; }
-    | attributes T_STATIC T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr
+    | attributes T_STATIC T_FN optional_ref '(' parameter_list ')' optional_return_type T_DOUBLE_ARROW expr %prec T_THROW
           { $$ = Expr\ArrowFunction[['static' => true, 'byRef' => $4, 'params' => $6, 'returnType' => $8, 'expr' => $10, 'attrGroups' => $1]]; }
     | attributes T_FUNCTION optional_ref '(' parameter_list ')' lexical_vars optional_return_type block_or_error
           { $$ = Expr\Closure[['static' => false, 'byRef' => $3, 'params' => $5, 'uses' => $7, 'returnType' => $8, 'stmts' => $9, 'attrGroups' => $1]]; }
@@ -1092,10 +1122,10 @@ inner_array_pair_list:
 
 array_pair:
       expr                                                  { $$ = Expr\ArrayItem[$1, null, false]; }
-    | '&' variable                                          { $$ = Expr\ArrayItem[$2, null, true]; }
+    | ampersand variable                                    { $$ = Expr\ArrayItem[$2, null, true]; }
     | list_expr                                             { $$ = Expr\ArrayItem[$1, null, false]; }
     | expr T_DOUBLE_ARROW expr                              { $$ = Expr\ArrayItem[$3, $1,   false]; }
-    | expr T_DOUBLE_ARROW '&' variable                      { $$ = Expr\ArrayItem[$4, $1,   true]; }
+    | expr T_DOUBLE_ARROW ampersand variable                { $$ = Expr\ArrayItem[$4, $1,   true]; }
     | expr T_DOUBLE_ARROW list_expr                         { $$ = Expr\ArrayItem[$3, $1,   false]; }
     | T_ELLIPSIS expr                                       { $$ = Expr\ArrayItem[$2, null, false, attributes(), true]; }
     | /* empty */                                           { $$ = null; }

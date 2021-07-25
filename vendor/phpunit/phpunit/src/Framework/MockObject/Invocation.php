@@ -148,6 +148,7 @@ final class Invocation implements SelfDescribing
                 return 0;
 
             case 'bool':
+            case 'false':
                 return false;
 
             case 'array':
@@ -168,7 +169,7 @@ final class Invocation implements SelfDescribing
             case 'generator':
             case 'iterable':
                 $generator = static function (): \Generator {
-                    yield;
+                    yield from [];
                 };
 
                 return $generator();

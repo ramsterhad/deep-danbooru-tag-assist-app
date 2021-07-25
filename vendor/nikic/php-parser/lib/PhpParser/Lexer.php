@@ -134,10 +134,11 @@ class Lexer
         // detected by finding "gaps" in the token array. Unterminated comments are detected
         // by checking if a trailing comment has a "*/" at the end.
         //
-        // Additionally, we canonicalize to the PHP 8 comment format here, which does not include
-        // the trailing whitespace anymore.
-        //
-        // We also canonicalize to the PHP 8 T_NAME_* tokens.
+        // Additionally, we perform a number of canonicalizations here:
+        //  * Use the PHP 8.0 comment format, which does not include trailing whitespace anymore.
+        //  * Use PHP 8.0 T_NAME_* tokens.
+        //  * Use PHP 8.1 T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG and
+        //    T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG tokens used to disambiguate intersection types.
 
         $filePos = 0;
         $line = 1;
@@ -206,6 +207,22 @@ class Lexer
                     array_splice($this->tokens, $i, $j - $i, [$token]);
                     $numTokens -= $j - $i - 1;
                 }
+            }
+
+            if ($token === '&') {
+                $next = $i + 1;
+                while (isset($this->tokens[$next]) && $this->tokens[$next][0] === \T_WHITESPACE) {
+                    $next++;
+                }
+                $followedByVarOrVarArg = isset($this->tokens[$next]) &&
+                    ($this->tokens[$next][0] === \T_VARIABLE || $this->tokens[$next][0] === \T_ELLIPSIS);
+                $this->tokens[$i] = $token = [
+                    $followedByVarOrVarArg
+                        ? \T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG
+                        : \T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG,
+                    '&',
+                    $line,
+                ];
             }
 
             $tokenValue = \is_string($token) ? $token : $token[1];
@@ -322,7 +339,8 @@ class Lexer
                 $value = $token[1];
                 $id = $this->tokenMap[$token[0]];
                 if (\T_CLOSE_TAG === $token[0]) {
-                    $this->prevCloseTagHasNewline = false !== strpos($token[1], "\n");
+                    $this->prevCloseTagHasNewline = false !== strpos($token[1], "\n")
+                        || false !== strpos($token[1], "\r");
                 } elseif (\T_INLINE_HTML === $token[0]) {
                     $startAttributes['hasLeadingNewline'] = $this->prevCloseTagHasNewline;
                 }
@@ -421,6 +439,11 @@ class Lexer
             'T_MATCH',
             'T_NULLSAFE_OBJECT_OPERATOR',
             'T_ATTRIBUTE',
+            // PHP 8.1
+            'T_ENUM',
+            'T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG',
+            'T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG',
+            'T_READONLY',
         ];
 
         // PHP-Parser might be used together with another library that also emulates some or all
@@ -511,6 +534,10 @@ class Lexer
         $tokenMap[\T_MATCH] = Tokens::T_MATCH;
         $tokenMap[\T_NULLSAFE_OBJECT_OPERATOR] = Tokens::T_NULLSAFE_OBJECT_OPERATOR;
         $tokenMap[\T_ATTRIBUTE] = Tokens::T_ATTRIBUTE;
+        $tokenMap[\T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG] = Tokens::T_AMPERSAND_NOT_FOLLOWED_BY_VAR_OR_VARARG;
+        $tokenMap[\T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG] = Tokens::T_AMPERSAND_FOLLOWED_BY_VAR_OR_VARARG;
+        $tokenMap[\T_ENUM] = Tokens::T_ENUM;
+        $tokenMap[\T_READONLY] = Tokens::T_READONLY;
 
         return $tokenMap;
     }
@@ -519,7 +546,7 @@ class Lexer
         // Based on semi_reserved production.
         return array_fill_keys([
             \T_STRING,
-            \T_STATIC, \T_ABSTRACT, \T_FINAL, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC,
+            \T_STATIC, \T_ABSTRACT, \T_FINAL, \T_PRIVATE, \T_PROTECTED, \T_PUBLIC, \T_READONLY,
             \T_INCLUDE, \T_INCLUDE_ONCE, \T_EVAL, \T_REQUIRE, \T_REQUIRE_ONCE, \T_LOGICAL_OR, \T_LOGICAL_XOR, \T_LOGICAL_AND,
             \T_INSTANCEOF, \T_NEW, \T_CLONE, \T_EXIT, \T_IF, \T_ELSEIF, \T_ELSE, \T_ENDIF, \T_ECHO, \T_DO, \T_WHILE,
             \T_ENDWHILE, \T_FOR, \T_ENDFOR, \T_FOREACH, \T_ENDFOREACH, \T_DECLARE, \T_ENDDECLARE, \T_AS, \T_TRY, \T_CATCH,
