@@ -1,7 +1,7 @@
 # Deep Danbooru Tag Assist
 Web-based assist application for an AI-based multi-label image classification system, based on [KichangKim´s DeepDanbooru](https://github.com/KichangKim/DeepDanbooru "KichangKim´s DeepDanbooru").
 
-![screenshot](ddta_screenshot.png?raw=true "DDTA screenshot")
+![screenshot](ddta_screenshot.jpg?raw=true "DDTA screenshot")
 **[LIVE functional production server, login with danbooru username and API key](https://ddta.henta.hu/ "DDTA LIVE functional demonstration and production server").**  
 *PLEASE BEWARE: SELECTED & SUBMITTED TAGS ARE ADDED TO DANBOORU FOR REAL*.  
 An API key can be created and removed on your profile page: https://danbooru.donmai.us/profile. Please see https://danbooru.donmai.us/wiki_pages/help:api for further information.
