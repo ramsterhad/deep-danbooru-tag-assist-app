@@ -64,6 +64,7 @@ To adapt the configuration of DDTA, adapt the `.env` file or create `.env.local`
 | tags_min_score                             | 0.500                              |
 | picture_storage                            | tmp                                |
 | limit_for_suggested_tags                   | 15                                 |
+| tag_suggestion_exclude_list                | empty                              |
 | debug                                      | false                              |
 
 ### danbooru_api_url
@@ -107,6 +108,10 @@ learning platform (MLP). Needs write access.
 ### limit_for_suggested_tags
 Limits the checkboxes for suggested new tags. By default a row contains 3 columns. So a number dividable by 3 is 
 recommended. Using the numpad, the first 9 suggested tags can be toggled on/off. 
+
+### tag_suggestion_exclude_list
+A comma separated list to exclude tags to be suggested.  
+Example: `tag_suggestion_exclude_list=tag1,tag2,tag3`
 
 ### debug
 Activates a logging for Post Responses, e.g. the answer from the danbooru platform.  

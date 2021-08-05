@@ -4,8 +4,6 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
-use http\Cookie;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
