@@ -24,7 +24,7 @@ class TagExcludeList implements TagExcludeListInterface
 
     protected function transformStringListToArray(string $excludeList): array
     {
-        $list = preg_split('/,/', $excludeList);
+        $list = preg_split('/ /', $excludeList);
         return array_map(function ($value) {
             return trim($value);
         }, $list);
