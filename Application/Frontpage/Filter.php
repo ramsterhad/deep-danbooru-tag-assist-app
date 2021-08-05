@@ -4,6 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\TagExcludeListInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
 
@@ -12,9 +13,9 @@ class Filter
     /**
      * This function compares the Danbooru tags with given ones and returns a tag collection of unknown tags.
      *
-     * @param TagCollection $collection
+     * @param TagCollection $suggestedTags
+     * @param TagCollection $danbooruTags
      * @return TagCollection
-     *
      */
     public function filterTagsAgainstAlreadyKnownTags(
         TagCollection $suggestedTags,
@@ -82,6 +83,19 @@ class Filter
             $configScore = \floatval(Config::get('tags_min_score'));
 
             if ($tagScore >= $configScore) {
+                $filtered->add($tag);
+            }
+        }
+
+        return $filtered;
+    }
+
+    public function filterTagsByExcludeList(TagCollection $collection, TagExcludeListInterface $excludeList): TagCollection
+    {
+        $filtered = new TagCollection();
+
+        foreach ($collection->getTags() as $tag) {
+            if (!\in_array($tag->getName(), $excludeList->getList())) {
                 $filtered->add($tag);
             }
         }

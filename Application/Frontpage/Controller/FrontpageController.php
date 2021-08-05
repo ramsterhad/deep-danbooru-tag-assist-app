@@ -15,6 +15,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Excep
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\TagExcludeList;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Filter;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\Logger;
@@ -67,6 +68,8 @@ class FrontpageController implements Controller
         $suggestedTags = $filter->filterTagsByScore($suggestedTags);
         // Removes the rating tags.
         $suggestedTags = $filter->filterSafeTags($suggestedTags);
+        // Tags can be excluded by the user.
+        $suggestedTags = $filter->filterTagsByExcludeList($suggestedTags, new TagExcludeList());
         // Filter the known tags from Danbooru against the suggested tags and return the difference.
         // The unknown tags are later listed and registered with the numpad keys.
         $unknownTags = $filter->filterTagsAgainstAlreadyKnownTags($suggestedTags, $danbooru->getCollection());

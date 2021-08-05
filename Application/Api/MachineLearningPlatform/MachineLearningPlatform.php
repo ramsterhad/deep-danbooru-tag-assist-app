@@ -47,6 +47,9 @@ class MachineLearningPlatform implements ApiContract
                 '(0.992) solo',
                 '(1.000) hakurei_reimu',
                 '(1.000) rating:safe',
+                '(1.000) nagato_(azur_lane)',
+                '(1.000) tag1',
+                '(1.000) tag2',
                 '',
             ];
         }
