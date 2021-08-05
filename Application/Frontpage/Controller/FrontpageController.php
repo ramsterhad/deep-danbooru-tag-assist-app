@@ -119,9 +119,9 @@ class FrontpageController implements Controller
             }
 
             if ($isNew) {
-                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' . $this->addWikiLink($tag->getName()) . '</div>';
+                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' . $this->addWikiLink($tag->getName()) . '</div>&nbsp;';
             } else {
-                $mlpTagList .= '<div class="tag suggested-tags">' . $this->addWikiLink($tag->getName()) . '</div>';
+                $mlpTagList .= '<div class="tag suggested-tags">' . $this->addWikiLink($tag->getName()) . '</div>&nbsp;';
             }
         }
 
