@@ -3,6 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase;
 
 
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
@@ -24,11 +25,6 @@ class PredictedTagsDatabase implements ApiContract
     public function requestTags(string $id): void
     {
         $response = (new Database())->get((int) $id);
-
-        // Damn /\/\/\. If a backslash exists, double it so the JSON parser don't get in trouble.
-        if (strpos($response, '\\') !== false) {
-            $response = str_replace('\\', '\\\\', $response);
-        }
 
         if (!Json::isJson($response)) {
             throw new \JsonException('The predicted tags database did not return a valid json for id "' . $id . '".');

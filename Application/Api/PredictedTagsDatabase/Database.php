@@ -57,9 +57,15 @@ class Database
 
         $tags = [];
         foreach ($items as $item) {
-            $scoreAndTag = \preg_split('/ /', $item); // Split score and tag: "(0.991) 1girl" becomes [0] => 0.991, [1] => 1girl
-            $score = \str_replace(['(', ')'], '', $scoreAndTag[0]); // Remove the brackets from the score.
-            $tag = \str_replace(["\n"], '', $scoreAndTag[1]); // Removes \n from the last tag (often rating:).
+            $item = \str_replace('\n', '', $item);
+            \preg_match('/\((.+)\) (.+)/', $item, $scoreAndTag); // Split Score And Tags
+
+            $score = $scoreAndTag[1];
+            // Pre-encodes the string to json so it can correctly be used in an array for further json encoding
+            $tagEncoded = \json_encode($scoreAndTag[2], \JSON_UNESCAPED_SLASHES);
+            // Since the JSON encode add enclosing double-quotes, we'll remove them again
+            $tag = \substr($tagEncoded, 1, -1);
+
             $tags[] = [$score, $tag];
         }
 
@@ -68,6 +74,6 @@ class Database
             'tags' => $tags
         ];
 
-        return \stripslashes(\json_encode($output, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+        return \stripslashes(\json_encode($output, \JSON_PRETTY_PRINT));
     }
 }
