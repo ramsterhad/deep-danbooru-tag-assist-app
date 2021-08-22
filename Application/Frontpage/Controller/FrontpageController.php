@@ -117,7 +117,7 @@ class FrontpageController implements Controller
             foreach ($filteredTags->getTags() as $filteredTag) {
                 if ($tag->getName() === $filteredTag->getName()) {
                     $isNew = true;
-                    continue;
+                    break;
                 }
             }
 
@@ -134,7 +134,7 @@ class FrontpageController implements Controller
     protected function addWikiLink(string $title): string
     {
         $url = '<a href="https://danbooru.donmai.us/wiki_pages/%s" class="suggested-tag" target="_blank" rel="noreferrer">%s</a>';
-        $url = sprintf($url, $title, $title);
+        $url = sprintf($url, \htmlentities($title), $title);
         return $url;
     }
 
