@@ -3,7 +3,6 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase;
 
 
-use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
