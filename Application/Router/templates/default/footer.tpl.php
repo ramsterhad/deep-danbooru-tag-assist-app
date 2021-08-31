@@ -2,8 +2,9 @@
 
 <footer class="footer mt-auto bg-light">
     <div class="container-fluid container-footer">
-        <div class="row  align-items-end">
+        <div class="row align-items-end">
             <div class="col-sm-4">
+                <?php if (!$response->has('showManual')) : ?>
                 <div class="row footer-help-row">
                     <div class="col-sm-12"><h4>Manual</h4></div>
                 </div>
@@ -19,6 +20,7 @@
                     <div class="col-sm-3">Spacebar</div>
                     <div class="col-sm-9">Load a new post. Do not send anything to Danbooru.</div>
                 </div>
+                <?php endif; ?>
             </div>
 
             <div class="col-sm-4 text-center ">
@@ -26,9 +28,6 @@
             </div>
 
             <div class="col-sm-4">
-                <div class="row">
-                    <div class="col-lg"><div class="button-cosplays-as-link float-right">Cookies? <</div></div>
-                </div>
                 <div class="row">
                     <div class="col-lg">
                         <form method="post" action="index.php">
