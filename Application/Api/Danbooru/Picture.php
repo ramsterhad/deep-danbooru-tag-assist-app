@@ -27,7 +27,6 @@ class Picture
         $fp = \fopen($this->fullPathToFile, 'w');
 
         \curl_setopt($ch, CURLOPT_URL, $this->url);
-        \curl_setopt($ch, CURLOPT_VERBOSE, 1);
         \curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         \curl_setopt($ch, CURLOPT_AUTOREFERER, false);
         \curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
