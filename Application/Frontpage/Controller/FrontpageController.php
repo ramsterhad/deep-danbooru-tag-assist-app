@@ -117,14 +117,14 @@ class FrontpageController implements Controller
             foreach ($filteredTags->getTags() as $filteredTag) {
                 if ($tag->getName() === $filteredTag->getName()) {
                     $isNew = true;
-                    continue;
+                    break;
                 }
             }
 
             if ($isNew) {
-                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' . $this->addWikiLink($tag->getName()) . '</div>&nbsp;';
+                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' . $this->addWikiLink($tag->getName()) . '&nbsp;</div>';
             } else {
-                $mlpTagList .= '<div class="tag suggested-tags">' . $this->addWikiLink($tag->getName()) . '</div>&nbsp;';
+                $mlpTagList .= '<div class="tag suggested-tags">' . $this->addWikiLink($tag->getName()) . '&nbsp;</div>';
             }
         }
 
@@ -134,7 +134,7 @@ class FrontpageController implements Controller
     protected function addWikiLink(string $title): string
     {
         $url = '<a href="https://danbooru.donmai.us/wiki_pages/%s" class="suggested-tag" target="_blank" rel="noreferrer">%s</a>';
-        $url = sprintf($url, $title, $title);
+        $url = sprintf($url, \htmlentities($title), $title);
         return $url;
     }
 

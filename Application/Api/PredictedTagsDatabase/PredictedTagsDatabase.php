@@ -25,11 +25,6 @@ class PredictedTagsDatabase implements ApiContract
     {
         $response = (new Database())->get((int) $id);
 
-        // Damn /\/\/\. If a backslash exists, double it so the JSON parser don't get in trouble.
-        if (strpos($response, '\\') !== false) {
-            $response = str_replace('\\', '\\\\', $response);
-        }
-
         if (!Json::isJson($response)) {
             throw new \JsonException('The predicted tags database did not return a valid json for id "' . $id . '".');
         }

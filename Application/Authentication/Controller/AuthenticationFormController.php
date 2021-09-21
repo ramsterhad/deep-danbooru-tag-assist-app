@@ -18,6 +18,8 @@ class AuthenticationFormController implements Controller
     {
         $response = new Response($this, 'Authentication.authentication_form.index');
 
+        $response->assign('showManual', false);
+
         if (Session::has('wrong_credentials')) {
             Session::delete('wrong_credentials');
             $response->assign('authentication_wrong_credentials', true);

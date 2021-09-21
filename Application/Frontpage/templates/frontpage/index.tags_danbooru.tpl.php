@@ -7,7 +7,7 @@
             <span class="tag">
                 <a href="https://danbooru.donmai.us/wiki_pages/<?php echo $tag->getName(); ?>" target="_blank" rel="noreferrer">
                     <?php echo $response->getController()->tagsCssClassHelperColoredDanbooruTags($tag); ?>
-                </a>
+                </a>&nbsp;
             </span>
         <?php endforeach; ?>
     </div>
