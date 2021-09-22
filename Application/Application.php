@@ -6,6 +6,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
@@ -42,7 +43,7 @@ class Application
     public function authenticate(): void
     {
         if (!Authentication::isAuthenticated()) {
-            (new Authentication())->autoAuthentication();
+            (new Authentication(new DanbooruApiBridge()))->autoAuthentication();
         }
     }
 

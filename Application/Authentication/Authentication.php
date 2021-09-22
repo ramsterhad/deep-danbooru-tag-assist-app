@@ -10,6 +10,13 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 final class Authentication
 {
+    private DanbooruApiBridge $danbooruApiBridge;
+
+    public function __construct(DanbooruApiBridge $danbooruApiBridge)
+    {
+        $this->danbooruApiBridge = $danbooruApiBridge;
+    }
+
     /**
      * Tries to authenticate with the session variables username and api_key.
      * Originally the session variables can be populated by the login form
@@ -65,10 +72,11 @@ final class Authentication
      * @param string $username
      * @param string $key
      * @return bool
+     * @throws AuthenticationError
      */
     public function authenticate(string $username, string $key): bool
     {
-        $danbooruBridge = new DanbooruApiBridge();
+        $danbooruBridge = $this->danbooruApiBridge;
         if ($danbooruBridge->authenticate($username, $key)) {
             $this->writeUserCredentialsToSession($username, $key);
             $this->setIsAuthenticatedFlag();

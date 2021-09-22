@@ -4,7 +4,6 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Container;
 
 
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class ContainerFactory
