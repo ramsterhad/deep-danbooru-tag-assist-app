@@ -61,7 +61,7 @@
   </div>
   <script src="{{path_to_root}}_js/jquery.min.js" type="text/javascript"></script>
   <script src="{{path_to_root}}_js/popper.min.js" type="text/javascript"></script>
-  <script src="{{path_to_root}}_js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="{{path_to_root}}_js/bootstrap.bundle.min.js" type="text/javascript"></script>
   <script src="{{path_to_root}}_js/file.js" type="text/javascript"></script>
  </body>
 </html>
