@@ -4,7 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Container\ContainerFactory;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 require_once '../bootstrap.php';
 
@@ -14,4 +14,4 @@ dump($container);
 
 /** @var Authentication $authentication */
 $authentication = $container->get(Authentication::class);
-
+dump($authentication);

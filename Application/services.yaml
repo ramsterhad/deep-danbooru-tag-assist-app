@@ -1,0 +1,14 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true      # Automatically injects dependencies in your services.
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\:
+
+    # Anything in Application
+    resource: '*'
+    #exclude: '../{DependencyInjection,Entity,Tests,Kernel.php}'
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication:
+    public: true

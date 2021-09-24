@@ -1,0 +1,10 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true      # Automatically injects dependencies in your services.
+
+  Ramsterhad\DeepDanbooruTagAssist\Framework\:
+
+    # Anything in Framework
+    resource: '*'
