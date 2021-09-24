@@ -10,7 +10,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResp
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
-use Ramsterhad\DeepDanbooruTagAssist\Application\System\Json;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 
 class Danbooru implements ApiContract
 {

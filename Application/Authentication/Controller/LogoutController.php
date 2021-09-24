@@ -5,6 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
@@ -12,7 +13,7 @@ class LogoutController implements Controller
 {
     public function index(): void
     {
-        (new Authentication())->logout();
+        (new Authentication(new DanbooruApiBridge()))->logout();
         Router::route('/');
     }
 }

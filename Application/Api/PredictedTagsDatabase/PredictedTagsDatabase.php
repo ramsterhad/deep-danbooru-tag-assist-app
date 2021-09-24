@@ -9,7 +9,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Excep
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\Application\System\Json;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 
 class PredictedTagsDatabase implements ApiContract
 {

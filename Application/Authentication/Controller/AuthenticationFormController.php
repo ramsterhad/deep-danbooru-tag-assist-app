@@ -7,6 +7,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
@@ -39,7 +40,7 @@ class AuthenticationFormController implements Controller
         $key = $_POST['api_key'] ?? '';
 
         try {
-            (new Authentication())->authenticate($username, $key);
+            (new Authentication(new DanbooruApiBridge()))->authenticate($username, $key);
         } catch (InvalidCredentials $e) {
             Session::set('wrong_credentials', true);
             Router::route('auth');

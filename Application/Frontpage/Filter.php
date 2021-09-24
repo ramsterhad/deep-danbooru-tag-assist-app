@@ -6,7 +6,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\TagExcludeListInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\Application\System\StringUtils;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\StringUtils;
 
 class Filter
 {
