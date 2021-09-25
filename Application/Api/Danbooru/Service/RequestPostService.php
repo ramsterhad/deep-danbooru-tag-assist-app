@@ -23,7 +23,7 @@ use function preg_split;
 use function property_exists;
 use function str_contains;
 
-class RequestPostService
+final class RequestPostService
 {
     private DanbooruBridgeService $danbooruBridgeService;
     private EndpointUrlService $endpointUrlService;
@@ -91,7 +91,7 @@ class RequestPostService
      * image_width               In pixels
      * image_height              In pixels
      * parent_id                 In addition to pools, submissions can have a "parent" and/or a "child".
-     *                           Typically for variations or reuploads in higher resolution
+     *                           Typically, for variations or reuploads in higher resolution
      * has_children              See parent_id
      * is_banned                 The artist requested removal of the submission. Does not imply status:deleted
      * pixiv_id                  See source
@@ -110,7 +110,6 @@ class RequestPostService
      * large_file_url            Link to resized (850 px) file
      * preview_file_url          Link to thumbnail
      *
-     * @param TagCollection $tagCollection
      * @throws InvalidCredentials
      * @throws PostResponseException
      */
@@ -312,10 +311,5 @@ class RequestPostService
             ->setPicOriginal($object->file_url)
             ->setPicLarge($object->large_file_url)
             ->setTagCollection($tagCollection);
-    }
-
-    public function getEndpointUrl(): string
-    {
-        return $this->endpointUrlService->getEndpointAddress();
     }
 }
