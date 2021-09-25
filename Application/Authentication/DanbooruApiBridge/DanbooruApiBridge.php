@@ -24,9 +24,11 @@ class DanbooruApiBridge
      * @return bool
      * @throws AuthenticationError
      */
+    /*
     public function authenticate(string $user, string $key): bool
     {
         $danbooru = new Danbooru();
         return $danbooru->authenticate(new Endpoint(), $user, $key);
     }
+    */
 }

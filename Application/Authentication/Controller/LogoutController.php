@@ -4,16 +4,19 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 class LogoutController implements Controller
 {
     public function index(): void
     {
-        (new Authentication(new DanbooruApiBridge()))->logout();
+        /** @var AuthenticationService $authenticationService */
+        $authenticationService = ContainerFactory::getInstance()->getContainer()->get(AuthenticationService::class);
+        $authenticationService->logout();
+
         Router::route('/');
     }
 }

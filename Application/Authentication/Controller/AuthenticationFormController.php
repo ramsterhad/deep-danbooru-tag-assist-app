@@ -4,14 +4,14 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 class AuthenticationFormController implements Controller
 {
@@ -37,10 +37,20 @@ class AuthenticationFormController implements Controller
     public function checkAuthenticationRequest(): void
     {
         $username = $_POST['username'] ?? '';
-        $key = $_POST['api_key'] ?? '';
+        $apiKey = $_POST['api_key'] ?? '';
 
         try {
-            (new Authentication(new DanbooruApiBridge()))->authenticate($username, $key);
+            /** @var AuthenticationService $authenticationService */
+            $authenticationService = ContainerFactory::getInstance()
+                ->getContainer()
+                ->get(AuthenticationService::class);
+
+            $authenticationService->authenticate(
+                Config::get('danbooru_api_url'),
+                $username,
+                $apiKey
+            );
+
         } catch (InvalidCredentials $e) {
             Session::set('wrong_credentials', true);
             Router::route('auth');

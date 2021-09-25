@@ -4,7 +4,6 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
@@ -28,31 +27,6 @@ class Danbooru implements ApiContract
         'file_url',
         'large_file_url',
     ];
-
-    public function authenticate(Endpoint $endpoint, string $username, string $apiKey): bool
-    {
-        $response = $endpoint->authenticate(Config::get('danbooru_api_url'), $username, $apiKey);
-
-        // No json as return value. This is bad.
-        if (!Json::isJson($response)) {
-            throw new AuthenticationError(
-                'The authentication service didn\'t return a nice response. -_-\'',
-                AuthenticationError::CODE_RESPONSE_CONTAINED_INVALID_JSON
-            );
-        }
-
-        $response = \json_decode($response);
-
-        // Json didn't had the id property which every logged in user must have.
-        if (!\property_exists($response, 'id')) {
-            throw new InvalidCredentials(
-                'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
-                AuthenticationError::CODE_RESPONSE_MISSING_PROPERTIES
-            );
-        }
-
-        return true;
-    }
 
     /**
      * The API returns the following 49 fields:
@@ -326,7 +300,8 @@ class Danbooru implements ApiContract
      * @param TagCollection $collection
      * @throws Exception\EndpointException
      */
-    public function pushTags(Endpoint $endpoint, int $id, TagCollection $collection ): void {
+    public function pushTags(Endpoint $endpoint, int $id, TagCollection $collection ): void
+    {
 
         $endpoint->pushTags(
             Config::get('danbooru_api_url'),

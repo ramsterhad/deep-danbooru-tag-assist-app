@@ -5,10 +5,12 @@ services:
     autowire: true      # Automatically injects dependencies in your services.
 
   Ramsterhad\DeepDanbooruTagAssist\Application\:
-
-    # Anything in Application
     resource: '*'
     #exclude: '../{DependencyInjection,Entity,Tests,Kernel.php}'
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication:
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface:
+    class: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\CurlAdapter
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService:
     public: true

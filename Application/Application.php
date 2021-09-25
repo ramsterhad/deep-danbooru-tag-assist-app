@@ -5,13 +5,13 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Authentication;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\DanbooruApiBridge\DanbooruApiBridge;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 
 class Application
@@ -42,8 +42,11 @@ class Application
      */
     public function authenticate(): void
     {
-        if (!Authentication::isAuthenticated()) {
-            (new Authentication(new DanbooruApiBridge()))->autoAuthentication();
+        /** @var AuthenticationService $authenticationService */
+        $authenticationService = ContainerFactory::getInstance()->getContainer()->get(AuthenticationService::class);
+
+        if (!AuthenticationService::isAuthenticated()) {
+            $authenticationService->autoAuthentication();
         }
     }
 
@@ -112,6 +115,6 @@ class Application
 
     public function isAuthenticated(): bool
     {
-        return Authentication::isAuthenticated() ?? false;
+        return AuthenticationService::isAuthenticated() ?? false;
     }
 }

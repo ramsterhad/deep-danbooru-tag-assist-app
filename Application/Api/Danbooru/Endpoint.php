@@ -9,30 +9,6 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
 class Endpoint
 {
-    public function authenticate(string $url, string $username, string $apiKey): string
-    {
-        $apiRequestUrl = \sprintf(
-            '%sprofile.json?login=%s&api_key=%s',
-            $url,
-            $username,
-            $apiKey,
-        );
-
-        $ch = curl_init();
-        \curl_setopt($ch, CURLOPT_URL, $apiRequestUrl);
-        \curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-        \curl_setopt($ch, CURLOPT_TIMEOUT, 3); //timeout in seconds
-        $response = \curl_exec($ch);
-        \curl_close($ch);
-
-        if ($response === false) {
-            throw new EndpointException();
-        }
-
-        return $response;
-    }
-
     public function requestPost(string $url, string $username, string $apiKey): string
     {
         $ch = \curl_init();
@@ -65,7 +41,7 @@ class Endpoint
         \curl_setopt($ch, CURLOPT_URL, $apiRequestUrl);
         \curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         \curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-        \curl_setopt($ch, CURLOPT_POSTFIELDS, ['post[tag_string]' => $collection->toString()]);
+        \curl_setopt($ch, CURLOPT_POSTFIELDS, ['post[tag_string]' => $collection->toString()]); // ['post[tag_string]' => $collection->toString()]
         \curl_setopt($ch, CURLOPT_USERPWD, $username . ':' . $apiKey);
         \curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
         \curl_setopt($ch, CURLOPT_TIMEOUT, 120);
