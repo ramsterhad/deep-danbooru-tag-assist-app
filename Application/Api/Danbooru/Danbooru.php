@@ -121,7 +121,7 @@ class Danbooru implements ApiContract
         /*
          * We want the transformed json to be an object (an object wrapped in an array).
          * Since this function promises to return an array, we don't need a further check if the return value is
-         * an array actually. If it wouldn't then it would break at this very place.
+         * an array, actually. If it wouldn't then it would break at this very place.
          */
         $response = $this->transformJsonStringToObject($response);
 
@@ -184,7 +184,7 @@ class Danbooru implements ApiContract
             }
         }
 
-        // Fills a collection of tags with the various tag categories by Danbooru.
+        // Fills a collection with tags with the various tag categories by Danbooru.
         $this->transformTagStringListsToCollection($object, $tagCollection);
 
         /*
@@ -283,7 +283,7 @@ class Danbooru implements ApiContract
             return;
         }
 
-        if (strpos($color, '#') === false) {
+        if (!str_contains($color, '#')) {
             throw new \Exception('I need a hex color, nothing else!');
         }
 
