@@ -15,9 +15,9 @@ use function property_exists;
 
 final class AuthenticationService
 {
-    private DanbooruService $danbooruService;
+    private DanbooruBridgeService $danbooruService;
 
-    public function __construct(DanbooruService $danbooruService)
+    public function __construct(DanbooruBridgeService $danbooruService)
     {
         $this->danbooruService = $danbooruService;
     }

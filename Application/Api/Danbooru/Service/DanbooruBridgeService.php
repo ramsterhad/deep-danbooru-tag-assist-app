@@ -8,7 +8,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 use function sprintf;
 
-class DanbooruService
+class DanbooruBridgeService
 {
     private Repository $repository;
 
