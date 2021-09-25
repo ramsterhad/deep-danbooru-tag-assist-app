@@ -23,7 +23,7 @@ auth:
   action: index
 
 authenticate:
-  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationFormController
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationController
   action: checkAuthenticationRequest
 
 logout:

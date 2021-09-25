@@ -1,9 +1,6 @@
 <?php declare(strict_types=1);
 
-
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
-
-
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
@@ -21,23 +18,28 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Cont
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
-use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 
 class FrontpageController implements Controller
 {
-    public function index(): Response
-    {
+    private RequestPostService $requestPostService;
+    private EndpointUrlService $endpointUrlService;
+
+    public function __construct(
+        RequestPostService $requestPostService,
+        EndpointUrlService $endpointUrlService
+    ) {
+        $this->requestPostService = $requestPostService;
+        $this->endpointUrlService = $endpointUrlService;
+    }
+
+    public function index(): Response {
+
         if (!AuthenticationService::isAuthenticated()) {
             Router::route('auth');
         }
 
-        /** @var RequestPostService $requestPostService */
-        $requestPostService = ContainerFactory::getInstance()->getContainer()->get(RequestPostService::class);
-        $post = $requestPostService->requestTags(new TagCollection());
-
-        /** @var EndpointUrlService $endpointUrlService */
-        $endpointUrlService = ContainerFactory::getInstance()->getContainer()->get(EndpointUrlService::class);
+        $post = $this->requestPostService->requestTags(new TagCollection());
 
         $picture = new Picture($post->getPicOriginal());
         $picture->download();
@@ -76,7 +78,7 @@ class FrontpageController implements Controller
         $response->assign('suggestedTags', $suggestedTags);
         $response->assign('picture', $picture);
         $response->assign('unknownTags', $unknownTags);
-        $response->assign('endpointUrl', $endpointUrlService->getEndpointAddress());
+        $response->assign('endpointUrl', $this->endpointUrlService->getEndpointAddress());
         $response->assign('danbooruApiUrl', Config::get('danbooru_api_url'));
         $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
 

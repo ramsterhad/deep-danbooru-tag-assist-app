@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Router;
 
-
+use Exception;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Config\RouterConfig;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Exception\TemplateNotFoundException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\DefaultController;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
+use function sprintf;
 
 final class Router
 {
@@ -51,6 +51,7 @@ final class Router
 
     /**
      * Checks get parameter "r" (route).
+     * @noinspection PhpFieldAssignmentTypeMismatchInspection
      */
     public function processRequest(): void
     {
@@ -66,19 +67,20 @@ final class Router
 
         $route = $routerConfig->getRouteByAlias($this->requestController);
 
-        $controllerFullQualifiedNamespacePath = $route->getFullQualifiedNamespacePath();
-        $this->controller = new $controllerFullQualifiedNamespacePath();
+        $fullQualifiedNamespace = $route->getFullQualifiedNamespacePath();
+
+        $this->controller = ContainerFactory::getInstance()->getContainer()->get($fullQualifiedNamespace);
 
         if (!($this->controller instanceof Controller)) {
-            throw new \Exception(
-                sprintf('I can\'t work with this thing "%s"!', $controllerFullQualifiedNamespacePath)
+            throw new Exception(
+                sprintf('I can\'t work with this thing "%s"!', $fullQualifiedNamespace)
             );
         }
 
         $action = $routerConfig->getRouteByAlias($this->requestController)->getMethod();
 
         if (!method_exists($this->controller, $action)) {
-            throw new \Exception(sprintf('Called unknown method "%s" for object "%s".', $action, $this->controller));
+            throw new Exception(sprintf('Called unknown method "%s" for object "%s".', $action, $this->controller));
         }
 
         $response = $this->controller->{$action}();

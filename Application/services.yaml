@@ -2,11 +2,35 @@ services:
 
   _defaults:
     public: false
-    autowire: true      # Automatically injects dependencies in your services.
+    autowire: true
 
   Ramsterhad\DeepDanbooruTagAssist\Application\:
     resource: '*'
     #exclude: '../{DependencyInjection,Entity,Tests,Kernel.php}'
+
+
+  # Controller
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationFormController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\LogoutController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\ApiUrlController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\FrontpageController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\PushTagsController:
+    public: true
+
+
+  # Services
 
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface:
     class: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\CurlAdapter

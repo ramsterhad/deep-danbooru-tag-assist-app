@@ -1,27 +1,29 @@
 <?php declare(strict_types=1);
 
-
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
-
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
-use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 use function setcookie;
 
 class ApiUrlController implements Controller
 {
+    private EndpointUrlService $endpointService;
+
+    public function __construct(EndpointUrlService $endpointService)
+    {
+        $this->endpointService = $endpointService;
+    }
+
     /**
      * Reset the API URL to the default one
      */
     public function resetApiUrlToDefault(): void
     {
-        /** @var EndpointUrlService $endpointService */
-        $endpointService = ContainerFactory::getInstance()->getContainer()->get(EndpointUrlService::class);
 
-        setcookie('danbooru_api_url', $endpointService->getGetPostUrlFromConfig());
+        setcookie('danbooru_api_url', $this->endpointService->getGetPostUrlFromConfig());
         Router::route('/');
     }
 

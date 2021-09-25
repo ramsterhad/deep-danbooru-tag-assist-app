@@ -10,13 +10,19 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\StatisticLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
-use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 use function implode;
 use function sprintf;
 
 class PushTagsController implements Controller
 {
+    private PushTagsService $pushTagsService;
+
+    public function __construct(PushTagsService $pushTagsService)
+    {
+        $this->pushTagsService = $pushTagsService;
+    }
+
     public function pushNewTagsToDanbooru(): void
     {
         $id = (int) $_POST['tag_checkbox_post_id'] ?? 0;
@@ -34,8 +40,7 @@ class PushTagsController implements Controller
         }
 
         /** @var PushTagsService $pushTagsService */
-        $pushTagsService = ContainerFactory::getInstance()->getContainer()->get(PushTagsService::class);
-        $pushTagsService->pushTags(
+        $this->pushTagsService->pushTags(
             Config::get('danbooru_api_url'),
             Session::get('username'),
             Session::get('api_key'),
