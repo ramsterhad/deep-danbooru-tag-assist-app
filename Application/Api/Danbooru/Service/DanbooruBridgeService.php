@@ -4,6 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PushTagsException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure\Repository;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
@@ -46,6 +47,26 @@ final class DanbooruBridgeService
             return $this->repository->requestPost($adapter, $url, $username, $apiKey);
         } catch (AdapterException $e) {
             throw new RequestPostException();
+        }
+    }
+
+    /**
+     * @throws PushTagsException
+     */
+    public function pushTags(
+        string $url,
+        string $username,
+        string $apiKey,
+        array $data
+    ): string {
+
+        /** @var AdapterInterface $adapter */
+        $adapter = ContainerFactory::getInstance()->getContainer()->get(AdapterInterface::class);
+
+        try {
+            return $this->repository->pushTags($adapter, $url, $username, $apiKey, $data);
+        } catch (AdapterException $e) {
+            throw new PushTagsException();
         }
     }
 }

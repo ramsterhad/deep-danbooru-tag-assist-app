@@ -24,5 +24,8 @@ services:
 #  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\DanbooruBridgeService:
 #    public: true
 
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\PushTagsService:
+    public: true
+
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService:
     public: true

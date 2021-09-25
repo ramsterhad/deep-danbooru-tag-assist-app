@@ -7,6 +7,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
@@ -34,6 +35,9 @@ class FrontpageController implements Controller
         /** @var RequestPostService $requestPostService */
         $requestPostService = ContainerFactory::getInstance()->getContainer()->get(RequestPostService::class);
         $post = $requestPostService->requestTags(new TagCollection());
+
+        /** @var EndpointUrlService $endpointUrlService */
+        $endpointUrlService = ContainerFactory::getInstance()->getContainer()->get(EndpointUrlService::class);
 
         $picture = new Picture($post->getPicOriginal());
         $picture->download();
@@ -72,7 +76,7 @@ class FrontpageController implements Controller
         $response->assign('suggestedTags', $suggestedTags);
         $response->assign('picture', $picture);
         $response->assign('unknownTags', $unknownTags);
-        $response->assign('endpointUrl', $requestPostService->getEndpointUrl());
+        $response->assign('endpointUrl', $endpointUrlService->getEndpointAddress());
         $response->assign('danbooruApiUrl', Config::get('danbooru_api_url'));
         $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
 
