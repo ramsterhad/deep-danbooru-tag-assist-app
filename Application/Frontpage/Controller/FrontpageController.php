@@ -5,11 +5,9 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
 
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
@@ -22,6 +20,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Cont
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 
 class FrontpageController implements Controller
@@ -32,22 +31,18 @@ class FrontpageController implements Controller
             Router::route('auth');
         }
 
-        // Build the page
-        $danbooru = new Danbooru();
-        $danbooru->requestTags(
-            new TagCollection(),
-            new Post(),
-            new Endpoint()
-        );
+        /** @var RequestPostService $requestPostService */
+        $requestPostService = ContainerFactory::getInstance()->getContainer()->get(RequestPostService::class);
+        $post = $requestPostService->requestTags(new TagCollection());
 
-        $picture = new Picture($danbooru->getPost()->getPicOriginal());
+        $picture = new Picture($post->getPicOriginal());
         $picture->download();
         $picture->calculateDominantColors();
 
         // Try to use pre predicted tags. If something fails with the database, use the machine learning platform api.
         try {
             $predictedTagsDatabase = new PredictedTagsDatabase();
-            $predictedTagsDatabase->requestTags($danbooru->getPost()->getId());
+            $predictedTagsDatabase->requestTags($post->getId());
             $suggestedTags = $predictedTagsDatabase->getCollection();
 
         } catch (DatabaseException|PredictedTagsDatabaseInvalidResponseException $ex) {
@@ -70,13 +65,14 @@ class FrontpageController implements Controller
         $suggestedTags = $filter->filterTagsByExcludeList($suggestedTags, new TagExcludeList());
         // Filter the known tags from Danbooru against the suggested tags and return the difference.
         // The unknown tags are later listed and registered with the numpad keys.
-        $unknownTags = $filter->filterTagsAgainstAlreadyKnownTags($suggestedTags, $danbooru->getCollection());
+        $unknownTags = $filter->filterTagsAgainstAlreadyKnownTags($suggestedTags, $post->getTagCollection());
 
         $response = new Response($this, 'Frontpage.frontpage.index');
-        $response->assign('danbooru', $danbooru);
+        $response->assign('post', $post);
         $response->assign('suggestedTags', $suggestedTags);
         $response->assign('picture', $picture);
         $response->assign('unknownTags', $unknownTags);
+        $response->assign('endpointUrl', $requestPostService->getEndpointUrl());
         $response->assign('danbooruApiUrl', Config::get('danbooru_api_url'));
         $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
 

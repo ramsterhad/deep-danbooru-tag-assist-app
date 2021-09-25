@@ -1,6 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter;
+
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
 
 interface AdapterInterface
 {
@@ -20,6 +22,9 @@ interface AdapterInterface
 
     public function waitForFinishingTheRequest(int $seconds): AdapterInterface;
 
+    /**
+     * @throws AdapterException
+     */
     public function execute(): AdapterInterface;
 
     public function hangUp(): AdapterInterface;

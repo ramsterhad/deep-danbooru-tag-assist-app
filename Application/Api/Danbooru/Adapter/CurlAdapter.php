@@ -1,9 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter;
 
 use CurlHandle;
 
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
 use function curl_init;
 use function curl_setopt;
 use function curl_close;
@@ -71,9 +72,14 @@ final class CurlAdapter implements AdapterInterface
         return $this;
     }
 
+    /**
+     * @throws AdapterException
+     */
     public function execute(): AdapterInterface
     {
-        $this->response = curl_exec($this->connection);
+        if (($this->response = curl_exec($this->connection)) === false) {
+            throw new AdapterException();
+        }
         return $this;
     }
 
@@ -88,7 +94,7 @@ final class CurlAdapter implements AdapterInterface
         return $this->response;
     }
 
-    private function setOption(string $option, string|array $value): void
+    private function setOption(int $option, bool|int|string|array $value): void
     {
         curl_setopt($this->connection, $option, $value);
     }

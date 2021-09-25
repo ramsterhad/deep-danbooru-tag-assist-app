@@ -45,11 +45,11 @@
 
             ?>
 
-            <?php foreach ($response->get('danbooru')->getPost()->getTagCollection()->getTags() as $tag) : ?>
+            <?php foreach ($response->get('post')->getTagCollection()->getTags() as $tag) : ?>
                 <input type="hidden" name="tag_checkbox_existing_tags[]" value="<?php echo $tag->getName(); ?>">
             <?php endforeach; ?>
 
-            <input type="hidden" name="tag_checkbox_post_id" value="<?php echo $response->get('danbooru')->getPost()->getId() ;?>">
+            <input type="hidden" name="tag_checkbox_post_id" value="<?php echo $response->get('post')->getId() ;?>">
             <input type="hidden" name="r" value="pushnewtags">
             <button type="submit" id="id_tag_checkbox_submit" name="name_tag_checkbox_submit" class="tag_checkbox_submit"></button>
         </form>

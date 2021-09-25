@@ -14,7 +14,7 @@
                     id="input_id_danbooru_api_url"
                     name="input_name_danbooru_api_url"
                     placeholder="Danboorus API URL"
-                    value="<?php echo $response->get('danbooru')::loadEndpointAddress();?>"
+                    value="<?php echo $response->get('endpointUrl');?>"
                 >
                 <button class="btn btn-outline-secondary" type="button" name="api_submit_save" title="save your custom api url" onclick="document.getElementById('form_set_danbooru_api_url').submit();">save</button>
                 <button class="btn btn-outline-secondary" type="button" name="api_submit_reset" title="reset to default api url" onclick="document.getElementById('form_reset_danbooru_api_url').submit();">reset</button>

@@ -6,6 +6,14 @@ frontpage:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\FrontpageController
   action: index
 
+apiurlreset:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\ApiUrlController
+  action: resetApiUrlToDefault
+
+apiurlset:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller\ApiUrlController
+  action: setCustomApiUrl
+
 auth:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\AuthenticationFormController
   action: index
@@ -17,14 +25,6 @@ authenticate:
 logout:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller\LogoutController
   action: index
-
-apiurlreset:
-  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\ApiUrlController
-  action: resetApiUrlToDefault
-
-apiurlset:
-  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\ApiUrlController
-  action: setCustomApiUrl
 
 pushnewtags:
   namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Controller\TagsController

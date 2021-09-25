@@ -12,5 +12,17 @@ services:
     class: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\CurlAdapter
     public: true
 
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\PostFactory:
+    public: true
+
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService:
+    public: true
+
+#  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\DanbooruBridgeService:
+#    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService:
     public: true
