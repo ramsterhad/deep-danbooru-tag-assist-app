@@ -1,28 +1,37 @@
 <?php declare(strict_types=1);
 
-
 namespace Ramsterhad\DeepDanbooruTagAssist\Framework\Container;
-
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
+use function file_exists;
+use function file_put_contents;
 
 final class BootstrapContainer
 {
-    public function initialise(): ContainerBuilder
+    public function initialise(): ContainerInterface
     {
-        // init service container
-        $containerBuilder = new ContainerBuilder();
+        $cache = __DIR__ .'/cache/container.php';
 
-        // init yaml file loader
-        $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__));
+        if (file_exists($cache)) {
+            require_once $cache;
+            $container = new \ProjectServiceContainer();
+        } else {
+            $container = new ContainerBuilder();
 
-        // load services from the yaml file
-        $loader->load('services.yaml');
+            $loader = new YamlFileLoader($container, new FileLocator(__DIR__));
+            $loader->load('services.yaml');
 
-        $containerBuilder->compile();
+            $container->compile();
 
-        return $containerBuilder;
+            $dumper = new PhpDumper($container);
+            file_put_contents($cache, $dumper->dump());
+        }
+
+        return $container;
     }
 }

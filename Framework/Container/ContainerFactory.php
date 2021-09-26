@@ -1,16 +1,14 @@
 <?php declare(strict_types=1);
 
-
 namespace Ramsterhad\DeepDanbooruTagAssist\Framework\Container;
 
-
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ContainerFactory
 {
     private static ?ContainerFactory $instance = null;
 
-    private static ContainerBuilder $containerBuilder;
+    private static ContainerInterface $containerBuilder;
 
     public static function getInstance(): ContainerFactory
     {
@@ -21,7 +19,7 @@ final class ContainerFactory
         return ContainerFactory::$instance;
     }
 
-    public function getContainer(): ContainerBuilder
+    public function getContainer(): ContainerInterface
     {
         return self::$containerBuilder;
     }
