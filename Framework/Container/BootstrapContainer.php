@@ -15,9 +15,10 @@ final class BootstrapContainer
 {
     public function initialise(): ContainerInterface
     {
-        $cache = __DIR__ .'/cache/container.php';
+        $disableCache = true;
+        $cache = BASE_PATH . 'cache/container.php';
 
-        if (file_exists($cache)) {
+        if (!$disableCache || file_exists($cache)) {
             require_once $cache;
             $container = new \ProjectServiceContainer();
         } else {
