@@ -6,7 +6,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInt
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
-final class Repository
+final class DanbooruRepository
 {
     /**
      * @throws AdapterException
@@ -61,6 +61,23 @@ final class Repository
             ->requestTransferStatus(true)
             ->waitForFirstByte(3)
             ->waitForFinishingTheRequest(120)
+            ->execute();
+
+        return $adapter->getResponse();
+    }
+
+    /**
+     * @throws AdapterException
+     */
+    public function downloadPicture(AdapterInterface $adapter, string $url): string
+    {
+        $adapter
+            ->init()
+            ->sendTo($url)
+            ->requestTransferStatus(true)
+            ->activateAutoReferer(false)
+            ->withHttpVersion(2)
+            ->includeHeaderInResponse(false)
             ->execute();
 
         return $adapter->getResponse();

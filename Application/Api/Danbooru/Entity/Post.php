@@ -2,6 +2,7 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity;
 
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
 class Post
@@ -12,6 +13,8 @@ class Post
     private string $picOriginal;
     private ?string $picLarge = null;
     private TagCollection $tagCollection;
+
+    private Picture $picture;
 
     /**
      * @param string $id
@@ -68,6 +71,11 @@ class Post
         return $this->picPreview;
     }
 
+    /**
+     * file_url  Link to original (full resolution) file
+     * @see \Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService::request
+     * @return string
+     */
     public function getPicOriginal(): string
     {
         return $this->picOriginal;
@@ -86,5 +94,15 @@ class Post
     public function getTagCollection(): TagCollection
     {
         return $this->tagCollection;
+    }
+
+    public function getPicture(): Picture
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(Picture $picture): void
+    {
+        $this->picture = $picture;
     }
 }

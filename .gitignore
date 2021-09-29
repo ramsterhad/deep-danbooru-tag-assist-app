@@ -7,8 +7,8 @@ log/
 
 .env.local
 
-Framework/Container/cache/*
-!Framework/Container/cache/.gitkeep
+cache/*
+!cache/.gitkeep
 
 # PHPUnit
 /.phpunit.cache

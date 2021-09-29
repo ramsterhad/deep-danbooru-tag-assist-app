@@ -4,7 +4,8 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Post;
 
-class PostFactory implements FactoryInterface
+// TODO: static!
+class PostFactory
 {
 
     /**

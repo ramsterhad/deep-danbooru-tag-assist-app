@@ -6,16 +6,16 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInt
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PushTagsException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostException;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure\Repository;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure\DanbooruRepository;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 use function sprintf;
 
 final class DanbooruBridgeService
 {
-    private Repository $repository;
+    private DanbooruRepository $repository;
 
-    public function __construct(Repository $repository)
+    public function __construct(DanbooruRepository $repository)
     {
         $this->repository = $repository;
     }

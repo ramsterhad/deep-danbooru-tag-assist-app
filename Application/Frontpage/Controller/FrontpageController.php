@@ -2,8 +2,12 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
+use Exception;
+use JsonException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DeletePictureService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
@@ -19,31 +23,35 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
-
 class FrontpageController implements Controller
 {
-    private RequestPostService $requestPostService;
+    private DeletePictureService $deletePictureService;
     private EndpointUrlService $endpointUrlService;
+    private RequestPostService $requestPostService;
 
     public function __construct(
+        DeletePictureService $deletePictureService,
+        EndpointUrlService $endpointUrlService,
         RequestPostService $requestPostService,
-        EndpointUrlService $endpointUrlService
     ) {
+        $this->deletePictureService = $deletePictureService;
         $this->requestPostService = $requestPostService;
         $this->endpointUrlService = $endpointUrlService;
     }
 
-    public function index(): Response {
-
+    /**
+     * @throws PostResponseException
+     * @throws InvalidCredentials
+     * @throws JsonException
+     * @throws Exception
+     */
+    public function index(): Response
+    {
         if (!AuthenticationService::isAuthenticated()) {
             Router::route('auth');
         }
 
-        $post = $this->requestPostService->requestTags(new TagCollection());
-
-        $picture = new Picture($post->getPicOriginal());
-        $picture->download();
-        $picture->calculateDominantColors();
+        $post = $this->requestPostService->request();
 
         // Try to use pre predicted tags. If something fails with the database, use the machine learning platform api.
         try {
@@ -54,12 +62,14 @@ class FrontpageController implements Controller
         } catch (DatabaseException|PredictedTagsDatabaseInvalidResponseException $ex) {
 
             $machineLearningPlatform = new MachineLearningPlatform();
-            $machineLearningPlatform->setPicture($picture);
+            $machineLearningPlatform->setPicture($post->getPicture());
             $machineLearningPlatform->requestTags();
             $suggestedTags = $machineLearningPlatform->getCollection();
 
         } finally {
-            $picture->delete();
+            $this->deletePictureService->delete(
+                $post->getPicture()
+            );
         }
 
         $filter = new Filter();
@@ -76,7 +86,6 @@ class FrontpageController implements Controller
         $response = new Response($this, 'Frontpage.frontpage.index');
         $response->assign('post', $post);
         $response->assign('suggestedTags', $suggestedTags);
-        $response->assign('picture', $picture);
         $response->assign('unknownTags', $unknownTags);
         $response->assign('endpointUrl', $this->endpointUrlService->getEndpointAddress());
         $response->assign('danbooruApiUrl', Config::get('danbooru_api_url'));

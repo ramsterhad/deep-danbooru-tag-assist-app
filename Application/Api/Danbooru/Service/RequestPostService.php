@@ -8,6 +8,8 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidC
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\PostFactory;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DominantColorsService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DownloadPictureService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
@@ -26,6 +28,8 @@ use function str_contains;
 final class RequestPostService
 {
     private DanbooruBridgeService $danbooruBridgeService;
+    private DominantColorsService $dominantColorsService;
+    private DownloadPictureService $downloadPictureService;
     private EndpointUrlService $endpointUrlService;
 
     private array $listOfRequiredJsonPropertiesFromDanbooruResponse = [
@@ -43,9 +47,13 @@ final class RequestPostService
 
     public function __construct(
         DanbooruBridgeService $danbooruBridgeService,
+        DominantColorsService $dominantColorsService,
+        DownloadPictureService $downloadPictureService,
         EndpointUrlService $endpointUrlService,
     ) {
         $this->danbooruBridgeService = $danbooruBridgeService;
+        $this->dominantColorsService = $dominantColorsService;
+        $this->downloadPictureService = $downloadPictureService;
         $this->endpointUrlService = $endpointUrlService;
     }
 
@@ -113,8 +121,10 @@ final class RequestPostService
      * @throws InvalidCredentials
      * @throws PostResponseException
      */
-    public function requestTags(TagCollection $tagCollection): Post
+    public function request(): Post
     {
+        $tagCollection = new TagCollection();
+
         try {
             $response = $this->danbooruBridgeService->requestPost(
                 $this->endpointUrlService->getEndpointAddress(),
@@ -211,7 +221,17 @@ final class RequestPostService
          * We have now all the information we need to transform the data into a Post object, which represents one entry
          * from Danbooru; normalised for our needs.
          */
-        return $this->convertResponseObjectToPostObject($object, $tagCollection);
+        $post = $this->convertResponseObjectToPostObject($object, $tagCollection);
+
+        $post->setPicture(
+            $this->downloadPictureService->download($post)
+        );
+
+        $post->getPicture()->setDominantColors(
+            $this->dominantColorsService->calculateDominantColors($post)
+        );
+
+        return $post;
     }
 
 

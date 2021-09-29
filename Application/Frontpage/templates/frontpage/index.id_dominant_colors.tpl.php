@@ -8,7 +8,7 @@
         </div>
         <!-- <Dominant color bar> -->
         <span>
-        <?php foreach ($response->get('picture')->getDominantColors() as $color) : ?>
+        <?php foreach ($response->get('post')->getPicture()->getDominantColors() as $color) : ?>
             <div class="dominant-colors-box" style="background-color:<?php echo $color;?>"></div>
         <?php endforeach; ?>
     </span>

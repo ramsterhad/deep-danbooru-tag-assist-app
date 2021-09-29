@@ -18,7 +18,7 @@ final class BootstrapContainer
         $disableCache = true;
         $cache = BASE_PATH . 'cache/container.php';
 
-        if (!$disableCache || file_exists($cache)) {
+        if (!$disableCache && file_exists($cache)) {
             require_once $cache;
             $container = new \ProjectServiceContainer();
         } else {

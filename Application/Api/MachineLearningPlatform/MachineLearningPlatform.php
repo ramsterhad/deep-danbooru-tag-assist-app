@@ -4,7 +4,6 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
@@ -14,7 +13,7 @@ class MachineLearningPlatform implements ApiContract
 {
     private TagCollection $collection;
 
-    private Picture $picture;
+    private \Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture $picture;
 
     /**
      * The function triggers an analysis by a machine learning platform. The call returns a simple array with multiple
@@ -25,7 +24,7 @@ class MachineLearningPlatform implements ApiContract
     {
         if (Config::get('machine_learning_platform_repository_debug') === false) {
             $pathToFile = \sprintf('%s', Application::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'ml.sh ');
-            exec('bash ' . $pathToFile . $this->picture->getFullPathToFile().' 0.500', $output);
+            exec('bash ' . $pathToFile . $this->picture->getFile()->getPathname().' 0.500', $output);
         } else {
             // Placeholder array, replaces the above exec()
             $output = [
@@ -58,7 +57,7 @@ class MachineLearningPlatform implements ApiContract
         foreach ($output as $item) {
 
             // Filters for ( as we only want tags with a score.
-            if (strpos($item, '(') !== false) {
+            if (str_contains($item, '(')) {
                 $item = preg_split('/ /', $item);
                 $item[0] = str_replace(['(', ')'], '', $item[0]);
                 $tags[] = $item;
@@ -78,12 +77,12 @@ class MachineLearningPlatform implements ApiContract
         return $this->collection;
     }
 
-    public function setPicture(Picture $picture): void
+    public function setPicture(\Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture $picture): void
     {
         $this->picture = $picture;
     }
 
-    public function getPicture(): Picture
+    public function getPicture(): \Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture
     {
         return $this->picture;
     }

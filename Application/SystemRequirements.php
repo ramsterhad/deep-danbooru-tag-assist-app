@@ -11,6 +11,7 @@ class SystemRequirements
 {
     public function checkRequirementsForPictureHandling()
     {
+        /*
         if (!is_dir(Picture::getStoragePath())) {
 
             // Try to create the directory.
@@ -32,5 +33,6 @@ class SystemRequirements
                 )
             );
         }
+        */
     }
 }

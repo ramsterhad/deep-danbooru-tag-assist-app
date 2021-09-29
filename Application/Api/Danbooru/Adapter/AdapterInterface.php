@@ -22,6 +22,12 @@ interface AdapterInterface
 
     public function waitForFinishingTheRequest(int $seconds): AdapterInterface;
 
+    public function activateAutoReferer(bool $activate): AdapterInterface;
+
+    public function withHttpVersion(int $versionIdentifier): AdapterInterface;
+
+    public function includeHeaderInResponse(bool $include): AdapterInterface;
+
     /**
      * @throws AdapterException
      */

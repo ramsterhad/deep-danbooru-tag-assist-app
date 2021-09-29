@@ -5,11 +5,15 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter;
 use CurlHandle;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
+use function curl_error;
 use function curl_init;
 use function curl_setopt;
 use function curl_close;
 
 use const
+    CURLOPT_AUTOREFERER,
+    CURLOPT_HEADER,
+    CURLOPT_HTTP_VERSION,
     CURLOPT_URL,
     CURLOPT_CUSTOMREQUEST,
     CURLOPT_USERPWD,
@@ -77,9 +81,32 @@ final class CurlAdapter implements AdapterInterface
      */
     public function execute(): AdapterInterface
     {
-        if (($this->response = curl_exec($this->connection)) === false) {
-            throw new AdapterException();
+        if (($response = curl_exec($this->connection)) === false) {
+            throw new AdapterException(curl_error($this->connection));
         }
+
+        $this->response = $response;
+        return $this;
+    }
+
+    public function activateAutoReferer(bool $activate): AdapterInterface
+    {
+        $this->setOption(CURLOPT_AUTOREFERER, $activate);
+        return $this;
+    }
+
+    public function withHttpVersion(int $versionIdentifier): AdapterInterface
+    {
+        $this->setOption(CURLOPT_HTTP_VERSION, $versionIdentifier);
+        return $this;
+    }
+
+    /**
+     * @todo Version translator
+     */
+    public function includeHeaderInResponse(bool $include): AdapterInterface
+    {
+        $this->setOption(CURLOPT_HEADER, $include);
         return $this;
     }
 
