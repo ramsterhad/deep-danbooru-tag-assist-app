@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Frontpage;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 
 use function setcookie;
 
-class ApiUrlController implements Controller
+class ApiUrlController implements ControllerInterface
 {
     private EndpointUrlService $endpointService;
 

@@ -1,20 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Frontpage\Controller;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Frontpage;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\PushTagsService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\StatisticLogger;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
 use function implode;
 use function sprintf;
 
-class PushTagsController implements Controller
+class PushTagsController implements ControllerInterface
 {
     private PushTagsService $pushTagsService;
 

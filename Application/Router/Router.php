@@ -3,11 +3,11 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Router;
 
 use Exception;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Controller\ControllerInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Default\DefaultController;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Config\RouterConfig;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Exception\TemplateNotFoundException;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\DefaultController;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\DataType\Response;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Exception\TemplateNotFoundException;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 use function sprintf;
@@ -20,7 +20,7 @@ final class Router
 
     private string $requestController;
 
-    private Controller $controller;
+    private ControllerInterface $controller;
 
     private function __construct() {}
     private function __clone() {}
@@ -71,7 +71,7 @@ final class Router
 
         $this->controller = ContainerFactory::getInstance()->getContainer()->get($fullQualifiedNamespace);
 
-        if (!($this->controller instanceof Controller)) {
+        if (!($this->controller instanceof ControllerInterface)) {
             throw new Exception(
                 sprintf('I can\'t work with this thing "%s"!', $fullQualifiedNamespace)
             );
@@ -90,6 +90,9 @@ final class Router
         }
     }
 
+    /**
+     * @throws TemplateNotFoundException
+     */
     private function displayTemplate(Response $response)
     {
         if (!is_file($response->getFullPathToTemplateFile())) {
@@ -141,9 +144,9 @@ final class Router
     }
 
     /**
-     * @return Controller
+     * @return ControllerInterface
      */
-    public function getController(): Controller
+    public function getController(): ControllerInterface
     {
         return $this->controller;
     }

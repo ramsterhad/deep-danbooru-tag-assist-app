@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Authentication\Controller;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Authentication;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Contract\Controller;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Controller\Response;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Controller\ControllerInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Router\DataType\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 
-class AuthenticationFormController implements Controller
+class AuthenticationFormController implements ControllerInterface
 {
     public function index(): Response
     {
-        $response = new Response($this, 'Authentication.authentication_form.index');
+        $response = new Response($this, '.authentication_form.index');
 
         $response->assign('showManual', false);
 
