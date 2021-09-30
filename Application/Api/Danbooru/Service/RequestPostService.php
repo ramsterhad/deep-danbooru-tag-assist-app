@@ -10,7 +10,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestP
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\PostFactory;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DominantColorsService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DownloadPictureService;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;

@@ -7,10 +7,11 @@ use JsonException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter\FilterTagsService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DeletePictureService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
@@ -27,15 +28,18 @@ class FrontpageController implements Controller
 {
     private DeletePictureService $deletePictureService;
     private EndpointUrlService $endpointUrlService;
+    private FilterTagsService $filterTagsService;
     private RequestPostService $requestPostService;
 
     public function __construct(
         DeletePictureService $deletePictureService,
         EndpointUrlService $endpointUrlService,
+        FilterTagsService $filterTagsService,
         RequestPostService $requestPostService,
     ) {
         $this->deletePictureService = $deletePictureService;
         $this->requestPostService = $requestPostService;
+        $this->filterTagsService = $filterTagsService;
         $this->endpointUrlService = $endpointUrlService;
     }
 
@@ -72,16 +76,7 @@ class FrontpageController implements Controller
             );
         }
 
-        $filter = new Filter();
-        // Removes all tags with a score lass than $tags_min_score (see config).
-        $suggestedTags = $filter->filterTagsByScore($suggestedTags);
-        // Removes the rating tags.
-        $suggestedTags = $filter->filterSafeTags($suggestedTags);
-        // Tags can be excluded by the user.
-        $suggestedTags = $filter->filterTagsByExcludeList($suggestedTags, new TagExcludeList());
-        // Filter the known tags from Danbooru against the suggested tags and return the difference.
-        // The unknown tags are later listed and registered with the numpad keys.
-        $unknownTags = $filter->filterTagsAgainstAlreadyKnownTags($suggestedTags, $post->getTagCollection());
+        $unknownTags = $this->filterTagsService->filter($suggestedTags, $post);
 
         $response = new Response($this, 'Frontpage.frontpage.index');
         $response->assign('post', $post);
