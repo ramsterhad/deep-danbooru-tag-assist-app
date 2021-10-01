@@ -2,9 +2,9 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\ApplicationException;
 
-class AuthenticationError extends Exception
+class AuthenticationError extends ApplicationException
 {
     const CODE_RESPONSE_CONTAINED_INVALID_JSON = 100;
     const CODE_RESPONSE_MISSING_PROPERTIES = 101;

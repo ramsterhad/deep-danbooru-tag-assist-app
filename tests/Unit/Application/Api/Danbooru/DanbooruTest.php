@@ -7,7 +7,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Tests\Unit\Application\Api\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Danbooru;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Endpoint;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
@@ -18,8 +18,8 @@ class DanbooruTest extends TestCase
 {
     public function testRequestTagsExpectExceptionForInvalidJson(): void
     {
-        $this->expectException(PostResponseException::class);
-        $this->expectExceptionCode(PostResponseException::CODE_INVALID_JSON);
+        $this->expectException(PostResponseApplicationException::class);
+        $this->expectExceptionCode(PostResponseApplicationException::CODE_INVALID_JSON);
 
         $endpointMock = $this->createMock(Endpoint::class);
         $endpointMock
@@ -49,8 +49,8 @@ class DanbooruTest extends TestCase
 
     public function testRequestTagsExpectExceptionForHaveMoreThanOneArrayItem(): void
     {
-        $this->expectException(PostResponseException::class);
-        $this->expectExceptionCode(PostResponseException::CODE_JSON_CONTAINS_MORE_THAN_ONE_ITEM);
+        $this->expectException(PostResponseApplicationException::class);
+        $this->expectExceptionCode(PostResponseApplicationException::CODE_JSON_CONTAINS_MORE_THAN_ONE_ITEM);
 
         $endpointMock = $this->createMock(Endpoint::class);
         $endpointMock
@@ -65,8 +65,8 @@ class DanbooruTest extends TestCase
 
     public function testRequestTagsExpectExceptionForHaveAnEmptyArray(): void
     {
-        $this->expectException(PostResponseException::class);
-        $this->expectExceptionCode(PostResponseException::CODE_JSON_CONTAINS_NO_ITEM);
+        $this->expectException(PostResponseApplicationException::class);
+        $this->expectExceptionCode(PostResponseApplicationException::CODE_JSON_CONTAINS_NO_ITEM);
 
         $endpointMock = $this->createMock(Endpoint::class);
         $endpointMock
@@ -81,8 +81,8 @@ class DanbooruTest extends TestCase
 
     public function testRequestTagsExpectExceptionArrayItemIsNotAnObject(): void
     {
-        $this->expectException(PostResponseException::class);
-        $this->expectExceptionCode(PostResponseException::CODE_JSON_ITEM_IS_NOT_OBJECT);
+        $this->expectException(PostResponseApplicationException::class);
+        $this->expectExceptionCode(PostResponseApplicationException::CODE_JSON_ITEM_IS_NOT_OBJECT);
 
         $endpointMock = $this->createMock(Endpoint::class);
         $endpointMock
@@ -97,8 +97,8 @@ class DanbooruTest extends TestCase
 
     public function testListOfRequiredJsonPropertiesExpectExceptionForMissingProperty(): void
     {
-        $this->expectException(PostResponseException::class);
-        $this->expectExceptionCode(PostResponseException::CODE_JSON_ITEM_IS_MISSING_PROPERTIES);
+        $this->expectException(PostResponseApplicationException::class);
+        $this->expectExceptionCode(PostResponseApplicationException::CODE_JSON_ITEM_IS_MISSING_PROPERTIES);
 
         $responseWithMissingId = '
         [{
@@ -192,7 +192,7 @@ class DanbooruTest extends TestCase
 
     public function testExpectExceptionMissingArtistForTransformTagStringListsToCollection(): void
     {
-        $this->expectException(PostResponseException::class);
+        $this->expectException(PostResponseApplicationException::class);
 
         $stdObject = new \stdClass();
         //$stdObject->tag_string_artist = '';
@@ -207,7 +207,7 @@ class DanbooruTest extends TestCase
 
     public function testExpectExceptionMissingCopyrightForTransformTagStringListsToCollection(): void
     {
-        $this->expectException(PostResponseException::class);
+        $this->expectException(PostResponseApplicationException::class);
 
         $stdObject = new \stdClass();
         $stdObject->tag_string_artist = '';
@@ -222,7 +222,7 @@ class DanbooruTest extends TestCase
 
     public function testExpectExceptionMissingCharacterForTransformTagStringListsToCollection(): void
     {
-        $this->expectException(PostResponseException::class);
+        $this->expectException(PostResponseApplicationException::class);
 
         $stdObject = new \stdClass();
         $stdObject->tag_string_artist = '';
@@ -237,7 +237,7 @@ class DanbooruTest extends TestCase
 
     public function testExpectExceptionMissingGeneralForTransformTagStringListsToCollection(): void
     {
-        $this->expectException(PostResponseException::class);
+        $this->expectException(PostResponseApplicationException::class);
 
         $stdObject = new \stdClass();
         $stdObject->tag_string_artist = '';
@@ -252,7 +252,7 @@ class DanbooruTest extends TestCase
 
     public function testExpectExceptionMissingMetaForTransformTagStringListsToCollection(): void
     {
-        $this->expectException(PostResponseException::class);
+        $this->expectException(PostResponseApplicationException::class);
 
         $stdObject = new \stdClass();
         $stdObject->tag_string_artist = '';

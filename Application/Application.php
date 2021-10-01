@@ -4,13 +4,13 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\Exception;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\ApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 
@@ -61,7 +61,7 @@ class Application
         try {
             Router::getInstance()->processRequest();
 
-        } catch (PostResponseException $e) {
+        } catch (PostResponseApplicationException $e) {
             if (Config::get('debug')) {
                 (new RequestLogger())->log($e->getStacktraceWithCode());
             }
@@ -70,7 +70,7 @@ class Application
             $this->displayErrorAndExit($e);
 
         // Log always.
-        } catch (Exception $e) {
+        } catch (ApplicationException $e) {
 
             (new ErrorLogger())->log($e->getStacktraceWithCode());
             $this->displayErrorAndExit($e);

@@ -3,9 +3,9 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PushTagsException;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PushTagsApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure\DanbooruRepository;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
@@ -36,7 +36,7 @@ final class DanbooruBridgeService
     }
 
     /**
-     * @throws RequestPostException
+     * @throws RequestPostApplicationException
      */
     public function requestPost(string $url, string $username, string $apiKey): string
     {
@@ -45,13 +45,13 @@ final class DanbooruBridgeService
 
         try {
             return $this->repository->requestPost($adapter, $url, $username, $apiKey);
-        } catch (AdapterException $e) {
-            throw new RequestPostException();
+        } catch (AdapterApplicationException $e) {
+            throw new RequestPostApplicationException();
         }
     }
 
     /**
-     * @throws PushTagsException
+     * @throws PushTagsApplicationException
      */
     public function pushTags(
         string $url,
@@ -65,8 +65,8 @@ final class DanbooruBridgeService
 
         try {
             return $this->repository->pushTags($adapter, $url, $username, $apiKey, $data);
-        } catch (AdapterException $e) {
-            throw new PushTagsException();
+        } catch (AdapterApplicationException $e) {
+            throw new PushTagsApplicationException();
         }
     }
 }

@@ -11,22 +11,22 @@ services:
 
   # Controller
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Authentication\AuthenticationController:
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\AuthenticationController:
     public: true
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Authentication\AuthenticationFormController:
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\AuthenticationFormController:
     public: true
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Authentication\LogoutController:
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\LogoutController:
     public: true
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Frontpage\ApiUrlController:
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\ApiUrlController:
     public: true
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Frontpage\FrontpageController:
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\FrontpageController:
     public: true
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Controller\Frontpage\PushTagsController:
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\PushTagsController:
     public: true
 
 

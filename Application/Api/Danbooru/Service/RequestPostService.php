@@ -5,8 +5,8 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service;
 use Exception;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseException;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\PostFactory;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DominantColorsService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DownloadPictureService;
@@ -119,7 +119,7 @@ final class RequestPostService
      * preview_file_url          Link to thumbnail
      *
      * @throws InvalidCredentials
-     * @throws PostResponseException
+     * @throws PostResponseApplicationException
      */
     public function request(): Post
     {
@@ -131,19 +131,19 @@ final class RequestPostService
                 Session::get('username'),
                 Session::get('api_key')
             );
-        } catch (RequestPostException $e) {
-            throw new PostResponseException(
-                PostResponseException::MESSAGE_INVALID_JSON,
-                PostResponseException::CODE_INVALID_JSON
+        } catch (RequestPostApplicationException $e) {
+            throw new PostResponseApplicationException(
+                PostResponseApplicationException::MESSAGE_INVALID_JSON,
+                PostResponseApplicationException::CODE_INVALID_JSON
             );
         }
 
 
         // Check if the result is a valid json
         if (!Json::isJson($response)) {
-            throw new PostResponseException(
-                PostResponseException::MESSAGE_INVALID_JSON,
-                PostResponseException::CODE_INVALID_JSON
+            throw new PostResponseApplicationException(
+                PostResponseApplicationException::MESSAGE_INVALID_JSON,
+                PostResponseApplicationException::CODE_INVALID_JSON
             );
         }
 
@@ -158,17 +158,17 @@ final class RequestPostService
 
         // The API URL must be set with limit=1, indicating the API to return only 1 result.
         if (count($response) > 1) {
-            throw new PostResponseException(
-                PostResponseException::MESSAGE_JSON_CONTAINS_MORE_THAN_ONE_ITEM,
-                PostResponseException::CODE_JSON_CONTAINS_MORE_THAN_ONE_ITEM
+            throw new PostResponseApplicationException(
+                PostResponseApplicationException::MESSAGE_JSON_CONTAINS_MORE_THAN_ONE_ITEM,
+                PostResponseApplicationException::CODE_JSON_CONTAINS_MORE_THAN_ONE_ITEM
             );
         }
 
         // We got less than 0 result? Nothing?
         if (count($response) === 0) {
-            throw new PostResponseException(
-                PostResponseException::MESSAGE_JSON_CONTAINS_NO_ITEM,
-                PostResponseException::CODE_JSON_CONTAINS_NO_ITEM
+            throw new PostResponseApplicationException(
+                PostResponseApplicationException::MESSAGE_JSON_CONTAINS_NO_ITEM,
+                PostResponseApplicationException::CODE_JSON_CONTAINS_NO_ITEM
             );
         }
 
@@ -177,9 +177,9 @@ final class RequestPostService
         $object = $response[0];
 
         if (!is_object($object)) {
-            throw new PostResponseException(
-                PostResponseException::MESSAGE_JSON_ITEM_IS_NOT_OBJECT,
-                PostResponseException::CODE_JSON_ITEM_IS_NOT_OBJECT
+            throw new PostResponseApplicationException(
+                PostResponseApplicationException::MESSAGE_JSON_ITEM_IS_NOT_OBJECT,
+                PostResponseApplicationException::CODE_JSON_ITEM_IS_NOT_OBJECT
             );
         }
 
@@ -197,9 +197,9 @@ final class RequestPostService
 
         // Any other error message directly from Danbooru.
         if (property_exists($object, 'success') && $object->success === false) {
-            throw new PostResponseException(
+            throw new PostResponseApplicationException(
                 'Danbooru said "'.$object->message.'". (╯︵╰,)',
-                PostResponseException::CODE_DANBOORU_ERROR_MESSAGE
+                PostResponseApplicationException::CODE_DANBOORU_ERROR_MESSAGE
             );
         }
 
@@ -207,9 +207,9 @@ final class RequestPostService
         // Basic members don't have access to 'fringe' content. In that case, the API does not return the id.
         foreach ($this->listOfRequiredJsonPropertiesFromDanbooruResponse as $item) {
             if (!property_exists($object, $item)) {
-                throw new PostResponseException(
-                    PostResponseException::MESSAGE_JSON_ITEM_IS_MISSING_PROPERTIES,
-                    PostResponseException::CODE_JSON_ITEM_IS_MISSING_PROPERTIES
+                throw new PostResponseApplicationException(
+                    PostResponseApplicationException::MESSAGE_JSON_ITEM_IS_MISSING_PROPERTIES,
+                    PostResponseApplicationException::CODE_JSON_ITEM_IS_MISSING_PROPERTIES
                 );
             }
         }
@@ -258,29 +258,29 @@ final class RequestPostService
      * Tags have colors to quickly show their category: The categories are: artist, copyright, character, general, meta.
      * The method assigns the correct category color to each tag.
      *
-     * @throws PostResponseException
+     * @throws PostResponseApplicationException
      * @throws Exception
      */
     protected function transformTagStringListsToCollection(stdClass $object, TagCollection $tagCollection): void
     {
         if (!property_exists($object, 'tag_string_artist')) {
-            throw new PostResponseException('Missing property "tag_string_artist".');
+            throw new PostResponseApplicationException('Missing property "tag_string_artist".');
         }
 
         if (!property_exists($object, 'tag_string_copyright')) {
-            throw new PostResponseException('Missing property "tag_string_copyright".');
+            throw new PostResponseApplicationException('Missing property "tag_string_copyright".');
         }
 
         if (!property_exists($object, 'tag_string_character')) {
-            throw new PostResponseException('Missing property "tag_string_character".');
+            throw new PostResponseApplicationException('Missing property "tag_string_character".');
         }
 
         if (!property_exists($object, 'tag_string_general')) {
-            throw new PostResponseException('Missing property "tag_string_general".');
+            throw new PostResponseApplicationException('Missing property "tag_string_general".');
         }
 
         if (!property_exists($object, 'tag_string_meta')) {
-            throw new PostResponseException('Missing property "tag_string_meta".');
+            throw new PostResponseApplicationException('Missing property "tag_string_meta".');
         }
 
         $this->addTagsFromResponseObjectToCollection($object->tag_string_artist, Tag::DANBOORU_TAG_HEXCOLOR_ARTIST, $tagCollection);

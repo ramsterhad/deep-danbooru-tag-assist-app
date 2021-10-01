@@ -121,7 +121,7 @@ final class TestFailure
      * Note: The test object is not set when the test is executed in process
      * isolation.
      *
-     * @see Exception
+     * @see ApplicationException
      */
     public function failedTest(): ?Test
     {

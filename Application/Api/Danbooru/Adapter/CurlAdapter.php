@@ -4,7 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter;
 
 use CurlHandle;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterApplicationException;
 use function curl_error;
 use function curl_init;
 use function curl_setopt;
@@ -77,12 +77,12 @@ final class CurlAdapter implements AdapterInterface
     }
 
     /**
-     * @throws AdapterException
+     * @throws AdapterApplicationException
      */
     public function execute(): AdapterInterface
     {
         if (($response = curl_exec($this->connection)) === false) {
-            throw new AdapterException(curl_error($this->connection));
+            throw new AdapterApplicationException(curl_error($this->connection));
         }
 
         $this->response = $response;

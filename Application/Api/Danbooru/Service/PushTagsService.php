@@ -2,7 +2,7 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PushTagsException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PushTagsApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
 use function sprintf;
@@ -17,7 +17,7 @@ class PushTagsService
     }
 
     /**
-     * @throws PushTagsException
+     * @throws PushTagsApplicationException
      */
     public function pushTags(
         string $url,

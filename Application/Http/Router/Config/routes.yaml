@@ -1,0 +1,31 @@
+_default:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\FrontpageController
+  action: index
+
+frontpage:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\FrontpageController
+  action: index
+
+apiurlreset:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\ApiUrlController
+  action: resetApiUrlToDefault
+
+apiurlset:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\ApiUrlController
+  action: setCustomApiUrl
+
+pushnewtags:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\PushTagsController
+  action: pushNewTagsToDanbooru
+
+auth:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\AuthenticationFormController
+  action: index
+
+authenticate:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\AuthenticationController
+  action: checkAuthenticationRequest
+
+logout:
+  namespace: Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\LogoutController
+  action: index

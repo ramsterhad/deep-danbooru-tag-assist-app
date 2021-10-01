@@ -3,4 +3,4 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception;
 
 
-class PredictedTagsDatabaseInvalidResponseException extends PredictedTagsDatabaseException {}
+class PredictedTagsDatabaseInvalidResponseException extends PredictedTagsDatabaseApplicationException {}

@@ -3,13 +3,13 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 
 final class DanbooruRepository
 {
     /**
-     * @throws AdapterException
+     * @throws AdapterApplicationException
      */
     public function authenticate(AdapterInterface $adapter, string $url): string {
         $adapter
@@ -25,7 +25,7 @@ final class DanbooruRepository
     }
 
     /**
-     * @throws AdapterException
+     * @throws AdapterApplicationException
      */
     public function requestPost(AdapterInterface $adapter, string $url, string $username, string $apiKey): string
     {
@@ -43,7 +43,7 @@ final class DanbooruRepository
     }
 
     /**
-     * @throws AdapterException
+     * @throws AdapterApplicationException
      */
     public function pushTags(
         AdapterInterface $adapter,
@@ -67,7 +67,7 @@ final class DanbooruRepository
     }
 
     /**
-     * @throws AdapterException
+     * @throws AdapterApplicationException
      */
     public function downloadPicture(AdapterInterface $adapter, string $url): string
     {

@@ -2,7 +2,7 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterApplicationException;
 
 interface AdapterInterface
 {
@@ -29,7 +29,7 @@ interface AdapterInterface
     public function includeHeaderInResponse(bool $include): AdapterInterface;
 
     /**
-     * @throws AdapterException
+     * @throws AdapterApplicationException
      */
     public function execute(): AdapterInterface;
 
