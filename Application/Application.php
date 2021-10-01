@@ -53,8 +53,6 @@ class Application
 
     public function run(): void
     {
-        $this->executeSystemRequirementChecks();
-
         $this->startSession();
 
         $this->authenticate();
@@ -86,17 +84,6 @@ class Application
         $str .= $exception->getMessage();
         echo $str;
         exit;
-    }
-
-    /**
-     * Check if the tmp directory does exist and is writeable.
-     *
-     * @throws \Exception
-     */
-    public function executeSystemRequirementChecks()
-    {
-        $systemRequirements = new SystemRequirements();
-        $systemRequirements->checkRequirementsForPictureHandling();
     }
 
     /**
