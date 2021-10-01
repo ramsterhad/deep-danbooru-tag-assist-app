@@ -4,7 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Logger;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
 
 class Logger
 {
@@ -31,7 +31,7 @@ class Logger
 
     public function getDefaultDestinationDirectory(): string
     {
-        return Application::getBasePath() . 'log' . \DIRECTORY_SEPARATOR;
+        return Kernel::getBasePath() . 'log' . \DIRECTORY_SEPARATOR;
     }
 
     public function getDefaultDestinationFile(): string

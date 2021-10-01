@@ -3,7 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Framework\FileHandler\Service;
 
 use Exception;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\DotEnv\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\FileHandler\Exception\DirectoryNotFound;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\FileHandler\Exception\DirectoryOrFileNotWriteable;
@@ -41,6 +41,6 @@ class TemporaryFileService
      */
     private function buildPathToTemporaryStorage(): string
     {
-        return Application::getBasePath() . Config::get('picture_storage') . DIRECTORY_SEPARATOR;
+        return Kernel::getBasePath() . Config::get('picture_storage') . DIRECTORY_SEPARATOR;
     }
 }

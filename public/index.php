@@ -2,9 +2,9 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
 
 require_once '../bootstrap.php';
 
-$app = Application::getInstance();
+$app = Kernel::getInstance();
 $app->run();

@@ -3,7 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
 
 use function exec;
 use function sprintf;
@@ -41,6 +41,6 @@ class DominantColorsRepository
 
     private function buildPathToScript(): string
     {
-        return Application::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'dcolors.sh';
+        return Kernel::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'dcolors.sh';
     }
 }

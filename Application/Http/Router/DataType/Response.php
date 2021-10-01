@@ -3,7 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\DataType;
 
 use Exception;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Exception\TemplateVariableNotFoundException;
 

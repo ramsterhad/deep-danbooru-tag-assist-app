@@ -5,7 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 
@@ -35,7 +35,7 @@ class Database
         // index.php is in /var/www/html/public
         // the database is relatively in ../db
         // /var/www/html/db/000.txt
-        $targetFilename =  Application::getBasePath() . 'db/' . $filename . '.txt';
+        $targetFilename =  Kernel::getBasePath() . 'db/' . $filename . '.txt';
 
         // grep -rh "^12345:" /var/www/html/db/345.txt
         $line = \shell_exec(\sprintf('grep -rh "^%s:" %s', $id, $targetFilename));

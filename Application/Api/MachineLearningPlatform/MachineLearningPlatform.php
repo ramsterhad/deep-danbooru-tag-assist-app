@@ -6,7 +6,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Application;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 
 class MachineLearningPlatform implements ApiContract
@@ -23,7 +23,7 @@ class MachineLearningPlatform implements ApiContract
     public function requestTags(): void
     {
         if (Config::get('machine_learning_platform_repository_debug') === false) {
-            $pathToFile = \sprintf('%s', Application::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'ml.sh ');
+            $pathToFile = \sprintf('%s', Kernel::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'ml.sh ');
             exec('bash ' . $pathToFile . $this->picture->getFile()->getPathname().' 0.500', $output);
         } else {
             // Placeholder array, replaces the above exec()
