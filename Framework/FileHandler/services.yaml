@@ -1,0 +1,30 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Framework\FileHandler\:
+    resource: '*'
+    exclude: 'Exception'
+
+
+  # Controller
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\AuthenticationController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\AuthenticationFormController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentication\LogoutController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\ApiUrlController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\FrontpageController:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\PushTagsController:
+    public: true

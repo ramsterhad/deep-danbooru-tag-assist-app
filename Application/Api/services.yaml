@@ -7,14 +7,10 @@ services:
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\:
     resource: '*'
 
-
   # Factories
 
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\PostFactory:
     public: true
-
-  #  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\SplFileObjectFromUrlFactory:
-  #    public: true
 
 
   # Services
@@ -28,9 +24,6 @@ services:
 
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService:
     public: true
-
-  #  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\DanbooruBridgeService:
-  #    public: true
 
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\PushTagsService:
     public: true
