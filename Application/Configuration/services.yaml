@@ -4,7 +4,5 @@ services:
     public: false
     autowire: true
 
-  Ramsterhad\DeepDanbooruTagAssist\Framework\:
-
-    # Anything in Framework
+  Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\:
     resource: '*'

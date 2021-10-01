@@ -1,0 +1,39 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\:
+    resource: '*'
+
+
+  # Factories
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\PostFactory:
+    public: true
+
+  #  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\SplFileObjectFromUrlFactory:
+  #    public: true
+
+
+  # Services
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface:
+    class: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\CurlAdapter
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService:
+    public: true
+
+  #  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\DanbooruBridgeService:
+  #    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\PushTagsService:
+    public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService:
+    public: true
