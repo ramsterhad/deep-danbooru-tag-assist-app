@@ -9,7 +9,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\StatisticLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 
 use function implode;
 use function sprintf;

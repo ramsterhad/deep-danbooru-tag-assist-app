@@ -7,7 +7,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Authentica
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 
 class AuthenticationController implements ControllerInterface
 {

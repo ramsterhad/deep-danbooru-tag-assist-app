@@ -8,9 +8,10 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResp
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\ApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 

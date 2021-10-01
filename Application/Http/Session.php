@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Http;
 
 
 class Session

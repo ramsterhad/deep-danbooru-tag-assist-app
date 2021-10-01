@@ -12,7 +12,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\Do
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DownloadPictureService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 use stdClass;

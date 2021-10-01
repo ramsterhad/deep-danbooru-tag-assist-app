@@ -4,7 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Authentic
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\DataType\Response;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 
 class AuthenticationFormController implements ControllerInterface
 {

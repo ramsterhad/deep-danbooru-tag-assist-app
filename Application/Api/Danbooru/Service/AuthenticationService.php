@@ -6,7 +6,7 @@ use Exception;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 
 use function json_decode;
