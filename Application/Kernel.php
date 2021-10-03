@@ -1,19 +1,20 @@
 <?php declare(strict_types=1);
 
-
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
-
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\ApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Shared\Exception\FrameworkException;
+use function setcookie;
 
 class Kernel
 {
@@ -61,15 +62,19 @@ class Kernel
             Router::getInstance()->processRequest();
 
         } catch (PostResponseApplicationException $e) {
-            if (Config::get('debug')) {
+
+            /** @var ConfigurationInterface $configuration */
+            $configuration = ContainerFactory::getInstance()->getContainer()->get(ConfigurationInterface::class);
+
+            if ($configuration->get('debug')) {
                 (new RequestLogger())->log($e->getStacktraceWithCode());
             }
 
-            \setcookie('danbooru_api_url', '', 0);
+            setcookie('danbooru_api_url', '', 0);
             $this->displayErrorAndExit($e);
 
         // Log always.
-        } catch (ApplicationException $e) {
+        } catch (ApplicationException|FrameworkException $e) {
 
             (new ErrorLogger())->log($e->getStacktraceWithCode());
             $this->displayErrorAndExit($e);

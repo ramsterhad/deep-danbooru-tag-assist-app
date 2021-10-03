@@ -1,8 +1,0 @@
-services:
-
-  _defaults:
-    public: false
-    autowire: true
-
-  Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\:
-    resource: '*'

@@ -17,24 +17,27 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Excep
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\DataType\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
 
 class FrontpageController implements ControllerInterface
 {
+    private ConfigurationInterface $configuration;
     private DeletePictureService $deletePictureService;
     private EndpointUrlService $endpointUrlService;
     private FilterTagsService $filterTagsService;
     private RequestPostService $requestPostService;
 
     public function __construct(
+        ConfigurationInterface $configuration,
         DeletePictureService $deletePictureService,
         EndpointUrlService $endpointUrlService,
         FilterTagsService $filterTagsService,
         RequestPostService $requestPostService,
     ) {
+        $this->configuration = $configuration;
         $this->deletePictureService = $deletePictureService;
         $this->requestPostService = $requestPostService;
         $this->filterTagsService = $filterTagsService;
@@ -81,8 +84,8 @@ class FrontpageController implements ControllerInterface
         $response->assign('suggestedTags', $suggestedTags);
         $response->assign('unknownTags', $unknownTags);
         $response->assign('endpointUrl', $this->endpointUrlService->getEndpointAddress());
-        $response->assign('danbooruApiUrl', Config::get('danbooru_api_url'));
-        $response->assign('suggestedTagsLimit', (int) Config::get('limit_for_suggested_tags'));
+        $response->assign('danbooruApiUrl', $this->configuration->get('danbooru_api_url'));
+        $response->assign('suggestedTagsLimit', (int) $this->configuration->get('limit_for_suggested_tags'));
 
         return $response;
     }

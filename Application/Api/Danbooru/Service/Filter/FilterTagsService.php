@@ -4,7 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filt
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Service\TagExcludeListService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\TagExcludeList;
 
 /**
  * Removes all tags with a score lass than $tags_min_score (see config).
@@ -15,14 +15,14 @@ class FilterTagsService
     private FilterTagsByAlreadyKnownTagsService $filterTagsByAlreadyKnownTagsService;
     private FilterTagsByExcludeListService $filterTagsByExcludeListService;
     private FilterTagsByScoreService $filterTagsByScoreService;
-    private TagExcludeListService $tagExcludeListService;
+    private TagExcludeList $tagExcludeListService;
 
     public function __construct(
         FilterSafeTagsService $filterSafeTags,
         FilterTagsByAlreadyKnownTagsService $filterTagsByAlreadyKnownTagsService,
         FilterTagsByExcludeListService $filterTagsByExcludeList,
         FilterTagsByScoreService $filterTagsByScoreService,
-        TagExcludeListService $tagExcludeListService,
+        TagExcludeList $tagExcludeListService,
     ) {
         $this->filterSafeTags = $filterSafeTags;
         $this->filterTagsByAlreadyKnownTagsService = $filterTagsByAlreadyKnownTagsService;

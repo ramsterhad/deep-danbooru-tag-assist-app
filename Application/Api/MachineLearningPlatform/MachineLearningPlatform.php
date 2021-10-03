@@ -4,25 +4,33 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
 class MachineLearningPlatform implements ApiContract
 {
     private TagCollection $collection;
 
-    private \Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture $picture;
+    private Picture $picture;
 
     /**
      * The function triggers an analysis by a machine learning platform. The call returns a simple array with multiple
      * entries; confidence scores and tags, so we have to filter the output accordingly. It also filters specific tags
      * by blacklist.
+     *
+     * @throws ParameterNotFoundException
      */
     public function requestTags(): void
     {
-        if (Config::get('machine_learning_platform_repository_debug') === false) {
+        /** @var ConfigurationInterface $configuration */
+        $configuration = ContainerFactory::getInstance()->getContainer()->get(ConfigurationInterface::class);
+
+        if ($configuration->get('machine_learning_platform_repository_debug') === false) {
             $pathToFile = \sprintf('%s', Kernel::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'ml.sh ');
             exec('bash ' . $pathToFile . $this->picture->getFile()->getPathname().' 0.500', $output);
         } else {
@@ -77,12 +85,12 @@ class MachineLearningPlatform implements ApiContract
         return $this->collection;
     }
 
-    public function setPicture(\Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture $picture): void
+    public function setPicture(Picture $picture): void
     {
         $this->picture = $picture;
     }
 
-    public function getPicture(): \Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture
+    public function getPicture(): Picture
     {
         return $this->picture;
     }

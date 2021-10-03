@@ -1,0 +1,12 @@
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\:
+    resource: '*'
+
+  Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface:
+    class: Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationService
+    public: true

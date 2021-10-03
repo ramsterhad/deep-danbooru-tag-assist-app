@@ -1,13 +1,19 @@
-<?php
-
+<?php declare(strict_types=1);
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api;
 
-
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
 
 class TagExcludeList implements TagExcludeListInterface
 {
+    private ConfigurationInterface $configuration;
+
+    public function __construct(ConfigurationInterface $configuration)
+    {
+        $this->configuration = $configuration;
+    }
+
     /**
      * @return string[]
      */
@@ -17,9 +23,12 @@ class TagExcludeList implements TagExcludeListInterface
         return $this->transformStringListToArray($excludeListAsString);
     }
 
+    /**
+     * @throws ParameterNotFoundException
+     */
     protected function readConfigValue(): string
     {
-        return Config::getInstance()->get('tag_suggestion_exclude_list');
+        return $this->configuration->get('tag_suggestion_exclude_list');
     }
 
     protected function transformStringListToArray(string $excludeList): array

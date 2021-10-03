@@ -8,7 +8,9 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Excep
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 
 class PredictedTagsDatabase implements ApiContract
@@ -49,9 +51,15 @@ class PredictedTagsDatabase implements ApiContract
         }
     }
 
+    /**
+     * @throws ParameterNotFoundException
+     */
     public function getEndpointAddress(): string
     {
-        return Config::get('predicted_tags_db_url');
+        /** @var ConfigurationInterface $configuration */
+        $configuration = ContainerFactory::getInstance()->getContainer()->get(ConfigurationInterface::class);
+
+        return $configuration->get('predicted_tags_db_url');
     }
 
     /**

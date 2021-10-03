@@ -5,8 +5,8 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service;
 use Exception;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AuthenticationError;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 
 use function json_decode;
@@ -14,10 +14,14 @@ use function property_exists;
 
 final class AuthenticationService
 {
+    private ConfigurationInterface $configuration;
     private DanbooruBridgeService $danbooruService;
 
-    public function __construct(DanbooruBridgeService $danbooruService)
+    public function __construct(
+        ConfigurationInterface $configuration,
+        DanbooruBridgeService $danbooruService)
     {
+        $this->configuration = $configuration;
         $this->danbooruService = $danbooruService;
     }
 
@@ -66,7 +70,7 @@ final class AuthenticationService
     public function authenticateBySession(): void
     {
         $this->authenticate(
-            Config::get('danbooru_api_url'),
+            $this->configuration->get('danbooru_api_url'),
             Session::get('username'),
             Session::get('api_key')
         );
@@ -80,9 +84,9 @@ final class AuthenticationService
     public function authenticateByConfig(): void
     {
         $this->authenticate(
-            Config::get('danbooru_api_url'),
-            Config::get('danbooru_user'),
-            Config::get('danbooru_pass')
+            $this->configuration->get('danbooru_api_url'),
+            $this->configuration->get('danbooru_user'),
+            $this->configuration->get('danbooru_pass')
         );
     }
 

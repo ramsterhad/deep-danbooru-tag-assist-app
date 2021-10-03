@@ -5,21 +5,25 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\PushTagsService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Config;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\StatisticLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
 
 use function implode;
 use function sprintf;
 
 class PushTagsController implements ControllerInterface
 {
+    private ConfigurationInterface $configuration;
     private PushTagsService $pushTagsService;
 
-    public function __construct(PushTagsService $pushTagsService)
-    {
+    public function __construct(
+        ConfigurationInterface $configuration,
+        PushTagsService $pushTagsService
+    ) {
+        $this->configuration = $configuration;
         $this->pushTagsService = $pushTagsService;
     }
 
@@ -41,7 +45,7 @@ class PushTagsController implements ControllerInterface
 
         /** @var PushTagsService $pushTagsService */
         $this->pushTagsService->pushTags(
-            Config::get('danbooru_api_url'),
+            $this->configuration->get('danbooru_api_url'),
             Session::get('username'),
             Session::get('api_key'),
             $id,

@@ -1,2 +1,3 @@
 imports:
+  - { resource: Configuration/services.yaml }
   - { resource: FileHandler/services.yaml }

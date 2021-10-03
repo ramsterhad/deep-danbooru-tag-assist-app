@@ -3,7 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Configuration\Service\TagExcludeListService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\TagExcludeList;
 
 /**
  * Tags can be excluded by the user.
@@ -12,7 +12,7 @@ class FilterTagsByExcludeListService
 {
     public function filter(
         TagCollection $collection,
-        TagExcludeListService $excludeList
+        TagExcludeList $excludeList
     ): TagCollection {
 
         $filtered = new TagCollection();
