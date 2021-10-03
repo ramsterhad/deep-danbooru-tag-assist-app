@@ -4,7 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\ApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Shared\Exception\ApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;

@@ -6,6 +6,7 @@ services:
 
   Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\:
     resource: '*'
+    exclude: 'Exception,Infrastructure'
 
   Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface:
     class: Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationService

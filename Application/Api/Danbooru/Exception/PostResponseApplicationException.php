@@ -4,7 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\ApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Shared\Exception\ApplicationException;
 
 class PostResponseApplicationException extends ApplicationException
 {

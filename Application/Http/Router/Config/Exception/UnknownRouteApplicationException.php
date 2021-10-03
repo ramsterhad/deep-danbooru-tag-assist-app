@@ -4,7 +4,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Config\Exception;
 
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Exception\ApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Shared\Exception\ApplicationException;
 
 class UnknownRouteApplicationException extends ApplicationException
 {
