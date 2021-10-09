@@ -32,7 +32,7 @@ class MachineLearningPlatform implements ApiContract
 
         if ($configuration->get('machine_learning_platform_repository_debug') === false) {
             $pathToFile = \sprintf('%s', Kernel::getBasePath() . 'bin' . DIRECTORY_SEPARATOR . 'ml.sh ');
-            exec('bash ' . $pathToFile . $this->picture->getFile()->getPathname().' 0.500', $output);
+            exec('bash ' . $pathToFile . $this->picture->getFile()->getPathname().' 0.100', $output);
         } else {
             // Placeholder array, replaces the above exec()
             $output = [
