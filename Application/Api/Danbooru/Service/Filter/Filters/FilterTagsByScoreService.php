@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter\Filters;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;

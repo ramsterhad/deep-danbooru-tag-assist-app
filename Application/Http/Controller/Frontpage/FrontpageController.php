@@ -7,7 +7,8 @@ use JsonException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter\FilterTagsService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter\FilterAlreadyKnownTags;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter\FilterSafeTagsExcludeListThresholdService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DeletePictureService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService;
@@ -27,20 +28,23 @@ class FrontpageController implements ControllerInterface
     private ConfigurationInterface $configuration;
     private DeletePictureService $deletePictureService;
     private EndpointUrlService $endpointUrlService;
-    private FilterTagsService $filterTagsService;
+    private FilterAlreadyKnownTags $filterAlreadyKnownTags;
+    private FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService;
     private RequestPostService $requestPostService;
 
     public function __construct(
         ConfigurationInterface $configuration,
         DeletePictureService $deletePictureService,
         EndpointUrlService $endpointUrlService,
-        FilterTagsService $filterTagsService,
+        FilterAlreadyKnownTags $filterAlreadyKnownTags,
+        FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService,
         RequestPostService $requestPostService,
     ) {
         $this->configuration = $configuration;
         $this->deletePictureService = $deletePictureService;
         $this->requestPostService = $requestPostService;
-        $this->filterTagsService = $filterTagsService;
+        $this->filterAlreadyKnownTags = $filterAlreadyKnownTags;
+        $this->filterSafeTagsExcludeListThresholdService = $filterSafeTagsExcludeListThresholdService;
         $this->endpointUrlService = $endpointUrlService;
     }
 
@@ -77,7 +81,8 @@ class FrontpageController implements ControllerInterface
             );
         }
 
-        $unknownTags = $this->filterTagsService->filter($suggestedTags, $post);
+        $suggestedTags = $this->filterSafeTagsExcludeListThresholdService->filter($suggestedTags, $post);
+        $unknownTags = $this->filterAlreadyKnownTags->filter($suggestedTags, $post);
 
         $response = new Response($this, '.frontpage.index');
         $response->assign('post', $post);

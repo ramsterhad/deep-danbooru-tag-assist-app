@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter\Filters;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;

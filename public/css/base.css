@@ -124,7 +124,7 @@ a.suggested-tag { text-decoration: none; color: inherit;}
 /* used by \Ramsterhad\DeepDanbooruTagAssist\Api\MachineLearningPlatform\TemplateHelper::tagsCssClassHelper */
 .unknownTag {
     font-weight: bold;
-    color: green;
+    color: #0ca781;
 }
 
 .new_tags_grid {
