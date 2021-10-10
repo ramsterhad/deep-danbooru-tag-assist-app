@@ -6,6 +6,8 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Authentica
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 
+use function setcookie;
+
 class LogoutController implements ControllerInterface
 {
     private AuthenticationService $authenticationService;
@@ -17,6 +19,9 @@ class LogoutController implements ControllerInterface
 
     public function index(): void
     {
+        unset($_COOKIE['danbooru_api_url']);
+        setcookie('danbooru_api_url', '', time() - 1);
+
         $this->authenticationService->logout();
         Router::route('/');
     }
