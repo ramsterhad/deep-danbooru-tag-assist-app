@@ -8,6 +8,8 @@
                 </div>
             </div>
 
+            <div class="row top-buffer-headline"></div>
+
             <!-- danboooru api url -->
             <?php require_once 'index.endpoint.tpl.php'; ?>
 
