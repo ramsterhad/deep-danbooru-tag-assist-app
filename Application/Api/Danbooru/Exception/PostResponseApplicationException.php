@@ -5,6 +5,9 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception;
 
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Shared\Exception\ApplicationException;
+use Throwable;
+
+use function sprintf;
 
 class PostResponseApplicationException extends ApplicationException
 {
@@ -20,4 +23,10 @@ class PostResponseApplicationException extends ApplicationException
     const MESSAGE_JSON_CONTAINS_NO_ITEM = 'Got nothing. &#175;\\_(&#12484;)_/&#175; Pls reload.';
     const MESSAGE_JSON_ITEM_IS_NOT_OBJECT = 'That\'s not an object. What. Is. This.?';
     const MESSAGE_JSON_ITEM_IS_MISSING_PROPERTIES = '( &#865;&#3232; &#662;&#815; &#865;&#3232;) Can\'t show you that. Maybe you don\'t have the permission to see the post?';
+
+    public function __construct($response, $message = "", $code = 0, Throwable $previous = null)
+    {
+        $message = sprintf("Response: %s\nMessage: %s", $response, $message);
+        parent::__construct($message, $code, $previous);
+    }
 }

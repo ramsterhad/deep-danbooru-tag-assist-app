@@ -132,7 +132,9 @@ final class RequestPostService
                 Session::get('api_key')
             );
         } catch (RequestPostApplicationException $e) {
+            dump($e);
             throw new PostResponseApplicationException(
+                'not defined yet',
                 PostResponseApplicationException::MESSAGE_INVALID_JSON,
                 PostResponseApplicationException::CODE_INVALID_JSON
             );
@@ -142,6 +144,7 @@ final class RequestPostService
         // Check if the result is a valid json
         if (!Json::isJson($response)) {
             throw new PostResponseApplicationException(
+                (string) $response,
                 PostResponseApplicationException::MESSAGE_INVALID_JSON,
                 PostResponseApplicationException::CODE_INVALID_JSON
             );
@@ -159,6 +162,7 @@ final class RequestPostService
         // The API URL must be set with limit=1, indicating the API to return only 1 result.
         if (count($response) > 1) {
             throw new PostResponseApplicationException(
+                $response,
                 PostResponseApplicationException::MESSAGE_JSON_CONTAINS_MORE_THAN_ONE_ITEM,
                 PostResponseApplicationException::CODE_JSON_CONTAINS_MORE_THAN_ONE_ITEM
             );
@@ -167,6 +171,7 @@ final class RequestPostService
         // We got less than 0 result? Nothing?
         if (count($response) === 0) {
             throw new PostResponseApplicationException(
+                $response,
                 PostResponseApplicationException::MESSAGE_JSON_CONTAINS_NO_ITEM,
                 PostResponseApplicationException::CODE_JSON_CONTAINS_NO_ITEM
             );
@@ -178,6 +183,7 @@ final class RequestPostService
 
         if (!is_object($object)) {
             throw new PostResponseApplicationException(
+                $response,
                 PostResponseApplicationException::MESSAGE_JSON_ITEM_IS_NOT_OBJECT,
                 PostResponseApplicationException::CODE_JSON_ITEM_IS_NOT_OBJECT
             );
@@ -198,6 +204,7 @@ final class RequestPostService
         // Any other error message directly from Danbooru.
         if (property_exists($object, 'success') && $object->success === false) {
             throw new PostResponseApplicationException(
+                $response,
                 'Danbooru said "'.$object->message.'". (╯︵╰,)',
                 PostResponseApplicationException::CODE_DANBOORU_ERROR_MESSAGE
             );
@@ -208,6 +215,7 @@ final class RequestPostService
         foreach ($this->listOfRequiredJsonPropertiesFromDanbooruResponse as $item) {
             if (!property_exists($object, $item)) {
                 throw new PostResponseApplicationException(
+                    $response,
                     PostResponseApplicationException::MESSAGE_JSON_ITEM_IS_MISSING_PROPERTIES,
                     PostResponseApplicationException::CODE_JSON_ITEM_IS_MISSING_PROPERTIES
                 );

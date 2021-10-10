@@ -44,9 +44,17 @@ final class DanbooruBridgeService
         $adapter = ContainerFactory::getInstance()->getContainer()->get(AdapterInterface::class);
 
         try {
+
+            // Danbooru doesn't like the car sequence :> and :< .
+            $url = str_replace([':<', ':>'], [':%3E', ':%3C'], $url);
+
             return $this->repository->requestPost($adapter, $url, $username, $apiKey);
         } catch (AdapterApplicationException $e) {
-            throw new RequestPostApplicationException();
+            throw new RequestPostApplicationException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
         }
     }
 

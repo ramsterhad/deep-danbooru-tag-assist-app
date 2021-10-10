@@ -5,6 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructu
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use function urlencode;
 
 final class DanbooruRepository
 {
