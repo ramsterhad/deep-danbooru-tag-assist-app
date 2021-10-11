@@ -46,7 +46,7 @@ final class DanbooruBridgeService
         try {
 
             // Danbooru doesn't like the car sequence :> and :< .
-            $url = str_replace([':<', ':>'], [':%3E', ':%3C'], $url);
+            $url = str_replace([':<', ':>'], [':%3C', ':%3E'], $url);
 
             return $this->repository->requestPost($adapter, $url, $username, $apiKey);
         } catch (AdapterApplicationException $e) {
