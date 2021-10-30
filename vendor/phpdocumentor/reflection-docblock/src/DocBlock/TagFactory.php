@@ -67,7 +67,7 @@ interface TagFactory
      *
      * If you want to use your own tags then you can use this method to instruct the TagFactory
      * to register the name of a tag with the FQCN of a 'Tag Handler'. The Tag handler should implement
-     * the {@see Tag} interface (and thus the create method).
+     * the {@see TagDecorator} interface (and thus the create method).
      *
      * @param string                    $tagName Name of tag to register a handler for. When registering a namespaced
      *                                   tag, the full name, along with a prefixing slash MUST be provided.
@@ -78,7 +78,7 @@ interface TagFactory
      *                                   does not start with a backslash.
      * @throws InvalidArgumentException If the handler is not a string.
      * @throws InvalidArgumentException If the handler is not an existing class.
-     * @throws InvalidArgumentException If the handler does not implement the {@see Tag} interface.
+     * @throws InvalidArgumentException If the handler does not implement the {@see TagDecorator} interface.
      */
     public function registerTagHandler(string $tagName, string $handler) : void;
 }

@@ -26,6 +26,14 @@ class PostResponseApplicationException extends ApplicationException
 
     public function __construct($response, $message = "", $code = 0, Throwable $previous = null)
     {
+        if (is_array($response)) {
+            $response = implode(' ', $response);
+        }
+
+        if (is_object($response)) {
+            $response = '{ojbect}';
+        }
+
         $message = sprintf("Response: %s\nMessage: %s", $response, $message);
         parent::__construct($message, $code, $previous);
     }

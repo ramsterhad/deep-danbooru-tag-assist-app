@@ -24,7 +24,7 @@ use function array_key_exists;
 use function explode;
 
 /**
- * Reflection class for a @covers tag in a Docblock.
+ * Reflection class for a @covers TagDecorator in a Docblock.
  */
 final class Covers extends BaseTag implements Factory\StaticMethod
 {

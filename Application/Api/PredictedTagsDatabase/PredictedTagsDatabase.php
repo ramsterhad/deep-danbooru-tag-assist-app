@@ -6,6 +6,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\MarkTagByColorAttributeService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;
@@ -16,6 +17,13 @@ use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 class PredictedTagsDatabase implements ApiContract
 {
     private TagCollection $collection;
+
+    private MarkTagByColorAttributeService $markTagByColorAttributeService;
+
+    public function __construct(MarkTagByColorAttributeService $markTagByColorAttributeService)
+    {
+        $this->markTagByColorAttributeService = $markTagByColorAttributeService;
+    }
 
     /**
      * @param string $id
@@ -45,9 +53,10 @@ class PredictedTagsDatabase implements ApiContract
         $this->collection = new TagCollection();
 
         foreach ($jsonAsArray['tags'] as $item) {
-            $this->collection->add(
-                new Tag($item[1], $item[0])
-            );
+
+            $tag = new Tag($item[1], $item[0]);
+            $this->markTagByColorAttributeService->checkAndActivateHighlighting($tag);
+            $this->collection->add($tag);
         }
     }
 

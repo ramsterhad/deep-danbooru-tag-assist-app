@@ -7,13 +7,13 @@ class TagCollection implements \Countable
 {
     private array $tags = [];
 
-    public function add(Tag $tag): void
+    public function add(TagInterface $tag): void
     {
         $this->tags[] = $tag;
     }
 
     /**
-     * @return Tag[]
+     * @return TagInterface[]
      */
     public function getTags(): array
     {
@@ -29,7 +29,7 @@ class TagCollection implements \Countable
     {
         $tags = '';
 
-        /** @var Tag $tag */
+        /** @var TagInterface $tag */
         foreach ($this->tags as $tag) {
             $tags .= $tag->getName() . ' ';
         }

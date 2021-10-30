@@ -18,34 +18,52 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Excep
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\DataType\TagDecorator;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\Service\ConvertTagsToDecoratedTagsService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\Service\FindDifferentColorsForTheSameTagService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\DataType\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
+use function implode;
 
 class FrontpageController implements ControllerInterface
 {
     private ConfigurationInterface $configuration;
+    private ConvertTagsToDecoratedTagsService $convertTagsToDecoratedTagsService;
     private DeletePictureService $deletePictureService;
     private EndpointUrlService $endpointUrlService;
     private FilterAlreadyKnownTags $filterAlreadyKnownTags;
     private FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService;
+    private FindDifferentColorsForTheSameTagService $findDifferentColorsForTheSameTagService;
     private RequestPostService $requestPostService;
+    private PredictedTagsDatabase $predictedTagsDatabase;
+    private MachineLearningPlatform $machineLearningPlatform;
 
     public function __construct(
         ConfigurationInterface $configuration,
+        ConvertTagsToDecoratedTagsService $convertTagsToDecoratedTagsService,
         DeletePictureService $deletePictureService,
         EndpointUrlService $endpointUrlService,
         FilterAlreadyKnownTags $filterAlreadyKnownTags,
         FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService,
+        FindDifferentColorsForTheSameTagService $findDifferentColorsForTheSameTagService,
         RequestPostService $requestPostService,
+        PredictedTagsDatabase $predictedTagsDatabase,
+        MachineLearningPlatform $machineLearningPlatform,
+
     ) {
         $this->configuration = $configuration;
+        $this->convertTagsToDecoratedTagsService = $convertTagsToDecoratedTagsService;
         $this->deletePictureService = $deletePictureService;
         $this->requestPostService = $requestPostService;
         $this->filterAlreadyKnownTags = $filterAlreadyKnownTags;
         $this->filterSafeTagsExcludeListThresholdService = $filterSafeTagsExcludeListThresholdService;
+        $this->findDifferentColorsForTheSameTagService = $findDifferentColorsForTheSameTagService;
         $this->endpointUrlService = $endpointUrlService;
+        $this->predictedTagsDatabase = $predictedTagsDatabase;
+        $this->machineLearningPlatform = $machineLearningPlatform;
     }
 
     /**
@@ -64,13 +82,13 @@ class FrontpageController implements ControllerInterface
 
         // Try to use pre predicted tags. If something fails with the database, use the machine learning platform api.
         try {
-            $predictedTagsDatabase = new PredictedTagsDatabase();
+            $predictedTagsDatabase = $this->predictedTagsDatabase;
             $predictedTagsDatabase->requestTags($post->getId());
             $suggestedTags = $predictedTagsDatabase->getCollection();
 
         } catch (DatabaseException|PredictedTagsDatabaseInvalidResponseException $ex) {
 
-            $machineLearningPlatform = new MachineLearningPlatform();
+            $machineLearningPlatform = $this->machineLearningPlatform;
             $machineLearningPlatform->setPicture($post->getPicture());
             $machineLearningPlatform->requestTags();
             $suggestedTags = $machineLearningPlatform->getCollection();
@@ -84,9 +102,20 @@ class FrontpageController implements ControllerInterface
         $suggestedTags = $this->filterSafeTagsExcludeListThresholdService->filter($suggestedTags, $post);
         $unknownTags = $this->filterAlreadyKnownTags->filter($suggestedTags, $post);
 
+
+        // start: find tags with same name but different color attribute
+        $decoratedSuggestedTags = $this->convertTagsToDecoratedTagsService->convert($suggestedTags);
+
+        $decoratedDanbooruTags = $this->convertTagsToDecoratedTagsService->convert($post->getTagCollection());
+        $post->setTagCollection($decoratedDanbooruTags);
+
+        $this->findDifferentColorsForTheSameTagService->highlightTags($decoratedSuggestedTags, $post);
+        // end: find tags with same name but different color attribute
+
+
         $response = new Response($this, '.frontpage.index');
         $response->assign('post', $post);
-        $response->assign('suggestedTags', $suggestedTags);
+        $response->assign('suggestedTags', $decoratedSuggestedTags);
         $response->assign('unknownTags', $unknownTags);
         $response->assign('endpointUrl', $this->endpointUrlService->getEndpointAddress());
         $response->assign('danbooruApiUrl', $this->configuration->get('danbooru_api_url'));
@@ -125,6 +154,12 @@ class FrontpageController implements ControllerInterface
             $isNew = false;
 
             foreach ($filteredTags->getTags() as $filteredTag) {
+
+                $tags = [
+                    'tag',
+                    'suggested-tags',
+                ];
+
                 if ($tag->getName() === $filteredTag->getName()) {
                     $isNew = true;
                     break;
@@ -132,10 +167,19 @@ class FrontpageController implements ControllerInterface
             }
 
             if ($isNew) {
-                $mlpTagList .= '<div class="tag suggested-tags unknownTag">' . $this->addWikiLink($tag->getName()) . '&nbsp;</div>';
-            } else {
-                $mlpTagList .= '<div class="tag suggested-tags">' . $this->addWikiLink($tag->getName()) . '&nbsp;</div>';
+                $tags[] = 'unknownTag';
             }
+
+            if ($tag->highlightColoredTag()) {
+                $markStart = '<mark>';
+                $markEnd = '</mark>';
+            } else {
+                $markStart = '';
+                $markEnd = '';
+            }
+
+            $cssClasses = implode(' ', $tags);
+            $mlpTagList .= '<div class="'.$cssClasses.'">' . $markStart .  $this->addWikiLink($tag->getName()) . $markEnd . '&nbsp;</div>';
         }
 
         return $mlpTagList;
@@ -148,7 +192,7 @@ class FrontpageController implements ControllerInterface
         return $url;
     }
 
-    public function tagsCssClassHelperColoredDanbooruTags(Tag $tag): string
+    public function tagsCssClassHelperColoredDanbooruTags(TagInterface $tag): string
     {
         return '<span style="color: '. $tag->getHexColor().';">'.$tag->getName().'</span>';
     }

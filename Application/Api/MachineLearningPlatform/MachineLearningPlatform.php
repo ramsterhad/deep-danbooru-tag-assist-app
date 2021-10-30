@@ -5,6 +5,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatfo
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\ApiContract;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\MarkTagByColorAttributeService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Kernel;
@@ -17,6 +18,13 @@ class MachineLearningPlatform implements ApiContract
     private TagCollection $collection;
 
     private Picture $picture;
+
+    private MarkTagByColorAttributeService $markTagByColorAttributeService;
+
+    public function __construct(MarkTagByColorAttributeService $markTagByColorAttributeService)
+    {
+        $this->markTagByColorAttributeService = $markTagByColorAttributeService;
+    }
 
     /**
      * The function triggers an analysis by a machine learning platform. The call returns a simple array with multiple
@@ -76,7 +84,9 @@ class MachineLearningPlatform implements ApiContract
         $this->collection = new TagCollection();
 
         foreach ($tags as $tag) {
-            $this->collection->add(new Tag($tag[1], $tag[0]));
+            $tag = new Tag($tag[1], $tag[0]);
+            $this->markTagByColorAttributeService->checkAndActivateHighlighting($tag);
+            $this->collection->add($tag);
         }
     }
 

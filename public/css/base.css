@@ -138,3 +138,8 @@ a.suggested-tag { text-decoration: none; color: inherit;}
 div.row.new_tags_grid {
     margin-bottom: 10px;
 }
+
+
+.color_tag {
+    text-decoration: underline;
+}

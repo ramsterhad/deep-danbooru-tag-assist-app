@@ -11,6 +11,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Factory\PostFactor
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DominantColorsService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DownloadPictureService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\MarkTagByColorAttributeService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
@@ -31,6 +32,7 @@ final class RequestPostService
     private DominantColorsService $dominantColorsService;
     private DownloadPictureService $downloadPictureService;
     private EndpointUrlService $endpointUrlService;
+    private MarkTagByColorAttributeService $markTagByColorAttributeService;
 
     private array $listOfRequiredJsonPropertiesFromDanbooruResponse = [
         'id',
@@ -50,11 +52,13 @@ final class RequestPostService
         DominantColorsService $dominantColorsService,
         DownloadPictureService $downloadPictureService,
         EndpointUrlService $endpointUrlService,
+        MarkTagByColorAttributeService $markTagByColorAttributeService,
     ) {
         $this->danbooruBridgeService = $danbooruBridgeService;
         $this->dominantColorsService = $dominantColorsService;
         $this->downloadPictureService = $downloadPictureService;
         $this->endpointUrlService = $endpointUrlService;
+        $this->markTagByColorAttributeService = $markTagByColorAttributeService;
     }
 
     /**
@@ -323,7 +327,9 @@ final class RequestPostService
         $tags = preg_split('/ /', $tags);
 
         foreach ($tags as $item) {
-            $collection->add(new Tag($item, '0.0', $color));
+            $tag = new Tag($item, '0.0', $color);
+            $this->markTagByColorAttributeService->checkAndActivateHighlighting($tag);
+            $collection->add($tag);
         }
     }
 
