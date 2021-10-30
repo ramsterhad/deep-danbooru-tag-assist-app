@@ -50,9 +50,6 @@ class Tag implements TagInterface
         return $this->color;
     }
 
-    /**
-     * @param bool $isColored
-     */
     public function setIsColored(bool $isColored): void
     {
         $this->isColored = $isColored;

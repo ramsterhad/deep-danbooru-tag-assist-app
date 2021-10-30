@@ -18,8 +18,8 @@ class FindDifferentColorsForTheSameTagService
                 foreach ($post->getTags() as $danbooruTag) {
 
                     /*
-                     * Those queries are split, because if the second one hits the loop can jump to the next item
-                     * independently if it was true or not, since it had already the check with the tag with the same name.
+                     * Those queries are split, because if the second one hits, the loop can jump to the next item.
+                     * Independently if it was true or not, it had already checked if there are two tags with the same name.
                      */
                     if ($danbooruTag->isColored()) {
 
