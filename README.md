@@ -64,6 +64,7 @@ To adapt the configuration of DDTA, adapt the `.env` file or create `.env.local`
 | tags_min_score                             | 0.500                              |
 | picture_storage                            | tmp                                |
 | limit_for_suggested_tags                   | 15                                 |
+| highlight_color_attributes                 | red,green,blue,pink,black,silver,purple,<br>grey,white,brown,orange,blonde,aqua,<br>dark_blue,dark_green,light_blue,<br>light_brown,light_green,light_purple,pink,<br>platinum_blonde,purple,translucent,yellow |
 | tag_suggestion_exclude_list                | empty                              |
 | debug                                      | false                              |
 
@@ -103,11 +104,16 @@ Tags got a confidence score by the machine learning platform. From 1 to 0. The t
 
 ### picture_storage
 The image is downloaded from danbooru and temporarily locally stored in case it is to be forwarded to the machine 
-learning platform (MLP). Needs write access.
+learning platform (MLP). Needs write rights.
 
 ### limit_for_suggested_tags
-Limits the checkboxes for suggested new tags. By default a row contains 3 columns. So a number dividable by 3 is 
+Limits the checkboxes for suggested new tags. By default, a row contains 3 columns. So a number dividable by 3 is 
 recommended. Using the numpad, the first 9 suggested tags can be toggled on/off. 
+
+### highlight_color_attributes
+Highlights tags which are already present at Danbooru, but were also suggested from Deep Danbooru, but with a different 
+color.  
+Example: `hair_yellow` <-> `hair_orange`
 
 ### tag_suggestion_exclude_list
 A whitespace separated list to exclude tags to be suggested.  
