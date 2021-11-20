@@ -37,8 +37,8 @@ Download the deepdanbooru tag assist [ZIP](https://github.com/ramsterhad/deep-da
 [main repository](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/tree/main) and unzip the files into the
 target directory of your webserver (e.g. apache: /var/www/html/).
 ```shell
-wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/main.zip
-unzip main.zip
+wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/refs/tags/v1.0.0.zip
+unzip v1.0.0.zip
 ```
 Optional but advised: browse to the `db/` directory (e.g. /var/www/html/db) and download a precomputed database (suggested: v3):
 ```shell
