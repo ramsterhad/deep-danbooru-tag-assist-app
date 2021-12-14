@@ -14,6 +14,7 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\MarkTagByColorAttributeService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Utility\Json;
 use stdClass;
@@ -123,7 +124,7 @@ final class RequestPostService
      * preview_file_url          Link to thumbnail
      *
      * @throws InvalidCredentials
-     * @throws PostResponseApplicationException
+     * @throws PostResponseApplicationException|ParameterNotFoundException
      */
     public function request(): Post
     {
@@ -136,7 +137,7 @@ final class RequestPostService
                 Session::get('api_key')
             );
         } catch (RequestPostApplicationException $e) {
-            dump($e);
+
             throw new PostResponseApplicationException(
                 'not defined yet',
                 PostResponseApplicationException::MESSAGE_INVALID_JSON,
