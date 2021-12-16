@@ -56,12 +56,16 @@ class Kernel
     {
         $this->startSession();
 
-        $this->authenticate();
+        try {
+            $this->authenticate();
+        } catch (\Exception $e) {
+            $this->displayErrorAndExit($e);
+        }
 
         try {
             Router::getInstance()->processRequest();
 
-        } catch (PostResponseApplicationException $e) {
+        } catch (PostResponseApplicationException|PostResponseApplicationException $e) {
 
             /** @var ConfigurationInterface $configuration */
             $configuration = ContainerFactory::getInstance()->getContainer()->get(ConfigurationInterface::class);

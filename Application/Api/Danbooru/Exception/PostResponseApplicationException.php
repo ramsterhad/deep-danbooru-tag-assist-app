@@ -4,9 +4,13 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception;
 
 
+use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Shared\Exception\ApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 use Throwable;
 
+use function print_r;
 use function sprintf;
 
 class PostResponseApplicationException extends ApplicationException
@@ -26,15 +30,13 @@ class PostResponseApplicationException extends ApplicationException
 
     public function __construct($response, $message = "", $code = 0, Throwable $previous = null)
     {
-        if (is_array($response)) {
-            $response = implode(' ', $response);
-        }
-
-        if (is_object($response)) {
-            $response = '{ojbect}';
-        }
-
-        $message = sprintf("Response: %s\nMessage: %s", $response, $message);
+        $message = sprintf("Response message: %s", $message);
         parent::__construct($message, $code, $previous);
+
+        $configuration = ContainerFactory::getInstance()->getContainer()->get(ConfigurationInterface::class);
+
+        if ($configuration->get('debug')) {
+            (new ErrorLogger())->log(print_r($response, true));
+        }
     }
 }
