@@ -57,7 +57,7 @@ To adapt the configuration of DDTA, adapt the `.env` file or create `.env.local`
 | Parameter                                  | default value                      |
 |--------------------------------------------|------------------------------------|
 | danbooru_api_url                           | https://danbooru.donmai.us/        |
-| danbooru_default_request                   | limit=1&tags=order:random+rating:s |
+| danbooru_default_request                   | tags=random:1+rating:s             |
 | danbooru_user                              | empty                              |
 | danbooru_pass                              | empty                              |
 | machine_learning_platform_repository_debug | false                              |
