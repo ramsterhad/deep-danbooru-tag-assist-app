@@ -44,7 +44,7 @@ class FrontpageController implements ControllerInterface
         private FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService,
         private FindDifferentColorsForTheSameTagService   $findDifferentColorsForTheSameTagService,
         private RequestPostService                        $requestPostService,
-        private PredictedTagsDatabase                     $predictedTagsDatabase,
+        //private PredictedTagsDatabase                     $predictedTagsDatabase,
         private MachineLearningPlatform                   $machineLearningPlatform,
         private RequestTagsByPictureUrlService            $requestTagsFromDeepDanbooruByPictureUrlService,
     ) {}
