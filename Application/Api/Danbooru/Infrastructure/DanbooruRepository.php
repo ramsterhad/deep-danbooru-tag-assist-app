@@ -81,26 +81,4 @@ final class DanbooruRepository
 
         return $adapter->getResponse();
     }
-
-    public function requestTagsForPicture(AdapterInterface $adapter, string $url, string $pictureUrl)
-    {
-
-
-        // https://deepdanbooru.donmai.us/?url=
-
-
-        $adapter
-            ->init()
-            ->sendTo($url)
-            ->requestTransferStatus(true)
-            ->activateAutoReferer(false)
-            ->withHttpVersion(2)
-            ->includeHeaderInResponse(false)
-            ->execute();
-
-        print_r($adapter->getResponse());
-        exit;
-
-        return $adapter->getResponse();
-    }
 }
