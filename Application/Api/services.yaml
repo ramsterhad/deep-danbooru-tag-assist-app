@@ -30,3 +30,6 @@ services:
 
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService:
     public: true
+
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\DeepDanbooru\Service\RequestTagsByPictureUrlService:
+    public: true

@@ -13,10 +13,14 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\De
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Tag;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\DeepDanbooru\Infrastructure\DeepDanbooruRepository;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\DeepDanbooru\Service\RequestTagsByPictureUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\DatabaseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\Exception\PredictedTagsDatabaseInvalidResponseException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\PredictedTagsDatabase\PredictedTagsDatabase;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\AdapterInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\CurlAdapter;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
@@ -26,45 +30,24 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage\Servi
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\DataType\Response;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 use function implode;
 
 class FrontpageController implements ControllerInterface
 {
-    private ConfigurationInterface $configuration;
-    private ConvertTagsToDecoratedTagsService $convertTagsToDecoratedTagsService;
-    private DeletePictureService $deletePictureService;
-    private EndpointUrlService $endpointUrlService;
-    private FilterAlreadyKnownTags $filterAlreadyKnownTags;
-    private FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService;
-    private FindDifferentColorsForTheSameTagService $findDifferentColorsForTheSameTagService;
-    private RequestPostService $requestPostService;
-    private PredictedTagsDatabase $predictedTagsDatabase;
-    private MachineLearningPlatform $machineLearningPlatform;
-
     public function __construct(
-        ConfigurationInterface $configuration,
-        ConvertTagsToDecoratedTagsService $convertTagsToDecoratedTagsService,
-        DeletePictureService $deletePictureService,
-        EndpointUrlService $endpointUrlService,
-        FilterAlreadyKnownTags $filterAlreadyKnownTags,
-        FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService,
-        FindDifferentColorsForTheSameTagService $findDifferentColorsForTheSameTagService,
-        RequestPostService $requestPostService,
-        PredictedTagsDatabase $predictedTagsDatabase,
-        MachineLearningPlatform $machineLearningPlatform,
-
-    ) {
-        $this->configuration = $configuration;
-        $this->convertTagsToDecoratedTagsService = $convertTagsToDecoratedTagsService;
-        $this->deletePictureService = $deletePictureService;
-        $this->requestPostService = $requestPostService;
-        $this->filterAlreadyKnownTags = $filterAlreadyKnownTags;
-        $this->filterSafeTagsExcludeListThresholdService = $filterSafeTagsExcludeListThresholdService;
-        $this->findDifferentColorsForTheSameTagService = $findDifferentColorsForTheSameTagService;
-        $this->endpointUrlService = $endpointUrlService;
-        $this->predictedTagsDatabase = $predictedTagsDatabase;
-        $this->machineLearningPlatform = $machineLearningPlatform;
-    }
+        private ConfigurationInterface                    $configuration,
+        private ConvertTagsToDecoratedTagsService         $convertTagsToDecoratedTagsService,
+        private DeletePictureService                      $deletePictureService,
+        private EndpointUrlService                        $endpointUrlService,
+        private FilterAlreadyKnownTags                    $filterAlreadyKnownTags,
+        private FilterSafeTagsExcludeListThresholdService $filterSafeTagsExcludeListThresholdService,
+        private FindDifferentColorsForTheSameTagService   $findDifferentColorsForTheSameTagService,
+        private RequestPostService                        $requestPostService,
+        private PredictedTagsDatabase                     $predictedTagsDatabase,
+        private MachineLearningPlatform                   $machineLearningPlatform,
+        private RequestTagsByPictureUrlService            $requestTagsFromDeepDanbooruByPictureUrlService,
+    ) {}
 
     /**
      * @throws PostResponseApplicationException
@@ -82,9 +65,14 @@ class FrontpageController implements ControllerInterface
 
         // Try to use pre predicted tags. If something fails with the database, use the machine learning platform api.
         try {
+            /*
             $predictedTagsDatabase = $this->predictedTagsDatabase;
             $predictedTagsDatabase->requestTags($post->getId());
             $suggestedTags = $predictedTagsDatabase->getCollection();
+            */
+            $suggestedTags = $this->requestTagsFromDeepDanbooruByPictureUrlService->requestTags(
+                $post->getPicOriginal()
+            );
 
         } catch (DatabaseException|PredictedTagsDatabaseInvalidResponseException $ex) {
 
