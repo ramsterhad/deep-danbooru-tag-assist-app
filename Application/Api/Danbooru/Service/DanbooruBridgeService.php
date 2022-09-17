@@ -2,8 +2,8 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\AdapterInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Exception\AdapterApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PushTagsApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\RequestPostApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure\DanbooruRepository;

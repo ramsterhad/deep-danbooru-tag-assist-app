@@ -1,11 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Infrastructure;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\DeepDanbooru\Infrastructure;
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\AdapterInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Exception\AdapterApplicationException;
 
-final class DanbooruRepository
+
+final class DeepDanbooruRepository
 {
     /**
      * @throws AdapterApplicationException

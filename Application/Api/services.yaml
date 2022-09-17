@@ -15,8 +15,8 @@ services:
 
   # Services
 
-  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface:
-    class: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\CurlAdapter
+  Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\AdapterInterface:
+    class: Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\CurlAdapter
     public: true
 
   Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService:
