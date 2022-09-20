@@ -2,6 +2,7 @@
 
 namespace Ramsterhad\DeepDanbooruTagAssist\Application;
 
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Shared\Exception\ApplicationException;
@@ -9,7 +10,6 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Router\Router;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Session;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
-use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Exception\ParameterNotFoundException;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
 
@@ -64,7 +64,9 @@ class Kernel
 
         try {
             Router::getInstance()->processRequest();
-
+        } catch (InvalidCredentials $e) {
+            Session::destroy();
+            Router::route('auth');
         } catch (PostResponseApplicationException|PostResponseApplicationException $e) {
 
             /** @var ConfigurationInterface $configuration */
