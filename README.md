@@ -14,7 +14,7 @@ of 0.100. In total, 3.227.713 images were classified using the 4 models, giving 
 is available under [releases](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/tag/danbooru2020 "DDTA danbooru 2020 SFW subset dataset tag prediction releases")
 
 ## Installation
-Deepdanbooru tag assist requires PHP8 and php8-curl.
+Deepdanbooru tag assist requires a webserver with PHP 8 and php8-curl.
 Download the deepdanbooru tag assist [ZIP](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/main.zip) package from the 
 [main repository](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/tree/main) and unzip the files into the
 target directory of your webserver (e.g. apache: /var/www/html/).
