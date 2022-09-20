@@ -4,6 +4,8 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Http;
 
 
+use function session_unset;
+
 class Session
 {
     private function __construct() {}
@@ -44,6 +46,6 @@ class Session
     public static function destroy(): void
     {
         session_destroy();
-        unset($_SESSION);
+        session_unset();
     }
 }

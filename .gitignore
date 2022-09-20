@@ -1,7 +1,5 @@
 !tmp/.gitkeep
 
-db/
-
 log/
 !log/.gitkeep
 

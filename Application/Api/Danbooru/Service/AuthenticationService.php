@@ -47,8 +47,11 @@ final class AuthenticationService
 
         $response = json_decode($response);
 
-        // Json didn't have the id property which every logged in user must have.
-        if (!property_exists($response, 'id')) {
+        // Json must have the id property with a number, else the API doesn't know the user.
+        if (
+            !property_exists($response, 'id') ||
+            $response->id == null
+        ) {
             throw new InvalidCredentials(
                 'Danbooru said no to your credentials. (╯︵╰,)<br>Whats your name and api key again?<br>must. know. that.',
                 AuthenticationError::CODE_RESPONSE_MISSING_PROPERTIES

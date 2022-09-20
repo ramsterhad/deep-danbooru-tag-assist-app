@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter;
+namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter;
 
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\AdapterApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Exception\AdapterApplicationException;
 
 interface AdapterInterface
 {

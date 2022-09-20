@@ -3,7 +3,7 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture;
 
 use Exception;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Adapter\AdapterInterface;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\AdapterInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\DataType\Picture;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Entity\Post;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\DownloadPictureException;

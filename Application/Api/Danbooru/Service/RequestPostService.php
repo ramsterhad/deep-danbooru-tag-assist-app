@@ -208,6 +208,14 @@ final class RequestPostService
 
         // Any other error message directly from Danbooru.
         if (property_exists($object, 'success') && $object->success === false) {
+
+            if (str_contains(strtolower($object->message), 'invalid api key')) {
+                throw new InvalidCredentials(
+                    'Danbooru said "'.$object->message.'". (╯︵╰,)',
+                    InvalidCredentials::CODE_RESPONSE_INVALID_CREDENTIALS
+                );
+            }
+
             throw new PostResponseApplicationException(
                 $response,
                 'Danbooru said "'.$object->message.'". (╯︵╰,)',
