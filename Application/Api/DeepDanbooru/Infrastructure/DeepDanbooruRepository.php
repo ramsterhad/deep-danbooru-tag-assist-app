@@ -4,6 +4,7 @@ namespace Ramsterhad\DeepDanbooruTagAssist\Application\Api\DeepDanbooru\Infrastr
 
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Adapter\AdapterInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Exception\AdapterApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\MarkTagByColorAttributeService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\Tag;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use function json_decode;
@@ -13,6 +14,10 @@ use function sprintf;
 final class DeepDanbooruRepository
 {
     private static $endpointUrl = 'https://deepdanbooru.donmai.us/';
+
+    public function __construct(
+        private MarkTagByColorAttributeService $markTagByColorAttributeService)
+    {}
 
     /**
      * @throws AdapterApplicationException
@@ -43,8 +48,10 @@ final class DeepDanbooruRepository
             return $collection;
         }
 
-        foreach ($tags as $tag) {
-            $collection->add(new Tag($tag[0], (string) $tag[1]));
+        foreach ($tags as $item) {
+            $tag = new Tag($item[0], (string) $item[1]);
+            $this->markTagByColorAttributeService->checkAndActivateHighlighting($tag);
+            $collection->add($tag);
         }
         return $collection;
     }
