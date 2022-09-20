@@ -22,7 +22,7 @@ class Repository
             throw new ParameterNotFoundException($key);
         }
 
-        return  $_ENV[$key];
+        return $_ENV[$key];
     }
 
     public function set(string $key, string $value): void
