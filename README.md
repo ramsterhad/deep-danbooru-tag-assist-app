@@ -2,9 +2,9 @@
 Web-based assist application for an AI-based multi-label image classification system, based on [KichangKim´s DeepDanbooru](https://github.com/KichangKim/DeepDanbooru "KichangKim´s DeepDanbooru").
 
 ![screenshot](ddta_screenshot.jpg?raw=true "DDTA screenshot")
-**[LIVE functional production server, login with danbooru username and API key](https://ddta.henta.hu/ "DDTA LIVE functional demonstration and production server").**  
+**[LIVE functional production server, login with danbooru username and API key](https://rdtls.nl/ddta/ "DDTA LIVE functional demonstration and production server").**  
 *PLEASE BEWARE: SELECTED & SUBMITTED TAGS ARE ADDED TO DANBOORU FOR REAL*.  
-An API key can be created and removed on your profile page: https://danbooru.donmai.us/profile. Please see https://danbooru.donmai.us/wiki_pages/help:api for further information.
+An API key can be created and removed on your profile page: https://danbooru.donmai.us/profile. See the danbooru API for further information:  https://danbooru.donmai.us/wiki_pages/help:api.
 
 ## Data availability
 We precomputed the images present in [Gwern's danbooru2020 SFW dataset](https://www.gwern.net/Danbooru2020 
@@ -14,25 +14,7 @@ of 0.100. In total, 3.227.713 images were classified using the 4 models, giving 
 is available under [releases](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/tag/danbooru2020 "DDTA danbooru 2020 SFW subset dataset tag prediction releases")
 
 ## Installation
-Deepdanbooru tag assist requires PHP 8. Deepdanbooru and its dependencies can be installed inside a Miniconda environment
-```shell
-wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
-bash https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
-conda create -n ml
-conda activate ml
-conda install python=3.6
-wget https://github.com/KichangKim/DeepDanbooru/archive/master.zip
-unzip master.zip 
-cd deepdanbooru/
-pip install .[tensorflow]
-```
-Download the Deepdanbooru RESNET model:
-```shell
-wget https://github.com/KichangKim/DeepDanbooru/releases/download/v3-20200915-sgd-e30/deepdanbooru-v3-20200915-sgd-e30.zip
-mkdir deepdanbooru-v3-20200915-sgd-e30
-cd deepdanbooru-v3-20200915-sgd-e30/
-unzip deepdanbooru-v3-20200915-sgd-e30.zip
-```
+Deepdanbooru tag assist requires PHP8 and php8-curl.
 Download the deepdanbooru tag assist [ZIP](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/main.zip) package from the 
 [main repository](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/tree/main) and unzip the files into the
 target directory of your webserver (e.g. apache: /var/www/html/).
@@ -40,24 +22,16 @@ target directory of your webserver (e.g. apache: /var/www/html/).
 wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/refs/tags/v1.0.1.zip
 unzip v1.0.1.zip
 ```
-Optional but advised: browse to the `db/` directory (e.g. /var/www/html/db) and download a precomputed database (suggested: v3):
-```shell
-wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/download/danbooru2020/danbooru2020_deepdanbooru_v3-2020-09-15.7z
-7z x danbooru2020_deepdanbooru_v3-2020-09-15.7z
-```
 Optional but advised: Configure your web server to serve `public/` as the webroot.
 
 ## Configuration
-Deepdanbooru is called by [ml.sh](bin/ml.sh "ml.sh").  
-Change `source` to the Miniconda directory (e.g. /home/username/miniconda3/etc/profile.d/conda.sh)  
-Change `PROJECTPATH` to the RESNET model directory (e.g. /home/username/deepdanbooru-v3-20200915-sgd-e30/
-
+Deepdanbooru tag assist queries a TensorFlow model evaluator server (TFMES) accessible from https://deepdanbooru.donmai.us/. The parameters are ?url= and &min_score=, example: https://deepdanbooru.donmai.us/?url=https://cdn.donmai.us/360x360/6e/8e/6e8e3f6c38f1e9b2e2c531943547e39e.jpg&min_score=0.5
 To adapt the configuration of DDTA, adapt the `.env` file or create `.env.local` so an update doesn't overwrite your configuration. 
 
 | Parameter                                  | default value                      |
 |--------------------------------------------|------------------------------------|
 | danbooru_api_url                           | https://danbooru.donmai.us/        |
-| danbooru_default_request                   | tags=random:1+rating:s             |
+| danbooru_default_request                   | tags=random:1+rating:g             |
 | danbooru_user                              | empty                              |
 | danbooru_pass                              | empty                              |
 | machine_learning_platform_repository_debug | false                              |
