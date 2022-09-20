@@ -36,8 +36,13 @@ final class DeepDanbooruRepository
 
         $response = $adapter->getResponse();
         $tags = json_decode($response);
-
         $collection = new TagCollection();
+
+        // In case there are no tags.
+        if (!is_array($tags)) {
+            return $collection;
+        }
+
         foreach ($tags as $tag) {
             $collection->add(new Tag($tag[0], (string) $tag[1]));
         }
