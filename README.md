@@ -33,12 +33,11 @@ composer create-project ramsterhad/ddta-project .
 
 ### ZIP
 
-Download the deepdanbooru tag assist [ZIP](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/main.zip) package from the 
-[main repository](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/tree/main) and unzip the files into the
+Download the latest deepdanbooru tag assist [ddta.zip](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/latest) package and unzip the files into the
 target directory of your webserver (e.g. apache: /var/www/html/).
 ```shell
-wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/refs/tags/v1.1.0.zip
-unzip v1.1.0.zip
+wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/download/v1.3.0/ddta.zip
+unzip v1.3.0.zip
 chmod -R 777 cache tmp
 ```
 
