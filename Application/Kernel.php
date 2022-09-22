@@ -65,6 +65,7 @@ class Kernel
     public function run(): void
     {
         $this->startSession();
+        $this->loadEnvironmentVariables();
 
         try {
             $this->authenticate();
