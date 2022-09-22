@@ -12,8 +12,8 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\ErrorLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Logger\RequestLogger;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Configuration\Service\ConfigurationInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Container\ContainerFactory;
-
 use Ramsterhad\DeepDanbooruTagAssist\Framework\Shared\Exception\FrameworkException;
+use Symfony\Component\Dotenv\Dotenv;
 use function setcookie;
 
 class Kernel
@@ -37,6 +37,16 @@ class Kernel
     public function startSession(): bool
     {
         return Session::start();
+    }
+
+    public function loadEnvironmentVariables(): void
+    {
+        $dotenv = new Dotenv();
+
+        if (!file_exists(BASE_PATH . '.env')) {
+            throw new FrameworkException('The environment file ".env" was not found!');
+        }
+        $dotenv->loadEnv(BASE_PATH . '.env');
     }
 
     /**
