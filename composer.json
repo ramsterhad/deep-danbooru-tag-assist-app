@@ -1,9 +1,8 @@
 {
-    "name": "ramsterhad/deepdanboorutagassist",
+    "name": "ramsterhad/ddta",
     "description": "Deep Danbooru Tag Assist. An assistant to find new tags.",
-    "type": "project",
+    "type": "library",
     "license": "GPL-3.0-only",
-    "version": "1.0",
     "autoload": {
         "psr-4": {
             "Ramsterhad\\DeepDanbooruTagAssist\\": ""
