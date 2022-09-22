@@ -39,7 +39,7 @@ target directory of your webserver (e.g. apache: /var/www/html/).
 ```shell
 wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/refs/tags/v1.1.0.zip
 unzip v1.1.0.zip
-chmod -R 774 cache tmp
+chmod -R 777 cache tmp
 ```
 
 
@@ -183,6 +183,14 @@ Host: localhost : Port 80
 git clone https://github.com/ramsterhad/deep-danbooru-tag-assist-app/ ddta
 cd ddta
 composer install
+```
+
+#### Codeception
+Create the file `.env.testing` in the root directory, next to the file `.env`:
+```env
+danbooru_api_url=https://testbooru.donmai.us/
+danbooru_user=%your_sandbox_username%
+danbooru_pass=%your_sandbox_password%
 ```
 
 #### PHPUnit
