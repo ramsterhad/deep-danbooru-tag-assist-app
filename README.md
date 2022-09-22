@@ -39,7 +39,7 @@ target directory of your webserver (e.g. apache: /var/www/html/).
 ```shell
 wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/refs/tags/v1.1.0.zip
 unzip v1.1.0.zip
-chmod -R 777 cache tmp
+chmod -R 774 cache tmp
 ```
 
 
