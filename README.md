@@ -14,15 +14,34 @@ of 0.100. In total, 3.227.713 images were classified using the 4 models, giving 
 is available under [releases](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/releases/tag/danbooru2020 "DDTA danbooru 2020 SFW subset dataset tag prediction releases")
 
 ## Installation
-Deepdanbooru tag assist requires a webserver with PHP 8 and php8-curl.
+
+You can either install it by composer or by downloading the  ZIP file.
+
+### Requirements
+- web server (tested with Apache 2.4)
+- PHP 8.0
+- php8-curl
+
+#### Optional
+- ImageMagick
+- Optional but advised: Configure your web server to serve `public/` as the webroot.
+
+### Composer
+```shell
+composer create-project ramsterhad/ddta-project .
+```
+
+### ZIP
+
 Download the deepdanbooru tag assist [ZIP](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/main.zip) package from the 
 [main repository](https://github.com/ramsterhad/deep-danbooru-tag-assist-app/tree/main) and unzip the files into the
 target directory of your webserver (e.g. apache: /var/www/html/).
 ```shell
 wget https://github.com/ramsterhad/deep-danbooru-tag-assist-app/archive/refs/tags/v1.1.0.zip
 unzip v1.1.0.zip
+chmod -R 777 cache tmp
 ```
-Optional but advised: Configure your web server to serve `public/` as the webroot.
+
 
 ## Configuration
 Deepdanbooru tag assist queries a TensorFlow model evaluator server (TFMES) accessible from https://deepdanbooru.donmai.us/. The parameters are ?url= and &min_score=, example: https://deepdanbooru.donmai.us/?url=https://cdn.donmai.us/360x360/6e/8e/6e8e3f6c38f1e9b2e2c531943547e39e.jpg&min_score=0.5
