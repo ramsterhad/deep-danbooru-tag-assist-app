@@ -14,5 +14,10 @@
         "symfony/dependency-injection": "^5.3",
         "symfony/config": "^5.3",
         "symfony/var-dumper": "^5.3"
+    },
+    "require-dev": {
+        "codeception/codeception": "^5.0",
+        "codeception/module-phpbrowser": "*",
+        "codeception/module-asserts": "*"
     }
 }
