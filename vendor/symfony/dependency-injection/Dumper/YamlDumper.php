@@ -42,7 +42,7 @@ class YamlDumper extends Dumper
     /**
      * Dumps the service container as an YAML string.
      *
-     * @return string A YAML string representing of the service container
+     * @return string
      */
     public function dump(array $options = [])
     {
@@ -347,7 +347,7 @@ class YamlDumper extends Dumper
         foreach ($parameters as $key => $value) {
             if (\is_array($value)) {
                 $value = $this->prepareParameters($value, $escape);
-            } elseif ($value instanceof Reference || \is_string($value) && 0 === strpos($value, '@')) {
+            } elseif ($value instanceof Reference || \is_string($value) && str_starts_with($value, '@')) {
                 $value = '@'.$value;
             }
 

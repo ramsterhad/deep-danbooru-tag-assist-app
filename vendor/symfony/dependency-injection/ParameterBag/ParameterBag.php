@@ -25,16 +25,13 @@ class ParameterBag implements ParameterBagInterface
     protected $parameters = [];
     protected $resolved = false;
 
-    /**
-     * @param array $parameters An array of parameters
-     */
     public function __construct(array $parameters = [])
     {
         $this->add($parameters);
     }
 
     /**
-     * Clears all parameters.
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -42,9 +39,7 @@ class ParameterBag implements ParameterBagInterface
     }
 
     /**
-     * Adds parameters to the service container parameters.
-     *
-     * @param array $parameters An array of parameters
+     * {@inheritdoc}
      */
     public function add(array $parameters)
     {
@@ -74,13 +69,13 @@ class ParameterBag implements ParameterBagInterface
             $alternatives = [];
             foreach ($this->parameters as $key => $parameterValue) {
                 $lev = levenshtein($name, $key);
-                if ($lev <= \strlen($name) / 3 || false !== strpos($key, $name)) {
+                if ($lev <= \strlen($name) / 3 || str_contains($key, $name)) {
                     $alternatives[] = $key;
                 }
             }
 
             $nonNestedAlternative = null;
-            if (!\count($alternatives) && false !== strpos($name, '.')) {
+            if (!\count($alternatives) && str_contains($name, '.')) {
                 $namePartsLength = array_map('strlen', explode('.', $name));
                 $key = substr($name, 0, -1 * (1 + array_pop($namePartsLength)));
                 while (\count($namePartsLength)) {
@@ -102,10 +97,7 @@ class ParameterBag implements ParameterBagInterface
     }
 
     /**
-     * Sets a service container parameter.
-     *
-     * @param string $name  The parameter name
-     * @param mixed  $value The parameter value
+     * {@inheritdoc}
      */
     public function set(string $name, $value)
     {
@@ -117,13 +109,11 @@ class ParameterBag implements ParameterBagInterface
      */
     public function has(string $name)
     {
-        return \array_key_exists((string) $name, $this->parameters);
+        return \array_key_exists($name, $this->parameters);
     }
 
     /**
-     * Removes a parameter.
-     *
-     * @param string $name The parameter name
+     * {@inheritdoc}
      */
     public function remove(string $name)
     {
@@ -161,7 +151,7 @@ class ParameterBag implements ParameterBagInterface
      * @param mixed $value     A value
      * @param array $resolving An array of keys that are being resolved (used internally to detect circular references)
      *
-     * @return mixed The resolved value
+     * @return mixed
      *
      * @throws ParameterNotFoundException          if a placeholder references a parameter that does not exist
      * @throws ParameterCircularReferenceException if a circular reference if detected
@@ -190,7 +180,7 @@ class ParameterBag implements ParameterBagInterface
      *
      * @param array $resolving An array of keys that are being resolved (used internally to detect circular references)
      *
-     * @return mixed The resolved string
+     * @return mixed
      *
      * @throws ParameterNotFoundException          if a placeholder references a parameter that does not exist
      * @throws ParameterCircularReferenceException if a circular reference if detected

@@ -51,7 +51,7 @@ class PassConfig
         ];
 
         $this->optimizationPasses = [[
-            new AutoAliasServicePass(),
+            $autoAliasServicePass = new AutoAliasServicePass(),
             new ValidateEnvPlaceholdersPass(),
             new ResolveDecoratorStackPass(),
             new ResolveChildDefinitionsPass(),
@@ -62,6 +62,7 @@ class PassConfig
             new AutowireRequiredMethodsPass(),
             new AutowireRequiredPropertiesPass(),
             new ResolveBindingsPass(),
+            new ServiceLocatorTagPass(),
             new DecoratorServicePass(),
             new CheckDefinitionValidityPass(),
             new AutowirePass(false),
@@ -78,7 +79,7 @@ class PassConfig
 
         $this->removingPasses = [[
             new RemovePrivateAliasesPass(),
-            new ReplaceAliasByActualDefinitionPass(),
+            (new ReplaceAliasByActualDefinitionPass())->setAutoAliasServicePass($autoAliasServicePass),
             new RemoveAbstractDefinitionsPass(),
             new RemoveUnusedDefinitionsPass(),
             new AnalyzeServiceReferencesPass(),

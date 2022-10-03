@@ -38,6 +38,8 @@ class DirectoryLoader extends FileLoader
                 $this->import($dir, null, false, $path);
             }
         }
+
+        return null;
     }
 
     /**
@@ -49,6 +51,6 @@ class DirectoryLoader extends FileLoader
             return true;
         }
 
-        return null === $type && \is_string($resource) && '/' === substr($resource, -1);
+        return null === $type && \is_string($resource) && str_ends_with($resource, '/');
     }
 }

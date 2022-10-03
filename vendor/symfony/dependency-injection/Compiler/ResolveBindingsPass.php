@@ -45,7 +45,7 @@ class ResolveBindingsPass extends AbstractRecursivePass
             foreach ($this->unusedBindings as [$key, $serviceId, $bindingType, $file]) {
                 $argumentType = $argumentName = $message = null;
 
-                if (false !== strpos($key, ' ')) {
+                if (str_contains($key, ' ')) {
                     [$argumentType, $argumentName] = explode(' ', $key, 2);
                 } elseif ('$' === $key[0]) {
                     $argumentName = $key;
@@ -126,11 +126,16 @@ class ResolveBindingsPass extends AbstractRecursivePass
                 $this->unusedBindings[$bindingId] = [$key, $this->currentId, $bindingType, $file];
             }
 
-            if (preg_match('/^(?:(?:array|bool|float|int|string|([^ $]++)) )\$/', $key, $m)) {
+            if (preg_match('/^(?:(?:array|bool|float|int|string|iterable|([^ $]++)) )\$/', $key, $m)) {
                 $bindingNames[substr($key, \strlen($m[0]))] = $binding;
             }
 
             if (!isset($m[1])) {
+                continue;
+            }
+
+            if (is_subclass_of($m[1], \UnitEnum::class)) {
+                $bindingNames[substr($key, \strlen($m[0]))] = $binding;
                 continue;
             }
 
