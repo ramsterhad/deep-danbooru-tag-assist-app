@@ -13,11 +13,12 @@ use function sprintf;
 
 final class DeepDanbooruRepository
 {
-    private static $endpointUrl = 'https://deepdanbooru.donmai.us/';
+    //private static $endpointUrl = 'https://deepdanbooru.donmai.us/';
+    private static $endpointUrl = 'https://danbooru.donmai.us/';
 
     public function __construct(
-        private MarkTagByColorAttributeService $markTagByColorAttributeService)
-    {}
+        private MarkTagByColorAttributeService $markTagByColorAttributeService
+    ) {}
 
     /**
      * @throws AdapterApplicationException
