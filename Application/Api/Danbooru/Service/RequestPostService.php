@@ -46,6 +46,7 @@ final class RequestPostService
         'preview_file_url',
         'file_url',
         'large_file_url',
+        'media_asset',
     ];
 
     public function __construct(
@@ -251,6 +252,8 @@ final class RequestPostService
         $post->getPicture()->setDominantColors(
             $this->dominantColorsService->calculateDominantColors($post)
         );
+
+        $post->setMediaAssetId((int) $object->media_asset->id);
 
         return $post;
     }

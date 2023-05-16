@@ -15,6 +15,7 @@ class Post
     private TagCollection $tagCollection;
 
     private Picture $picture;
+    private int $mediaAssetId;
 
     /**
      * @param string $id
@@ -105,4 +106,22 @@ class Post
     {
         $this->picture = $picture;
     }
+
+    /**
+     * @return int
+     */
+    public function getMediaAssetId(): int
+    {
+        return $this->mediaAssetId;
+    }
+
+    /**
+     * @param int $mediaAssetId
+     */
+    public function setMediaAssetId(int $mediaAssetId): void
+    {
+        $this->mediaAssetId = $mediaAssetId;
+    }
+
+
 }

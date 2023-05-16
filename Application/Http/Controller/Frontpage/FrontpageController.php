@@ -3,7 +3,6 @@
 namespace Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\Frontpage;
 
 use Exception;
-use JsonException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\InvalidCredentials;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Exception\PostResponseApplicationException;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\AuthenticationService;
@@ -12,9 +11,10 @@ use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Filter\Fil
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\Picture\DeletePictureService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\EndpointUrlService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestPostService;
-use Ramsterhad\DeepDanbooruTagAssist\Application\Api\DeepDanbooru\Service\RequestTagsByPictureUrlService;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Danbooru\Service\RequestTagsService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\MachineLearningPlatform\MachineLearningPlatform;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\Exception\AdapterApplicationException;
+use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Shared\MarkTagByColorAttributeService;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagCollection;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Api\Tag\TagInterface;
 use Ramsterhad\DeepDanbooruTagAssist\Application\Http\Controller\ControllerInterface;
@@ -37,13 +37,13 @@ class FrontpageController implements ControllerInterface
         private FindDifferentColorsForTheSameTagService   $findDifferentColorsForTheSameTagService,
         private RequestPostService                        $requestPostService,
         private MachineLearningPlatform                   $machineLearningPlatform,
-        private RequestTagsByPictureUrlService            $requestTagsFromDeepDanbooruByPictureUrlService,
+        private RequestTagsService                        $requestTagsService,
+        private MarkTagByColorAttributeService            $markTagByColorAttributeService
     ) {}
 
     /**
      * @throws PostResponseApplicationException
      * @throws InvalidCredentials
-     * @throws JsonException
      * @throws Exception
      */
     public function index(): Response
@@ -56,8 +56,10 @@ class FrontpageController implements ControllerInterface
 
         // Try to use predicted tags by DeepDanbooru. If something fails, use the machine learning platform API.
         try {
-            $suggestedTags = $this->requestTagsFromDeepDanbooruByPictureUrlService->requestTags(
-                $post->getPicOriginal()
+            $suggestedTags = $this->requestTagsService->requestTags(
+                $post,
+                $this->configuration->get('danbooru_api_url'),
+                $this->markTagByColorAttributeService
             );
         } catch (AdapterApplicationException $e) {
             $machineLearningPlatform = $this->machineLearningPlatform;
@@ -122,8 +124,16 @@ class FrontpageController implements ControllerInterface
     {
         $mlpTagList = '';
 
+        if (!count($suggestedTags->getTags())) {
+            return 'nothing to do here...';
+        }
+
         foreach ($suggestedTags->getTags() as $tag) {
             $isNew = false;
+
+            if (!count($filteredTags->getTags())) {
+                return 'nothing to do here...';
+            }
 
             foreach ($filteredTags->getTags() as $filteredTag) {
 
@@ -150,7 +160,12 @@ class FrontpageController implements ControllerInterface
                 $markEnd = '';
             }
 
-            $cssClasses = implode(' ', $tags);
+            if (isset($tags)) {
+                $cssClasses = implode(' ', $tags);
+            } else {
+                $cssClasses = 'unknownTag';
+            }
+
             $mlpTagList .= '<div class="'.$cssClasses.'">' . $markStart .  $this->addWikiLink($tag->getName()) . $markEnd . '&nbsp;</div>';
         }
 
