@@ -8,6 +8,8 @@ interface AdapterInterface
 {
     public function init(): AdapterInterface;
 
+    public function registerUserAgent(): AdapterInterface;
+
     public function sendTo(string $url): AdapterInterface;
 
     public function byMethod(string $method): AdapterInterface;
